@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>alex-chen-backend (陈明) - 个人简历</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        github: {
+                            bg: '#0d1117',
+                            canvas: '#161b22',
+                            border: '#30363d',
+                            text: '#c9d1d9',
+                            muted: '#8b949e',
+                            blue: '#58a6ff',
+                            orange: '#f0883e',
+                            l0: '#161b22',
+                            l1: '#0e4429',
+                            l2: '#006d32',
+                            l3: '#26a641',
+                            l4: '#39d353',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .transition-micro {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .active-scale:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-github-bg text-[#24292f] dark:text-github-text font-sans antialiased min-h-screen transition-colors duration-300">
+
+    <!-- 1. 顶部双层自适应导航栏 -->
+    <header class="bg-[#f6f8fa] dark:bg-[#161b22] border-b border-[#d0d7de] dark:border-[#30363d] sticky top-0 z-50 backdrop-blur-md bg-opacity-95 dark:bg-opacity-95 transition-colors duration-300">
+        <!-- 第一层：Logo 与工具区 -->
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <!-- GitHub 风格 Logo -->
+                <svg class="w-8 h-8 fill-[#24292f] dark:fill-github-text hover:text-github-blue transition-micro cursor-pointer shrink-0" viewBox="0 0 16 16" version="1.1" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+                
+                <!-- 桌面端导航 -->
+                <div class="hidden md:flex items-center space-x-1 pl-4 border-l border-[#d0d7de] dark:border-[#30363d]">
+                    <a href="#overview" class="tab-btn px-3 py-1.5 text-sm font-semibold border-b-2 border-transparent hover:text-[#24292f] dark:hover:text-white transition-micro">总览</a>
+                    <a href="#experience" class="tab-btn px-3 py-1.5 text-sm font-semibold border-b-2 border-transparent hover:text-[#24292f] dark:hover:text-white transition-micro">工作经历</a>
+                    <a href="#projects" class="tab-btn px-3 py-1.5 text-sm font-semibold border-b-2 border-transparent hover:text-[#24292f] dark:hover:text-white transition-micro">精选项目</a>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <!-- 深色/浅色模式切换 -->
+                <button onclick="toggleTheme()" class="p-1.5 rounded-md border border-[#d0d7de] dark:border-[#30363d] bg-white dark:bg-github-canvas hover:bg-[#f3f4f6] dark:hover:bg-[#30363d] text-[#24292f] dark:text-github-text transition-micro active-scale" aria-label="切换主题">
+                    <svg id="theme-sun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+                    <svg id="theme-moon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+
+                <div class="w-7 h-7 rounded-full overflow-hidden border border-[#d0d7de] dark:border-[#30363d] shrink-0">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="头像" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- 第二层：移动端次级导航 -->
+        <div class="md:hidden flex border-t border-[#d0d7de] dark:border-[#30363d] bg-white dark:bg-[#161b22] justify-around py-2 transition-colors duration-300">
+            <a href="#overview" class="tab-btn px-4 py-1 text-xs font-semibold border-b-2 border-transparent transition-micro">总览</a>
+            <a href="#experience" class="tab-btn px-4 py-1 text-xs font-semibold border-b-2 border-transparent transition-micro">工作经历</a>
+            <a href="#projects" class="tab-btn px-4 py-1 text-xs font-semibold border-b-2 border-transparent transition-micro">精选项目</a>
+        </div>
+    </header>
+
+    <!-- 2. 主容器 -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            
+            <!-- 左栏：个人信息展示 (Sidebar) -->
+            <div class="md:col-span-1 flex flex-col">
+                <!-- 头像与状态 (重构防遮挡设计) -->
+                <div class="flex items-center md:block mb-4">
+                    <div class="relative shrink-0">
+                        <div class="w-20 h-20 sm:w-28 sm:h-28 md:w-full md:h-auto rounded-full md:rounded-xl overflow-hidden border-2 border-[#d0d7de] dark:border-github-border relative aspect-square transition-micro">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="头像" class="w-full h-full object-cover">
+                        </div>
+                        <!-- 悬浮在头像右下角的极简状态圆徽章 -->
+                        <div class="absolute -bottom-1 -right-1 bg-white dark:bg-[#161b22] border border-[#d0d7de] dark:border-[#30363d] rounded-full p-1 shadow-lg hover:scale-110 transition-micro cursor-pointer flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8" title="专注中">
+                            <span class="text-xs sm:text-sm">🚀</span>
+                        </div>
+                    </div>
+                    <!-- 个人称呼 -->
+                    <div class="ml-4 md:ml-0 md:mt-4">
+                        <h1 class="text-xl sm:text-2xl font-bold text-[#24292f] dark:text-github-text leading-tight">陈明 (Alex Chen)</h1>
+                        <p class="text-base text-[#57606a] dark:text-github-muted font-mono">alex-chen-backend</p>
+                    </div>
+                </div>
+
+                <!-- 个人简介 -->
+                <p class="text-sm text-[#24292f] dark:text-github-text mb-4 leading-relaxed">
+                    专注于高并发、分布式系统架构的后端开发工程师。热衷于编写优雅、高性能的代码，积极拥抱开源生态。
+                </p>
+
+                <!-- 邮箱操作按钮组件 (防溢出增强版) -->
+                <div class="relative w-full mb-6 min-w-0">
+                    <div class="flex rounded-md shadow-sm w-full min-w-0">
+                        <!-- 左侧：点击复制 -->
+                        <button onclick="copyEmail()" class="flex-1 min-w-0 inline-flex items-center justify-center space-x-2 px-3 py-2 text-xs font-semibold rounded-l-md border border-r-0 border-[#d0d7de] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#161b22] hover:bg-[#eaeef2] dark:hover:bg-[#30363d] text-[#24292f] dark:text-github-text transition-micro active-scale">
+                            <svg class="w-4 h-4 text-[#57606a] dark:text-github-muted shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <span class="truncate block min-w-0" id="emailLabel">
+                                <span class="md:inline hidden">alex.chen.dev@email.com</span>
+                                <span class="md:hidden inline">复制邮箱</span>
+                            </span>
+                        </button>
+                        <!-- 右侧：跳转客户端 -->
+                        <a href="mailto:alex.chen.dev@email.com" class="inline-flex items-center px-3 py-2 rounded-r-md border border-[#d0d7de] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-[#161b22] hover:bg-[#eaeef2] dark:hover:bg-[#30363d] text-[#24292f] dark:text-github-text transition-micro shrink-0 active-scale" title="直接发送邮件">
+                            <svg class="w-4 h-4 text-[#57606a] dark:text-github-muted" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                    <!-- 复制微提示 -->
+                    <div id="copyToast" class="absolute -top-9 left-1/2 transform -translate-x-1/2 bg-[#1f883d] text-white text-[11px] font-semibold py-1 px-3 rounded shadow-md opacity-0 pointer-events-none transition-all duration-300">
+                        邮箱已复制! ✓
+                    </div>
+                </div>
+
+                <!-- 社交统计 -->
+                <div class="flex items-center space-x-2 text-xs text-[#57606a] dark:text-github-muted mb-6">
+                    <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M10.5 5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zM0 8c0-2.2 3.58-4 8-4s8 1.8 8 4-3.58 4-8 4-8-1.8-8-4z"></path></svg>
+                    <span><strong class="text-[#24292f] dark:text-github-text">2.4k</strong> 位关注者</span>
+                    <span>·</span>
+                    <span>正在关注 <strong class="text-[#24292f] dark:text-github-text">182</strong> 人</span>
+                </div>
+
+                <!-- 个人资料元数据 -->
+                <div class="space-y-2.5 text-xs text-[#24292f] dark:text-github-text border-t border-[#d0d7de] dark:border-github-border pt-4">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-[#57606a] dark:text-github-muted fill-current shrink-0" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 14.25c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V3a.25.25 0 00-.25-.25H1.75A.25.25 0 001.5 3v11.25zM1.75 1.25A1.75 1.75 0 000 3v11.25C0 15.216.784 16 1.75 16h12.5A1.75 1.75 0 0016 14.25V3A1.75 1.75 0 0014.25 1.25H1.75zM12 5H4v1.5h8V5zM4 8.5h8V10H4V8.5zm0 3.5h5v1.5H4V12z"></path></svg>
+                        <span class="font-semibold">字节跳动 (ByteDance)</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-[#57606a] dark:text-github-muted fill-current shrink-0" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.536 3.464a5 5 0 010 7.072L8 14.07l-3.536-3.535a5 5 0 010-7.072v-.001a5 5 0 017.072 0zM8 9a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg>
+                        <span>中国 · 北京</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-[#57606a] dark:text-github-muted fill-current shrink-0" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a3.5 3.5 0 114.95 4.95l-2.5 2.5a3.5 3.5 0 01-4.95 0 .75.75 0 00-1.06 1.06 5 5 0 007.07 0l2.5-2.5a5 5 0 00-7.07 0l-1.25 1.25zm-4.2 4.2a.75.75 0 00-1.06-.106l-1.2 1.25a5 5 0 007.07 7.07l2.5-2.5a5 5 0 000-7.07.75.75 0 00-1.06 1.06 3.5 3.5 0 010 4.95l-2.5 2.5a3.5 3.5 0 01-4.95 0l1.25-1.25a.75.75 0 00.106-1.06z"></path></svg>
+                        <a href="#" class="hover:text-github-blue hover:underline transition-micro">https://alexchen.dev</a>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-[#57606a] dark:text-github-muted fill-current shrink-0" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zm.5 4.75a.75.75 0 00-1.5 0v3.5a.75.75 0 00.312.607l2.5 1.75a.75.75 0 10.876-1.214L8.5 7.82V4.75z"></path></svg>
+                        <span>本地时间: <span id="localTime" class="font-mono text-github-blue">加载中...</span></span>
+                    </div>
+                </div>
+
+                <!-- 技术语言分布占比 -->
+                <div class="border-t border-[#d0d7de] dark:border-github-border pt-4 mt-6">
+                    <h3 class="text-sm font-semibold text-[#24292f] dark:text-github-text mb-3">核心语言占比</h3>
+                    <!-- 多色比例条 -->
+                    <div class="h-2 w-full flex rounded-full overflow-hidden mb-3 bg-[#e1e4e8] dark:bg-github-l0">
+                        <div class="bg-[#00add8] transition-all duration-500" style="width: 44.7%"></div>
+                        <div class="bg-[#b07219] transition-all duration-500" style="width: 24.4%"></div>
+                        <div class="bg-[#3572A5] transition-all duration-500" style="width: 19.3%"></div>
+                        <div class="bg-[#89e051] transition-all duration-500" style="width: 6.8%"></div>
+                        <div class="bg-[#e38c00] transition-all duration-500" style="width: 2.9%"></div>
+                        <div class="bg-[#c9d1d9] transition-all duration-500" style="width: 1.2%"></div>
+                        <div class="bg-[#57606a] transition-all duration-500" style="width: 0.9%"></div>
+                    </div>
+                    <!-- 数据网格 -->
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-xs">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#00add8] shrink-0"></span>
+                            <span class="font-semibold text-[#24292f] dark:text-github-text">Go</span>
+                            <span class="text-[#57606a] dark:text-github-muted">44.7%</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#b07219] shrink-0"></span>
+                            <span class="font-semibold text-[#24292f] dark:text-github-text">Java</span>
+                            <span class="text-[#57606a] dark:text-github-muted">24.4%</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#3572A5] shrink-0"></span>
+                            <span class="font-semibold text-[#24292f] dark:text-github-text">Python</span>
+                            <span class="text-[#57606a] dark:text-github-muted">19.3%</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#89e051] shrink-0"></span>
+                            <span class="font-semibold text-[#24292f] dark:text-github-text">Shell</span>
+                            <span class="text-[#57606a] dark:text-github-muted">6.8%</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#e38c00] shrink-0"></span>
+                            <span class="font-semibold text-[#24292f] dark:text-github-text">SQL</span>
+                            <span class="text-[#57606a] dark:text-github-muted">2.9%</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#c9d1d9] shrink-0"></span>
+                            <span class="font-semibold text-[#24292f] dark:text-github-text">HTML</span>
+                            <span class="text-[#57606a] dark:text-github-muted">1.2%</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 col-span-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#57606a] shrink-0"></span>
+                            <span class="font-semibold text-[#24292f] dark:text-github-text">其他</span>
+                            <span class="text-[#57606a] dark:text-github-muted">0.9%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右栏：主内容区 -->
+            <div class="md:col-span-3">
+                <div class="space-y-12">
+                    
+                    <!-- 区块 1: Overview (总览) -->
+                    <section id="overview" class="scroll-mt-36 md:scroll-mt-24 space-y-6">
+                        <!-- README.md 仿真卡片 -->
+                        <div class="border border-[#d0d7de] dark:border-github-border rounded-lg bg-[#f6f8fa] dark:bg-github-canvas overflow-hidden">
+                            <div class="bg-white dark:bg-github-bg px-4 py-2 border-b border-[#d0d7de] dark:border-github-border flex items-center justify-between text-xs text-[#57606a] dark:text-github-muted">
+                                <span class="font-mono flex items-center space-x-2">
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 1.75C4 .784 4.784 0 5.75 0h5.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0114.25 15h-8.5A1.75 1.75 0 014 13.25V1.75zm1.75-.25a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V5H12a1.5 1.5 0 01-1.5-1.5V1.5H5.75zM12 1.94V3.5a.5.5 0 00.5.5h1.56L12 1.94z"></path></svg>
+                                    <span>README.md</span>
+                                </span>
+                                <span class="hover:text-github-blue cursor-pointer">预览</span>
+                            </div>
+                            <div class="p-6 space-y-4 bg-white dark:bg-github-canvas">
+                                <h2 class="text-2xl font-bold border-b border-[#d0d7de] dark:border-github-border pb-2 flex items-center space-x-2 text-[#24292f] dark:text-github-text">
+                                    <span>你好 👋，我是陈明 (Alex)</span>
+                                </h2>
+                                <p class="text-sm leading-relaxed">
+                                    我是一名拥有 5 年以上核心服务端架构经验的后端开发，擅长处理<strong>高并发、微服务架构演进、以及海量数据存储</strong>优化。主要技术栈为 Go 和 Java，对云原生（Kubernetes/Docker）、分布式中间件有深入的研究和实践。
+                                </p>
+                                
+                                <div class="pt-2">
+                                    <h3 class="text-sm font-semibold text-[#57606a] dark:text-github-muted mb-2">⚡ 核心技术栈</h3>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="px-2.5 py-1 text-xs font-semibold rounded-full border border-[#d0d7de] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-github-bg hover:border-github-blue transition-micro cursor-default">Go (Golang)</span>
+                                        <span class="px-2.5 py-1 text-xs font-semibold rounded-full border border-[#d0d7de] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-github-bg hover:border-github-blue transition-micro cursor-default">Java / Spring Boot</span>
+                                        <span class="px-2.5 py-1 text-xs font-semibold rounded-full border border-[#d0d7de] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-github-bg hover:border-github-blue transition-micro cursor-default">Kubernetes</span>
+                                        <span class="px-2.5 py-1 text-xs font-semibold rounded-full border border-[#d0d7de] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-github-bg hover:border-github-blue transition-micro cursor-default">Redis</span>
+                                        <span class="px-2.5 py-1 text-xs font-semibold rounded-full border border-[#d0d7de] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-github-bg hover:border-github-blue transition-micro cursor-default">MySQL / PostgreSQL</span>
+                                        <span class="px-2.5 py-1 text-xs font-semibold rounded-full border border-[#d0d7de] dark:border-[#30363d] bg-[#f6f8fa] dark:bg-github-bg hover:border-github-blue transition-micro cursor-default">Apache Kafka</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 活跃度绿格子 -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-sm font-semibold text-[#24292f] dark:text-github-text">过去一年的代码贡献提交次数：1,428 次</h3>
+                            </div>
+                            <div class="border border-[#d0d7de] dark:border-github-border rounded-lg p-4 bg-white dark:bg-github-canvas overflow-x-auto no-scrollbar relative">
+                                <div class="absolute right-2 top-2 bg-[#f6f8fa] dark:bg-github-bg px-2 py-1 rounded text-[10px] text-[#57606a] dark:text-github-muted sm:hidden pointer-events-none animate-pulse">
+                                    左右滑动 &rarr;
+                                </div>
+                                
+                                <div class="flex flex-col min-w-[720px]">
+                                    <div class="flex text-[10px] text-[#57606a] dark:text-github-muted mb-1 pl-6 select-none" id="monthLabels"></div>
+                                    <div class="flex">
+                                        <div class="flex flex-col justify-between text-[10px] text-[#57606a] dark:text-github-muted pr-2 h-[88px] pt-1 select-none">
+                                            <span>周一</span>
+                                            <span>周三</span>
+                                            <span>周五</span>
+                                        </div>
+                                        <div class="grid grid-flow-col grid-rows-7 gap-[3px]" id="contributionGrid"></div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-end space-x-1.5 text-[10px] text-[#57606a] dark:text-github-muted mt-3 pr-2 select-none">
+                                        <span>少</span>
+                                        <div class="w-2.5 h-2.5 bg-[#ebedf0] dark:bg-github-l0 rounded-sm border border-[#d0d7de] dark:border-[#21262d]"></div>
+                                        <div class="w-2.5 h-2.5 bg-github-l1 rounded-sm"></div>
+                                        <div class="w-2.5 h-2.5 bg-github-l2 rounded-sm"></div>
+                                        <div class="w-2.5 h-2.5 bg-github-l3 rounded-sm"></div>
+                                        <div class="w-2.5 h-2.5 bg-github-l4 rounded-sm"></div>
+                                        <span>多</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 区块 2: Experience (工作经历) -->
+                    <section id="experience" class="scroll-mt-36 md:scroll-mt-24 space-y-6">
+                        <h3 class="text-lg font-bold text-[#24292f] dark:text-github-text border-b border-[#d0d7de] dark:border-github-border pb-2">工作经历</h3>
+                        
+                        <div class="relative pl-6 sm:pl-8 border-l-2 border-[#d0d7de] dark:border-github-border ml-3 space-y-10 py-2">
+                            <!-- 时间点 1: 字节跳动 -->
+                            <div class="relative group">
+                                <div class="absolute -left-[35px] sm:-left-[43px] top-1.5 w-7 h-7 bg-purple-600 rounded-full flex items-center justify-center border-4 border-white dark:border-github-bg shadow-md">
+                                    <svg class="w-3.5 h-3.5 text-white fill-current" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v5.256a2.251 2.251 0 101.5 0V5.372zm8 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM11 5.372a2.25 2.25 0 101.5 0v5.256a2.251 2.251 0 10-1.5 0V5.372zM5.75 11.5a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm7.5 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"></path></svg>
+                                </div>
+                                <div class="bg-white dark:bg-github-canvas border border-[#d0d7de] dark:border-github-border rounded-lg p-4 hover:border-github-blue transition-micro">
+                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                                        <h4 class="font-bold text-sm sm:text-base text-[#24292f] dark:text-github-text flex items-center space-x-2">
+                                            <span>高级后端开发工程师 @ 字节跳动 (ByteDance)</span>
+                                            <span class="bg-[#1f6feb] text-white text-[10px] px-2 py-0.5 rounded-full font-normal">至今</span>
+                                        </h4>
+                                        <span class="text-xs text-[#57606a] dark:text-github-muted mt-1 sm:mt-0 font-mono">2023.06 - 至今</span>
+                                    </div>
+                                    <p class="text-xs text-[#57606a] dark:text-github-muted mb-3">互娱研发部门 - 核心推荐系统基础平台</p>
+                                    <ul class="list-disc pl-4 text-xs text-[#24292f] dark:text-github-text space-y-2 leading-relaxed">
+                                        <li>负责日均千亿级请求推荐引擎底层微服务的重构，带领小组将微服务响应延迟（P99）降低 <strong class="text-github-blue">15%</strong>。</li>
+                                        <li>主导云原生环境下分布式高性能本地缓存框架设计与自研，零 GC 损耗，使核心接口吞吐提升 <strong class="text-github-blue">30%</strong>。</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- 时间点 2: 阿里巴巴 -->
+                            <div class="relative group">
+                                <div class="absolute -left-[35px] sm:-left-[43px] top-1.5 w-7 h-7 bg-green-600 rounded-full flex items-center justify-center border-4 border-white dark:border-github-bg shadow-md">
+                                    <svg class="w-3.5 h-3.5 text-white fill-current" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path></svg>
+                                </div>
+                                <div class="bg-white dark:bg-github-canvas border border-[#d0d7de] dark:border-github-border rounded-lg p-4 hover:border-github-blue transition-micro">
+                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                                        <h4 class="font-bold text-sm sm:text-base text-[#24292f] dark:text-github-text flex items-center space-x-2">
+                                            <span>核心系统 Java 资深开发 @ 阿里巴巴 (Alibaba)</span>
+                                            <span class="bg-[#d0d7de] dark:bg-github-border text-[#24292f] dark:text-github-muted text-[10px] px-2 py-0.5 rounded-full font-normal">已合并</span>
+                                        </h4>
+                                        <span class="text-xs text-[#57606a] dark:text-github-muted mt-1 sm:mt-0 font-mono">2021.03 - 2023.06</span>
+                                    </div>
+                                    <p class="text-xs text-[#57606a] dark:text-github-muted mb-3">本地生活集团 - 支付交易中心</p>
+                                    <ul class="list-disc pl-4 text-xs text-[#24292f] dark:text-github-text space-y-2 leading-relaxed">
+                                        <li>主导高并发支付网关架构重构，采用异步非阻塞响应式设计，平稳支撑“双十一”流量洪峰。</li>
+                                        <li>推动支付链路上微服务治理升级，应用 Hystrix / Sentinel 对关键依赖进行限流降级。</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 区块 3: Repositories (精选项目 - 改为4个企业级工作相关项目) -->
+                    <section id="projects" class="scroll-mt-36 md:scroll-mt-24 space-y-6">
+                        <div class="flex items-center justify-between border-b border-[#d0d7de] dark:border-github-border pb-3">
+                            <h3 class="text-lg font-bold text-[#24292f] dark:text-github-text">精选项目</h3>
+                        </div>
+
+                        <!-- 4张工作卡片网格布局 -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            
+                            <!-- 卡片 1 -->
+                            <div class="border border-[#d0d7de] dark:border-github-border rounded-lg p-4 bg-white dark:bg-github-canvas hover:border-github-blue transition-micro flex flex-col justify-between group cursor-pointer active-scale">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2 text-github-blue font-semibold text-sm">
+                                            <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8z"></path></svg>
+                                            <span class="group-hover:underline">智能推荐分布式检索引擎</span>
+                                        </div>
+                                        <span class="text-[10px] text-[#57606a] dark:text-github-muted border border-[#d0d7de] dark:border-github-border rounded-full px-2 py-0.5">字节跳动</span>
+                                    </div>
+                                    <p class="text-xs text-[#57606a] dark:text-github-muted leading-relaxed mb-4">
+                                        主导核心推荐链路上检索层系统重构。引入分布式倒排索引与高效向量检索技术，支撑了日均数亿次的超高吞吐查询，将核心微服务整体 P99 响应时间降低了 15%。
+                                    </p>
+                                </div>
+                                <div class="flex items-center space-x-3 text-xs text-[#57606a] dark:text-github-muted">
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">Go</span>
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">gRPC</span>
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">分布式索引</span>
+                                </div>
+                            </div>
+
+                            <!-- 卡片 2 -->
+                            <div class="border border-[#d0d7de] dark:border-github-border rounded-lg p-4 bg-white dark:bg-github-canvas hover:border-github-blue transition-micro flex flex-col justify-between group cursor-pointer active-scale">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2 text-github-blue font-semibold text-sm">
+                                            <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8z"></path></svg>
+                                            <span class="group-hover:underline">多活容灾金融级支付交易网关</span>
+                                        </div>
+                                        <span class="text-[10px] text-[#57606a] dark:text-github-muted border border-[#d0d7de] dark:border-github-border rounded-full px-2 py-0.5">阿里巴巴</span>
+                                    </div>
+                                    <p class="text-xs text-[#57606a] dark:text-github-muted leading-relaxed mb-4">
+                                        设计跨地域双活高可用支付网关架构。通过引入细粒度的热点限流、防重幂等验证机制与分布式一致性对账模块，在极端容灾切换演练中做到 5 秒内流量无损迁移。
+                                    </p>
+                                </div>
+                                <div class="flex items-center space-x-3 text-xs text-[#57606a] dark:text-github-muted">
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">Java</span>
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">Spring Cloud</span>
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">双活容灾</span>
+                                </div>
+                            </div>
+
+                            <!-- 卡片 3 -->
+                            <div class="border border-[#d0d7de] dark:border-github-border rounded-lg p-4 bg-white dark:bg-github-canvas hover:border-github-blue transition-micro flex flex-col justify-between group cursor-pointer active-scale">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2 text-github-blue font-semibold text-sm">
+                                            <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8z"></path></svg>
+                                            <span class="group-hover:underline">分布式实时流计算指标大盘</span>
+                                        </div>
+                                        <span class="text-[10px] text-[#57606a] dark:text-github-muted border border-[#d0d7de] dark:border-github-border rounded-full px-2 py-0.5">业务组件</span>
+                                    </div>
+                                    <p class="text-xs text-[#57606a] dark:text-github-muted leading-relaxed mb-4">
+                                        基于 Flink 框架与 ClickHouse 构建的多维亚秒级实时指标监控平台。完美承载单秒百万级日志流吞吐，支持大规模服务器集群资源健康度和核心链路延迟监控。
+                                    </p>
+                                </div>
+                                <div class="flex items-center space-x-3 text-xs text-[#57606a] dark:text-github-muted">
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">Flink</span>
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">Kafka</span>
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">实时大盘</span>
+                                </div>
+                            </div>
+
+                            <!-- 卡片 4 -->
+                            <div class="border border-[#d0d7de] dark:border-github-border rounded-lg p-4 bg-white dark:bg-github-canvas hover:border-github-blue transition-micro flex flex-col justify-between group cursor-pointer active-scale">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2 text-github-blue font-semibold text-sm">
+                                            <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8z"></path></svg>
+                                            <span class="group-hover:underline">容器弹性算力调度控制台</span>
+                                        </div>
+                                        <span class="text-[10px] text-[#57606a] dark:text-github-muted border border-[#d0d7de] dark:border-github-border rounded-full px-2 py-0.5">云原生</span>
+                                    </div>
+                                    <p class="text-xs text-[#57606a] dark:text-github-muted leading-relaxed mb-4">
+                                        针对超大集群离在线业务混部开发的 Kubernetes 自定义 Controller。在保证在线业务高吞吐的前提下大幅回收冗余算力资源，使得业务集群总资源利用率平均提升 12%。
+                                    </p>
+                                </div>
+                                <div class="flex items-center space-x-3 text-xs text-[#57606a] dark:text-github-muted">
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">Go</span>
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">K8s Operator</span>
+                                    <span class="px-2 py-0.5 bg-[#eaeef2] dark:bg-github-bg rounded text-[11px] font-mono">弹性调度</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 (精简设计，去除了无关链接) -->
+    <footer class="border-t border-[#d0d7de] dark:border-github-border mt-16 py-8 px-4 text-xs text-[#57606a] dark:text-github-muted transition-colors duration-300">
+        <div class="max-w-6xl mx-auto flex items-center justify-center">
+            <span>&copy; 2026 alex-chen-backend. 保留所有权利。</span>
+        </div>
+    </footer>
+
+    <!-- 绿格子 tooltip 浮动气泡 -->
+    <div id="tooltip" class="absolute hidden bg-[#161b22] border border-[#30363d] text-[#c9d1d9] text-[11px] py-1 px-2.5 rounded shadow-lg pointer-events-none transition-micro z-50"></div>
+
+    <script>
+        // 1. 动态生成 Contribution Graph
+        function generateContributions() {
+            const grid = document.getElementById('contributionGrid');
+            const tooltip = document.getElementById('tooltip');
+            const totalCells = 53 * 7; 
+            
+            const today = new Date();
+            const dateList = [];
+            for (let i = totalCells - 1; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(today.getDate() - i);
+                dateList.push(d);
+            }
+
+            dateList.forEach((date) => {
+                const cell = document.createElement('div');
+                cell.className = 'w-[10px] h-[10px] rounded-[1.5px] transition-all duration-150 cursor-pointer hover:ring-1 hover:ring-offset-1 hover:ring-[#8b949e]';
+                
+                const random = Math.random();
+                let level = 'bg-[#ebedf0] dark:bg-github-l0';
+                let commits = 0;
+                
+                if (random > 0.88) {
+                    level = 'bg-github-l4';
+                    commits = Math.floor(Math.random() * 5) + 8;
+                } else if (random > 0.75) {
+                    level = 'bg-github-l3';
+                    commits = Math.floor(Math.random() * 4) + 5;
+                } else if (random > 0.55) {
+                    level = 'bg-github-l2';
+                    commits = Math.floor(Math.random() * 3) + 2;
+                } else if (random > 0.25) {
+                    level = 'bg-github-l1';
+                    commits = 1;
+                }
+
+                cell.className += ` ${level}`;
+
+                const dateString = date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric', year: 'numeric' });
+                const commitMsg = commits === 0 ? '无提交纪录' : `${commits} 次代码提交`;
+
+                cell.addEventListener('mouseenter', (e) => {
+                    tooltip.innerHTML = `<strong>${commitMsg}</strong> (${dateString})`;
+                    tooltip.classList.remove('hidden');
+                    
+                    const rect = cell.getBoundingClientRect();
+                    tooltip.style.left = `${rect.left + window.scrollX - tooltip.offsetWidth / 2 + 5}px`;
+                    tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight - 8}px`;
+                });
+
+                cell.addEventListener('mouseleave', () => {
+                    tooltip.classList.add('hidden');
+                });
+
+                grid.appendChild(cell);
+            });
+
+            // 中文月份配置
+            const monthLabels = document.getElementById('monthLabels');
+            const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+            monthLabels.innerHTML = months.map(m => `<span class="flex-1">${m}</span>`).join('');
+        }
+
+        // 2. 动态本地时间生成
+        function updateLocalTime() {
+            const options = {
+                timeZone: 'Asia/Shanghai',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+            const formatter = new Intl.DateTimeFormat('zh-CN', options);
+            document.getElementById('localTime').innerText = formatter.format(new Date()) + " (CST)";
+        }
+
+        // 3. 一键复制邮箱
+        function copyEmail() {
+            const email = "alex.chen.dev@email.com";
+            navigator.clipboard.writeText(email).then(() => {
+                const toast = document.getElementById('copyToast');
+                toast.classList.remove('opacity-0', '-translate-y-2');
+                toast.classList.add('opacity-100', 'translate-y-0');
+                
+                setTimeout(() => {
+                    toast.classList.remove('opacity-100', 'translate-y-0');
+                    toast.classList.add('opacity-0', '-translate-y-2');
+                }, 2000);
+            }).catch(err => {
+                console.error("复制失败: ", err);
+            });
+        }
+
+        // 4. 深色 / 浅色模式切换
+        function toggleTheme() {
+            const html = document.documentElement;
+            const sunIcon = document.getElementById('theme-sun');
+            const moonIcon = document.getElementById('theme-moon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // 5. 滚动锚点状态高亮监听
+        function initScrollSpy() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.tab-btn');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-100px 0px -60% 0px', 
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const activeId = entry.target.getAttribute('id');
+                        navLinks.forEach((link) => {
+                            const href = link.getAttribute('href').replace('#', '');
+                            if (href === activeId) {
+                                link.classList.remove('border-transparent', 'text-[#57606a]', 'dark:text-github-muted');
+                                link.classList.add('border-orange-500', 'text-[#24292f]', 'dark:text-white');
+                            } else {
+                                link.classList.add('border-transparent', 'text-[#57606a]', 'dark:text-github-muted');
+                                link.classList.remove('border-orange-500', 'text-[#24292f]', 'dark:text-white');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach((section) => observer.observe(section));
+        }
+
+        window.onload = () => {
+            generateContributions();
+            updateLocalTime();
+            setInterval(updateLocalTime, 1000);
+            initScrollSpy();
+
+            // 检测系统主题/缓存主题
+            const savedTheme = localStorage.getItem('theme');
+            const html = document.documentElement;
+            const sunIcon = document.getElementById('theme-sun');
+            const moonIcon = document.getElementById('theme-moon');
+            
+            if (savedTheme === 'light') {
+                html.classList.remove('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                html.classList.add('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        };
+    </script>
+</body>
+</html>

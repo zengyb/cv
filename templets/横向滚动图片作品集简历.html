@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>林墨竹 | MoZhu Lin - 个人艺术空间</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* --- 1. 全局变量与基础重置 (莫兰迪色系) --- */
+    :root {
+      --bg-primary: #F2ECE4;      /* 燕麦白 */
+      --text-main: #3D3530;       /* 炭褐 */
+      --text-muted: #7A706A;      /* 浅褐 */
+      --color-sage: #9CA89E;      /* 鼠尾草绿 */
+      --color-rose: #CBB1A7;      /* 烟粉 */
+      --color-blue: #A4B3C2;      /* 雾霾蓝 */
+      --color-clay: #BFA895;      /* 陶土色 */
+      
+      /* 高级缓入缓出过渡曲线 (Ease-in-out Cubic) */
+      --ease-gallery: cubic-bezier(0.76, 0, 0.24, 1);
+      --transition-time: 1.1s;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", "Helvetica Neue", "Arial", "PingFang SC", "Noto Sans SC", sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      overflow: hidden; /* 彻底锁定系统默认的滚动条 */
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* --- 2. 艺术反色光标 --- */
+    .custom-cursor {
+      width: 16px;
+      height: 16px;
+      background-color: #fff;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.2s var(--ease-gallery), width 0.3s, height 0.3s;
+      mix-blend-mode: difference;
+    }
+    .custom-cursor.active {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .custom-cursor.cursor-hover {
+      transform: translate(-50%, -50%) scale(2.5);
+    }
+
+    /* --- 3. 导航与进度条 --- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 30px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      pointer-events: none;
+    }
+    .logo, nav {
+      pointer-events: auto;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+      position: relative;
+      padding-bottom: 4px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--text-main);
+      transition: var(--transition-time) var(--ease-gallery);
+    }
+    /* 处于活动状态的导航下划线铺满 */
+    nav a.active-nav::after {
+      width: 100%;
+    }
+
+    /* 顶部进度条 */
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      z-index: 101;
+      background-color: rgba(0,0,0,0.02);
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: var(--color-sage);
+      transition: width var(--transition-time) var(--ease-gallery);
+    }
+
+    /* --- 4. 核心：整轨联动幻灯容器 --- */
+    .slider-viewport {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slider-wrapper {
+      display: flex;
+      height: 100%;
+      width: 500vw; /* 5个屏宽度 */
+      transform: translate3d(0, 0, 0); /* 开启硬件加速 */
+      transition: transform var(--transition-time) var(--ease-gallery);
+      will-change: transform;
+    }
+
+    /* --- 5. 画卷章节样式 --- */
+    .section {
+      width: 100vw;
+      height: 100vh;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8vw;
+      position: relative;
+    }
+
+    #intro { background-color: #F2ECE4; }
+    #work-1 { background-color: #ECE7DF; }
+    #work-2 { background-color: #E6E0D7; }
+    #philosophy { background-color: #DFD8CF; }
+    #contact { background-color: #D6CDC2; }
+
+    /* 章节内容 */
+    .section-content {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 60px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1.2s var(--ease-gallery), transform 1.2s var(--ease-gallery);
+    }
+
+    /* 当前活跃章节触发淡入 */
+    .section-content.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 文本排版 */
+    .text-block {
+      flex: 1;
+      max-width: 500px;
+    }
+    .text-block .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+      display: block;
+    }
+    .text-block h1, .text-block h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 25px;
+    }
+    .text-block p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      text-align: justify;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      border: 1px solid var(--text-main);
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      background: transparent;
+      transition: all 0.5s var(--ease-gallery);
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: var(--text-main);
+      color: #fff;
+    }
+
+    .visual-block {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* 动态有机色块 */
+    .art-blob-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(45px);
+      opacity: 0.65;
+    }
+    .blob-1 {
+      width: 240px;
+      height: 240px;
+      background-color: var(--color-rose);
+      top: 10px;
+      left: 10px;
+      animation: float-rose 8s infinite alternate ease-in-out;
+    }
+    .blob-2 {
+      width: 200px;
+      height: 200px;
+      background-color: var(--color-sage);
+      bottom: 20px;
+      right: 20px;
+      animation: float-sage 10s infinite alternate ease-in-out;
+    }
+    @keyframes float-rose {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(25px, -15px) scale(1.1); }
+    }
+    @keyframes float-sage {
+      0% { transform: translate(0, 0) scale(1.1); }
+      100% { transform: translate(-25px, 20px) scale(0.9); }
+    }
+
+    /* 作品卡片 */
+    .artwork-canvas {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 4 / 5;
+      background-size: cover;
+      background-position: center;
+      border-radius: 4px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-time) var(--ease-gallery);
+      cursor: pointer;
+    }
+    .artwork-canvas:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    }
+    .artwork-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.35));
+      display: flex;
+      align-items: flex-end;
+      padding: 30px;
+      opacity: 0;
+      transition: var(--transition-time) var(--ease-gallery);
+    }
+    .artwork-canvas:hover .artwork-overlay {
+      opacity: 1;
+    }
+    .artwork-info-tag {
+      color: #fff;
+    }
+    .artwork-info-tag h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+    .artwork-info-tag span {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    .gradient-art-1 {
+      background: linear-gradient(135deg, #A4B3C2 0%, #CBB1A7 50%, #9CA89E 100%);
+    }
+    .gradient-art-2 {
+      background: linear-gradient(135deg, #BFA895 0%, #DFD8CF 50%, #9CA89E 100%);
+    }
+
+    /* 哲学模块 */
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      width: 100%;
+      max-width: 1200px;
+    }
+    .phil-item h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: var(--text-main);
+    }
+    .phil-item p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+    }
+
+    /* 联络 */
+    .contact-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .social-links {
+      display: flex;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .social-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--text-muted);
+      padding-bottom: 2px;
+      transition: var(--transition-time) var(--ease-gallery);
+    }
+    .social-links a:hover {
+      color: var(--color-sage);
+      border-bottom-color: var(--color-sage);
+    }
+
+    /* 引导微动效 */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 8vw;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      opacity: 0.7;
+      animation: nudge 2s infinite alternate ease-in-out;
+    }
+    .scroll-hint-line {
+      width: 50px;
+      height: 1px;
+      background-color: var(--text-main);
+    }
+    @keyframes nudge {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(10px); }
+    }
+
+    /* --- 6. 移动端优化 --- */
+    @media (max-width: 768px) {
+      .section {
+        padding: 80px 6vw 40px 6vw;
+      }
+      .section-content {
+        flex-direction: column-reverse;
+        justify-content: center;
+        gap: 20px;
+      }
+      .text-block {
+        text-align: center;
+        max-width: 100%;
+      }
+      .text-block h1, .text-block h2 {
+        font-size: 1.6rem;
+        margin-bottom: 10px;
+      }
+      .text-block p {
+        font-size: 0.85rem;
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+      .visual-block {
+        width: 100%;
+      }
+      .artwork-canvas {
+        max-width: 200px;
+        aspect-ratio: 1 / 1;
+      }
+      .art-blob-container {
+        width: 160px;
+        height: 160px;
+      }
+      .blob-1 { width: 110px; height: 110px; }
+      .blob-2 { width: 90px; height: 90px; }
+      .philosophy-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .phil-item h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+      .scroll-hint {
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 20px;
+        font-size: 0.7rem;
+      }
+      nav {
+        display: none; /* 移动端精简头部，依靠滑动即可 */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 艺术感反色鼠标 -->
+  <div class="custom-cursor"></div>
+
+  <!-- 顶部阅读进度条 -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- 全局导航栏 -->
+  <header>
+    <div class="logo" onclick="scrollToSection(0)">MOZHU LIN</div>
+    <nav>
+      <ul>
+        <li><a onclick="scrollToSection(0)">探索</a></li>
+        <li><a onclick="scrollToSection(1)">作品 01</a></li>
+        <li><a onclick="scrollToSection(2)">作品 02</a></li>
+        <li><a onclick="scrollToSection(3)">共鸣</a></li>
+        <li><a onclick="scrollToSection(4)">联络</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 核心滚轨容器 -->
+  <div class="slider-viewport">
+    <main class="slider-wrapper" id="sliderWrapper">
+
+      <!-- 章节 1：引言 -->
+      <section class="section" id="intro">
+        <div class="section-content">
+          <div class="text-block">
+            <span class="num">01 / PROLOGUE</span>
+            <h1>静谧的维度</h1>
+            <p>我是林墨竹，一名新媒体与架上绘画跨界探索者。我致力于寻找质感纤维与数字脉冲之间的温存。在这里，每一抹色彩都是一种内向的呼吸。</p>
+            <button class="btn" onclick="scrollToSection(1)">观展入口</button>
+          </div>
+          <div class="visual-block">
+            <div class="art-blob-container">
+              <div class="blob blob-1"></div>
+              <div class="blob blob-2"></div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-hint">
+          <span>滑动或滚动探索</span>
+          <div class="scroll-hint-line"></div>
+        </div>
+      </section>
+
+      <!-- 章节 2：作品 01 -->
+      <section class="section" id="work-1">
+        <div class="section-content">
+          <div class="text-block">
+            <span class="num">02 / SELECTED WORK</span>
+            <h2>《潮汐共振》</h2>
+            <p>综合媒介 (陶瓷、声音传感器与画布) | 2025<br><br>将海风在陶罐内壁留下的微弱气流转化为画布上的动态肌理，探索声音物理运动与视觉图像的微妙映射。</p>
+            <button class="btn">索取画册</button>
+          </div>
+          <div class="visual-block">
+            <div class="artwork-canvas gradient-art-1">
+              <div class="artwork-overlay">
+                <div class="artwork-info-tag">
+                  <h4>潮汐共振 (Resonance)</h4>
+                  <span>Mixed Media, 2025</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 章节 3：作品 02 -->
+      <section class="section" id="work-2">
+        <div class="section-content">
+          <div class="text-block">
+            <span class="num">03 / SELECTED WORK</span>
+            <h2>《无声之尘》</h2>
+            <p>数字生成艺术与矿物颜料微喷 | 2026<br><br>代码编写的无序沙粒在虚拟空间中受重力漂移，最终用手工研磨的云母颗粒微喷呈现于纸面，连接虚拟秩序与自然质感。</p>
+            <button class="btn">细节解析</button>
+          </div>
+          <div class="visual-block">
+            <div class="artwork-canvas gradient-art-2">
+              <div class="artwork-overlay">
+                <div class="artwork-info-tag">
+                  <h4>无声之尘 (Silent Dust)</h4>
+                  <span>Generative Art, 2026</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 章节 4：艺术哲学 -->
+      <section class="section" id="philosophy">
+        <div class="section-content">
+          <div class="philosophy-grid">
+            <div class="phil-item">
+              <span class="num">04 / PHILOSOPHY</span>
+              <h3>“以质感，解构速度”</h3>
+              <p>在快节奏的视听洪流中，我偏爱利用低饱和的莫兰迪色系和天然材质，将感官体验拉回到带有温度的低频。艺术不是发声，而是提供可以容纳安静的场所。</p>
+            </div>
+            <div class="phil-item">
+              <span class="num">RECENT EVENTS</span>
+              <h3>群展与足迹</h3>
+              <p>
+                • 2025 “重叠的视界” 青年艺术联展 (上海美术馆)<br>
+                • 2025 获 “东方新生代” 艺术优胜奖<br>
+                • 2024 “静水微澜” 个人数字艺术装置展 (杭州)
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 章节 5：联络 -->
+      <section class="section" id="contact">
+        <div class="section-content">
+          <div class="text-block contact-container">
+            <span class="num">05 / ENCOUNTER</span>
+            <h2>让灵感落地。</h2>
+            <p>无论是学术探讨、联合展览，或是作品收藏意向，都欢迎您通过以下方式建立连接，共同编织下一幅艺术画轴。</p>
+            <a href="mailto:contact@mozhulin.com" class="btn">发送邮件联络</a>
+            <div class="social-links">
+              <a href="#">Instagram</a>
+              <a href="#">Behance</a>
+              <a href="#">画廊</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 精准整轨交互系统 -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const wrapper = document.getElementById('sliderWrapper');
+      const progressBar = document.getElementById('progressBar');
+      const cursor = document.querySelector('.custom-cursor');
+      const contents = document.querySelectorAll('.section-content');
+      const navLinks = document.querySelectorAll('nav a');
+      
+      let currentSlide = 0;
+      const totalSlides = 5;
+      let isAnimating = false;
+      const animationCooldown = 1100; // 与CSS过渡时间严格对齐
+
+      /* --- 1. 核心幻灯定位器（带高精级贝塞尔缓动） --- */
+      function navigateSlide(index) {
+        if (index < 0 || index >= totalSlides || isAnimating) return;
+
+        isAnimating = true;
+        currentSlide = index;
+
+        // 利用 3D Transform 转换屏宽，触发缓入缓出 CSS 动效
+        wrapper.style.transform = `translate3d(-${currentSlide * 100}vw, 0, 0)`;
+
+        // 更新进度条
+        const progress = (currentSlide / (totalSlides - 1)) * 100;
+        progressBar.style.width = `${progress}%`;
+
+        // 同步状态与入场退场动效
+        updateSectionStates(currentSlide);
+
+        // 锁定时间，保障单屏过渡完成
+        setTimeout(() => {
+          isAnimating = false;
+        }, animationCooldown);
+      }
+
+      // 更新内容淡入及导航条状态
+      function updateSectionStates(activeIdx) {
+        contents.forEach((content, i) => {
+          if (i === activeIdx) {
+            content.classList.add('visible');
+          } else {
+            content.classList.remove('visible'); // 退场时重置动效，确保往返都有入场过渡
+          }
+        });
+
+        navLinks.forEach((link, i) => {
+          if (i === activeIdx) {
+            link.classList.add('active-nav');
+          } else {
+            link.classList.remove('active-nav');
+          }
+        });
+      }
+
+      // 提供给导航点击
+      window.scrollToSection = function(index) {
+        navigateSlide(index);
+      };
+
+      /* --- 2. 桌面端滚轮防爆切换器 --- */
+      window.addEventListener('wheel', (e) => {
+        // 屏蔽惯性产生的微小信号干扰
+        if (Math.abs(e.deltaY) < 25 || isAnimating) return;
+
+        if (e.deltaY > 0) {
+          navigateSlide(currentSlide + 1); // 向上滚动鼠标滚轮 -> 右移一屏
+        } else {
+          navigateSlide(currentSlide - 1); // 向下滚动鼠标滚轮 -> 左移一屏
+        }
+      }, { passive: false });
+
+      /* --- 3. 移动端无卡顿极简轻扫（Swipe）手势侦测 --- */
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      window.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+
+      window.addEventListener('touchend', (e) => {
+        if (isAnimating) return;
+        touchEndX = e.changedTouches[0].clientX;
+        
+        const swipeThreshold = 55; // 滑动阈值
+        const diffX = touchStartX - touchEndX;
+
+        if (Math.abs(diffX) > swipeThreshold) {
+          if (diffX > 0) {
+            navigateSlide(currentSlide + 1); // 左滑 -> 下一屏
+          } else {
+            navigateSlide(currentSlide - 1); // 右滑 -> 上一屏
+          }
+        }
+      }, { passive: true });
+
+      /* --- 4. 艺术反色随动光标 --- */
+      const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+      if (!isTouchDevice) {
+        document.addEventListener('mousemove', (e) => {
+          cursor.style.left = e.clientX + 'px';
+          cursor.style.top = e.clientY + 'px';
+          if (!cursor.classList.contains('active')) {
+            cursor.classList.add('active');
+          }
+        });
+
+        const interactiveElements = document.querySelectorAll('a, button, .artwork-canvas, .logo');
+        interactiveElements.forEach(el => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
+        });
+      }
+
+      /* --- 5. 初始化视口状态 --- */
+      updateSectionStates(0);
+    });
+  </script>
+</body>
+</html>

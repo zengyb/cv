@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>陆泽宇 | Alex Lu - 高级后端开发工程师简历</title>
+    <style>
+        /* 1. 全局设计变量体系 */
+        :root {
+            /* 默认：白昼（浅色）模式变量 */
+            --bg-color: #f6f8fa;
+            --grid-line: rgba(0, 0, 0, 0.03);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --card-border-hover: #2563eb;
+            --glow-color: rgba(37, 99, 235, 0.12);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-blue: #2563eb;
+            --accent-purple: #7c3aed;
+            --accent-green: #059669;
+            --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+            --progress-bg: rgba(0, 0, 0, 0.06);
+            --timeline-line: rgba(0, 0, 0, 0.08);
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        :root.dark-mode {
+            /* 切换：暗黑（深色）模式变量 */
+            --bg-color: #05070c;
+            --grid-line: rgba(255, 255, 255, 0.02);
+            --card-bg: rgba(13, 17, 28, 0.7);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --card-border-hover: #3b82f6; /* 外边框高亮主色 */
+            --glow-color: rgba(59, 130, 246, 0.15); /* 外轮廓发光颜色 */
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6);
+            --progress-bg: rgba(255, 255, 255, 0.1);
+            --timeline-line: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center;
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.5rem 1.5rem 4rem 1.5rem;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 2. 顶部整合交互 Tab 控制栏 */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 99px;
+            padding: 0.6rem 1.75rem;
+            margin-bottom: 2.25rem;
+            width: 100%;
+            max-width: 1200px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .nav-logo {
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.08);
+            padding: 0.35rem 0.8rem;
+            border-radius: 99px;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+            70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .theme-tab-btn {
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 99px;
+            padding: 0.35rem 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+
+        :root.dark-mode .theme-tab-btn {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .theme-tab-btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .theme-tab-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            transition: transform 0.4s ease;
+        }
+
+        .theme-tab-btn:hover svg {
+            transform: rotate(30deg);
+        }
+
+        /* 3. 巨型 6 行便当盒面板网格设计 */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: minmax(185px, auto);
+            gap: 1.25rem;
+        }
+
+        /* 4. 通用卡片及鼠标边框高亮动效 */
+        .bento-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            box-shadow: var(--shadow);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        border-color 0.3s ease, 
+                        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        background-color 0.4s ease;
+        }
+
+        /* 鼠标划入外边框与光晕高亮效果 */
+        @media (hover: hover) {
+            .bento-card:hover {
+                transform: translateY(-4px);
+                border-color: var(--card-border-hover);
+                box-shadow: 0 0 0 1px var(--card-border-hover), 
+                            0 14px 30px -8px rgba(0,0,0,0.1), 
+                            0 4px 15px 0 var(--glow-color);
+            }
+        }
+
+        @media (hover: none) {
+            .bento-card:active {
+                transform: scale(0.98);
+                transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+        }
+
+        /* 5. 网格布局划分布局 */
+        .card-hero { grid-column: span 2; grid-row: span 1; }
+        .card-stats { grid-column: span 1; grid-row: span 1; }
+        .card-connect { grid-column: span 1; grid-row: span 1; }
+        .card-projects { grid-column: span 2; grid-row: span 2; }
+        .card-experience { grid-column: span 2; grid-row: span 2; }
+        
+        .card-topology { grid-column: span 2; grid-row: span 1; }
+        .card-philosophy { grid-column: span 1; grid-row: span 1; }
+        .card-community { grid-column: span 1; grid-row: span 1; }
+        .card-leadership { grid-column: span 2; grid-row: span 1; }
+        .card-edu { grid-column: span 2; grid-row: span 1; }
+        
+        .card-skills { grid-column: span 4; grid-row: span 1; }
+
+        /* 卡片公共组件 */
+        .card-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            font-weight: 700;
+            margin-bottom: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 0.4rem;
+        }
+
+        .card-title svg {
+            width: 14px;
+            height: 14px;
+            stroke-width: 2px;
+            fill: none;
+            stroke: currentColor;
+        }
+
+        /* ================= 卡片细节内容设计 ================= */
+
+        /* 1. 后端工程师主卡片 (2x1) */
+        .hero-top {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .avatar {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+            flex-shrink: 0;
+        }
+
+        .avatar svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .hero-text h1 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-text p {
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        .hero-bio {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+        }
+
+        /* 2. 后端核心数据卡片 (1x1) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.85rem;
+            flex-grow: 1;
+            align-content: space-between;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-num {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            font-family: monospace;
+        }
+
+        .stat-lbl {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* 3. 极速联络卡片 (1x1) */
+        .connect-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .copy-item-btn {
+            background: var(--progress-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 0.55rem 0.65rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            color: var(--text-primary);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .copy-item-btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .copy-item-btn.success {
+            border-color: var(--accent-green) !important;
+            background: rgba(16, 185, 129, 0.08) !important;
+        }
+
+        .copy-item-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            overflow: hidden;
+            width: calc(100% - 20px);
+        }
+
+        .copy-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-val {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.2s ease;
+        }
+
+        .copy-item-btn.success .copy-val {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .copy-status-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+        }
+
+        .copy-status-icon svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: var(--text-secondary);
+            stroke-width: 2.5;
+            transition: all 0.2s ease;
+        }
+
+        .copy-item-btn.success .copy-status-icon svg {
+            stroke: var(--accent-green) !important;
+        }
+
+        /* 4. 精选项目案例 (2x2) */
+        .project-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            background: var(--progress-bg);
+            font-weight: 700;
+        }
+
+        .project-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .project-info {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .project-info.active {
+            display: flex;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.4rem;
+        }
+
+        .project-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .project-badge {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .project-desc {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .project-highlights {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        :root.light-mode .project-highlights {
+            background: rgba(0,0,0,0.01);
+        }
+
+        .highlight-item {
+            font-size: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.4rem;
+            color: var(--text-primary);
+            margin-bottom: 0.35rem;
+            line-height: 1.45;
+        }
+
+        .highlight-item:last-child { margin-bottom: 0; }
+        
+        .highlight-item svg {
+            width: 13px; height: 13px; stroke: var(--accent-green); fill: none; stroke-width: 3;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .metric-bar-group {
+            margin-top: auto;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-bg {
+            height: 5px;
+            background: var(--progress-bg);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .metric-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 99px;
+            width: 0%;
+            transition: width 1s ease-in-out;
+        }
+
+        /* 5. 6年多后端实战履历 (2x2) */
+        .exp-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-top: 0.25rem;
+            position: relative;
+            padding-left: 0.75rem;
+        }
+
+        .exp-container::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            bottom: 0.5rem;
+            width: 1px;
+            background: var(--timeline-line);
+        }
+
+        .exp-block {
+            position: relative;
+        }
+
+        .exp-block::before {
+            content: '';
+            position: absolute;
+            left: calc(-0.75rem - 4.5px);
+            top: 0.35rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--bg-color);
+        }
+
+        .exp-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.15rem;
+        }
+
+        .exp-role {
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .exp-company {
+            font-size: 0.75rem;
+            color: var(--accent-purple);
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .exp-detail {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        .exp-time {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        /* 6. 系统链路拓扑图 (2x1 SVG 纯CSS流光微动效) */
+        .topo-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            gap: 1.5rem;
+        }
+        .topo-desc {
+            width: 40%;
+            font-size: 0.75rem;
+            line-height: 1.55;
+            color: var(--text-secondary);
+        }
+        .topo-visual {
+            width: 60%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .topo-svg {
+            width: 100%;
+            height: 100px;
+        }
+        .topo-node {
+            fill: var(--card-bg);
+            stroke: var(--card-border);
+            stroke-width: 1.5;
+            transition: stroke 0.3s ease;
+        }
+        .topo-text {
+            fill: var(--text-primary);
+            font-size: 8px;
+            font-family: monospace;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            font-weight: 600;
+        }
+        .topo-line {
+            fill: none;
+            stroke: var(--timeline-line);
+            stroke-width: 1.5;
+        }
+        .flow-line {
+            fill: none;
+            stroke: var(--accent-blue);
+            stroke-width: 1.5;
+            stroke-dasharray: 6, 12;
+            animation: flow 2s linear infinite;
+        }
+        @keyframes flow {
+            to { stroke-dashoffset: -36; }
+        }
+
+        /* 7. 架构设计哲学 (1x1) */
+        .philo-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: auto;
+        }
+        .philo-item {
+            font-size: 0.75rem;
+            line-height: 1.45;
+        }
+        .philo-item strong {
+            color: var(--accent-purple);
+        }
+
+        /* 8. 技术沉淀 (1x1) */
+        .community-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .comm-stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            border-bottom: 1px dashed var(--card-border);
+            padding: 0.25rem 0;
+        }
+        .comm-stat-row:last-child { border: none; }
+        .comm-lbl { color: var(--text-secondary); }
+        .comm-val { font-weight: 700; color: var(--text-primary); font-family: monospace; }
+
+        /* 9. 团队协作与规范建设 (2x1) */
+        .lead-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            height: 100%;
+            margin-top: 0.25rem;
+        }
+        .lead-col h4 {
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.4rem;
+        }
+        .lead-col p {
+            font-size: 0.75rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        /* 10. 学术、荣誉资质 (2x1) */
+        .edu-content {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 1.5rem;
+            height: 100%;
+            margin-top: 0.25rem;
+        }
+        .edu-col h4 {
+            font-size: 0.85rem;
+            color: var(--accent-purple);
+            margin-bottom: 0.4rem;
+        }
+        .edu-col p {
+            font-size: 0.75rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        /* 11. 底部通栏技术技能栈 (4x1) */
+        .skills-grid-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .skill-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .skill-column-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+        }
+
+        .skill-tag {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.45rem;
+            background: var(--progress-bg);
+            border-radius: 6px;
+            color: var(--text-primary);
+            border: 1px solid var(--card-border);
+            font-family: monospace;
+        }
+
+        /* 吐司通知层 */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--accent-blue);
+            padding: 0.6rem 1.25rem;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================= 自适应弹性排布 ================= */
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .card-hero { grid-column: span 2; }
+            .card-stats { grid-column: span 1; }
+            .card-connect { grid-column: span 1; }
+            .card-projects { grid-column: span 2; }
+            .card-experience { grid-column: span 2; }
+            .card-topology { grid-column: span 2; }
+            .card-philosophy { grid-column: span 1; }
+            .card-community { grid-column: span 1; }
+            .card-leadership { grid-column: span 2; }
+            .card-edu { grid-column: span 2; }
+            .card-skills { grid-column: span 2; }
+            .skills-grid-row {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            .lead-content, .edu-content {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+            .top-navbar {
+                border-radius: 20px;
+                padding: 0.5rem 1rem;
+                margin-bottom: 1rem;
+            }
+            .bento-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            .bento-card {
+                grid-column: span 1 !important;
+                grid-row: span 1 !important;
+                min-height: auto;
+                padding: 1.25rem;
+            }
+            .skills-grid-row {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            .topo-box {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .topo-desc, .topo-visual {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部整合控制 Tab 栏 (默认为白昼模式) -->
+    <header class="top-navbar">
+        <div class="nav-logo">ALEX.BACKEND</div>
+        <div class="nav-controls">
+            <div class="status-pill">
+                <span class="pulse-dot"></span>
+                <span>杭州 · 随时沟通</span>
+            </div>
+            <button class="theme-tab-btn" onclick="toggleTheme()" id="theme-btn">
+                <svg id="moon-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <span id="theme-text">白昼模式</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="bento-grid">
+            
+            <!-- ROW 1 -->
+            <!-- 1. 个人卡片 (2x1) -->
+            <div class="bento-card card-hero">
+                <div class="hero-top">
+                    <div class="avatar">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                        </svg>
+                    </div>
+                    <div class="hero-text">
+                        <h1>陆泽宇 / Alex</h1>
+                        <p>高级后端开发工程师 / Senior Backend Engineer</p>
+                    </div>
+                </div>
+                <div class="hero-bio">
+                    6年互联网高并发后端系统研发经验。深耕分布式业务架构、多级缓存一致性设计与高频微服务治理。具备扎实的复杂业务建模能力，热衷于用优雅简洁的代码解决实际技术债。
+                </div>
+            </div>
+
+            <!-- 2. 后端数据指标卡 (1x1) -->
+            <div class="bento-card card-stats">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    系统性能底座
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-num">20K+</span>
+                        <span class="stat-lbl">高峰期交易QPS</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">100%</span>
+                        <span class="stat-lbl">核心对账一致性</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">99.95%</span>
+                        <span class="stat-lbl">核心服务SLA</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">500GB+</span>
+                        <span class="stat-lbl">日均处理日志流</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 极速联络卡片 (1x1) -->
+            <div class="bento-card card-connect">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                    极速建联
+                </div>
+                <div class="connect-list">
+                    <button class="copy-item-btn" onclick="copyValue(this, 'alex.lu.dev@example.com')">
+                        <div class="copy-item-left">
+                            <span class="copy-label">EMAIL 邮箱</span>
+                            <span class="copy-val">alex.lu.dev@example.com</span>
+                        </div>
+                        <div class="copy-status-icon">
+                            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display: none;"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                    </button>
+                    <button class="copy-item-btn" onclick="copyValue(this, 'AlexLu_Backend')">
+                        <div class="copy-item-left">
+                            <span class="copy-label">WECHAT 微信</span>
+                            <span class="copy-val">AlexLu_Backend</span>
+                        </div>
+                        <div class="copy-status-icon">
+                            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                            <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display: none;"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ROW 2 & 3 -->
+            <!-- 4. 精选项目卡片 (2x2) -->
+            <div class="bento-card card-projects">
+                <div>
+                    <div class="card-title">
+                        <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        核心业务实践
+                    </div>
+                    <div class="project-tabs">
+                        <button class="tab-btn active" onclick="switchProject(0)">分布式交易结算服务</button>
+                        <button class="tab-btn" onclick="switchProject(1)">高吞吐缓存同步引擎</button>
+                    </div>
+                </div>
+
+                <div class="project-wrapper">
+                    <div class="project-info active" id="proj-0">
+                        <div class="project-header">
+                            <span class="project-name">分布式交易对账中台</span>
+                            <span class="project-badge">核心开发</span>
+                        </div>
+                        <p class="project-desc">针对电商及业务主链路设计的一致性结算方案，解决多系统调用超时下的状态混乱，避免由于重复提交引发的数据对账不一致问题。</p>
+                        
+                        <div class="project-highlights">
+                            <div class="highlight-item">
+                                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                采用 RocketMQ 分布式事务消息保障上下游记账最终一致，平稳度过大促流量峰值。
+                            </div>
+                            <div class="highlight-item">
+                                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                引入 Redis 延迟双删及局部锁限制，将高并发热点库的请求压力降低 60%。
+                            </div>
+                        </div>
+
+                        <div class="metric-bar-group">
+                            <div class="metric-label">
+                                <span>交易处理极限性能压测 (高峰 TPS)</span>
+                                <strong>20,000 +</strong>
+                            </div>
+                            <div class="metric-bg">
+                                <div class="metric-fill" id="fill-0" style="width: 90%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-info" id="proj-1">
+                        <div class="project-header">
+                            <span class="project-name">MySQL 增量缓存流向同步</span>
+                            <span class="project-badge">主导研发</span>
+                        </div>
+                        <p class="project-desc">基于 Golang 自研增量消费 binlog 数据同步服务，在保证跨数据中心缓存一致性的同时，大幅缩短业务线平均缓存更新延时。</p>
+                        
+                        <div class="project-highlights">
+                            <div class="highlight-item">
+                                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                采用共享环形队列与分片消费池化，优化垃圾回收频率（GC Pause）并降低单机 CPU。
+                            </div>
+                            <div class="highlight-item">
+                                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                引入分布式版本锁自动去重校验，在保障数据流不丢不重的前提下，实现毫秒级同步。
+                            </div>
+                        </div>
+
+                        <div class="metric-bar-group">
+                            <div class="metric-label">
+                                <span>单机吞吐数据处理 (同步变更量/日)</span>
+                                <strong>1 亿次 +</strong>
+                            </div>
+                            <div class="metric-bg">
+                                <div class="metric-fill" id="fill-1" style="width: 82%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. 6年工作履历卡片 (2x2) -->
+            <div class="bento-card card-experience">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    职业实战轨迹
+                </div>
+                <div class="exp-container">
+                    <div class="exp-block">
+                        <div class="exp-head">
+                            <span class="exp-role">高级后端开发工程师</span>
+                            <span class="exp-time">2023.06 - 至今</span>
+                        </div>
+                        <div class="exp-company">字节跳动 · 核心交易结算组</div>
+                        <div class="exp-detail">
+                            参与大促交易链路系统的日常稳定运行与架构调优。重构账户分桶段锁控制，缓解高并发高频对账死锁及行锁超时争抢风险，成功减少了底层账单处理的排队时耗。
+                        </div>
+                    </div>
+                    <div class="exp-block">
+                        <div class="exp-head">
+                            <span class="exp-role">后端开发工程师</span>
+                            <span class="exp-time">2021.03 - 2023.06</span>
+                        </div>
+                        <div class="exp-company">阿里巴巴 · 推荐平台架构部</div>
+                        <div class="exp-detail">
+                            负责检索网关的模块解耦。基于本地冷热分级缓存策略优化 Redis 集群并发读取架构，使特征检索接口响应 P99 降至 15ms 内，协助团队治理复杂的服务调用链路。
+                        </div>
+                    </div>
+                    <div class="exp-block">
+                        <div class="exp-head">
+                            <span class="exp-role">后端开发工程师</span>
+                            <span class="exp-time">2019.07 - 2021.02</span>
+                        </div>
+                        <div class="exp-company">网易 · 结算支付服务研发组</div>
+                        <div class="exp-detail">
+                            维护支付渠道结算的日常迭代。基于 Spring Cloud、Kafka 开发分布式微服务及结算对账中台，完成高频入金通道幂等防刷，保障日均交易正常清算。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROW 4 -->
+            <!-- 6. 拓扑图卡片 (2x1) -->
+            <div class="bento-card card-topology">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    微服务流量路由拓扑 (SVG 动态模拟)
+                </div>
+                <div class="topo-box">
+                    <div class="topo-desc">
+                        模拟在典型生产环境微服务体系下，流量通过反向代理与核心网关，被自适应路由并均匀流向 Redis 集群及多实例分布式存储节点的数据流动微动效。
+                    </div>
+                    <div class="topo-visual">
+                        <svg class="topo-svg" viewBox="0 0 200 100">
+                            <!-- 连接线 -->
+                            <path class="topo-line" d="M 20 50 L 70 20 Z" />
+                            <path class="topo-line" d="M 20 50 L 70 80 Z" />
+                            <path class="topo-line" d="M 70 20 L 130 50 Z" />
+                            <path class="topo-line" d="M 70 80 L 130 50 Z" />
+                            <path class="topo-line" d="M 130 50 L 180 20 Z" />
+                            <path class="topo-line" d="M 130 50 L 180 80 Z" />
+                            
+                            <!-- 流光动画线 -->
+                            <path class="flow-line" d="M 20 50 L 70 20 L 130 50 L 180 20" />
+                            <path class="flow-line" d="M 20 50 L 70 80 L 130 50 L 180 80" />
+
+                            <!-- 节点 -->
+                            <rect class="topo-node" x="5" y="40" width="30" height="20" rx="4" />
+                            <text class="topo-text" x="20" y="50">Gateway</text>
+
+                            <rect class="topo-node" x="55" y="10" width="30" height="20" rx="4" />
+                            <text class="topo-text" x="70" y="20">gRPC-A</text>
+
+                            <rect class="topo-node" x="55" y="70" width="30" height="20" rx="4" />
+                            <text class="topo-text" x="70" y="80">gRPC-B</text>
+
+                            <rect class="topo-node" x="115" y="40" width="30" height="20" rx="4" />
+                            <text class="topo-text" x="130" y="50">Redis</text>
+
+                            <rect class="topo-node" x="165" y="10" width="30" height="20" rx="4" />
+                            <text class="topo-text" x="180" y="20">Node-M</text>
+
+                            <rect class="topo-node" x="165" y="70" width="30" height="20" rx="4" />
+                            <text class="topo-text" x="180" y="80">Node-S</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. 架构哲学 (1x1) -->
+            <div class="bento-card card-philosophy">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    核心设计哲学
+                </div>
+                <div class="philo-list">
+                    <div class="philo-item">1. <strong>工程规范性</strong>：业务分层清晰，推行规范的组件边界，核心业务代码与技术底座完全解耦。</div>
+                    <div class="philo-item">2. <strong>防降级考量</strong>：对关键链路设计分级熔断逻辑，确保第三方异常发生时核心服务不受损。</div>
+                    <div class="philo-item">3. <strong>全链路可观测</strong>：借助链路追踪工具及系统核心指标看板，实现对异常调用的分钟级定位。</div>
+                </div>
+            </div>
+
+            <!-- 8. 技术沉淀 (1x1) -->
+            <div class="bento-card card-community">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    技术社区沉淀
+                </div>
+                <div class="community-box">
+                    <div class="comm-stat-row">
+                        <span class="comm-lbl">开源协作 PR 合并</span>
+                        <span class="comm-val">日常反馈 Bug 修复</span>
+                    </div>
+                    <div class="comm-stat-row">
+                        <span class="comm-lbl">内部技术分享次数</span>
+                        <span class="comm-val">10+ 次宣讲</span>
+                    </div>
+                    <div class="comm-stat-row">
+                        <span class="comm-lbl">技术博客阅读总量</span>
+                        <span class="comm-val">10,000+</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROW 5 -->
+            <!-- 9. 团队协作规范 (2x1) -->
+            <div class="bento-card card-leadership">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    团队协作与工程规范建设
+                </div>
+                <div class="lead-content">
+                    <div class="lead-col">
+                        <h4>团队规范引导</h4>
+                        <p>日常作为组内核心组员协助带新成员熟悉业务，制定并推行代码质量审查规范（Code Review），推进项目单元测试覆盖率及集成 CI/CD 自动化静态扫描工具提效。</p>
+                    </div>
+                    <div class="lead-col">
+                        <h4>提效脚手架沉淀</h4>
+                        <p>将高频分布式限流及接口防刷封装成通用的底层脚手架组件，已在所在部门的 4 个微服务中成功复用，避免新业务链路搭建过程中的基础代码重复建设。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. 学历与资质荣誉 (2x1) -->
+            <div class="bento-card card-edu">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                    学术背景、资质与日常沉淀
+                </div>
+                <div class="edu-content">
+                    <div class="edu-col">
+                        <h4>教育背书</h4>
+                        <p><strong>同济大学 (Tongji University)</strong><br>计算机科学与技术学士 (B.S. in CS)</p>
+                        <p style="margin-top: 0.6rem;"><strong>专业技术资质</strong><br>AWS Certified Solutions Architect - Associate</p>
+                    </div>
+                    <div class="edu-col">
+                        <h4>团队荣誉与沉淀</h4>
+                        <p>1. 曾获业务部门<strong>“季度优秀研发标兵”</strong>称号，在系统性能调优中解决数据库连接池拥堵问题表现突出。</p>
+                        <p>2. 主笔编写过团队<strong>《微服务核心系统链路异常演练白皮书》</strong>，规范业务开发日常应急处理方案。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROW 6 -->
+            <!-- 11. 底部通栏技术技能栈 (4x1) -->
+            <div class="bento-card card-skills">
+                <div class="card-title">
+                    <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    后端专业技能矩阵
+                </div>
+                <div class="skills-grid-row">
+                    <div class="skill-column">
+                        <span class="skill-column-title">编程语言 & 高性能框架</span>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Go (Golang)</span>
+                            <span class="skill-tag">Java (Spring Boot)</span>
+                            <span class="skill-tag">Python (FastAPI)</span>
+                            <span class="skill-tag">gRPC / Protobuf</span>
+                            <span class="skill-tag">RPC 框架</span>
+                        </div>
+                    </div>
+                    <div class="skill-column">
+                        <span class="skill-column-title">数据存储、检索与缓存</span>
+                        <div class="skill-tags">
+                            <span class="skill-tag">MySQL (分库分表)</span>
+                            <span class="skill-tag">Redis Cluster</span>
+                            <span class="skill-tag">Elasticsearch</span>
+                            <span class="skill-tag">PostgreSQL</span>
+                            <span class="skill-tag">Canal / Binlog</span>
+                        </div>
+                    </div>
+                    <div class="skill-column">
+                        <span class="skill-column-title">消息队列、中间件与可观测</span>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Kafka</span>
+                            <span class="skill-tag">RocketMQ</span>
+                            <span class="skill-tag">Docker / K8s</span>
+                            <span class="skill-tag">Prometheus / Grafana</span>
+                            <span class="skill-tag">OpenTelemetry</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 全局轻量通知层 -->
+    <div class="toast" id="toast">信息通知</div>
+
+    <script>
+        // 1. 鼠标悬浮外框高亮（CSS 变量传参）
+        if (window.matchMedia('(hover: hover)').matches) {
+            document.querySelectorAll('.bento-card').forEach(card => {
+                card.addEventListener('pointermove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
+        }
+
+        // 2. 项目 Tabs 切换控制器
+        function switchProject(index) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+
+            const contents = document.querySelectorAll('.project-info');
+            contents.forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+        }
+
+        // 3. 卡片内一键复制与局域触觉及文本转换反馈
+        function copyValue(button, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const valEl = button.querySelector('.copy-val');
+                const copyIcon = button.querySelector('.icon-copy');
+                const checkIcon = button.querySelector('.icon-check');
+                
+                const originalText = valEl.innerText;
+                
+                button.classList.add('success');
+                valEl.innerText = '已成功复制 ✓';
+                
+                if (copyIcon && checkIcon) {
+                    copyIcon.style.display = 'none';
+                    checkIcon.style.display = 'block';
+                }
+
+                if (navigator.vibrate) {
+                    navigator.vibrate(40);
+                }
+
+                showToast(`已成功复制到剪贴板`);
+
+                setTimeout(() => {
+                    button.classList.remove('success');
+                    valEl.innerText = originalText;
+                    if (copyIcon && checkIcon) {
+                        copyIcon.style.display = 'block';
+                        checkIcon.style.display = 'none';
+                    }
+                }, 1800);
+            }).catch(err => {
+                console.error('复制失败: ', err);
+            });
+        }
+
+        // 4. 昼夜模式（默认白昼模式）切换
+        function toggleTheme() {
+            const root = document.documentElement;
+            const themeText = document.getElementById('theme-text');
+            const moonIcon = document.getElementById('moon-icon');
+            
+            root.classList.toggle('dark-mode');
+            
+            const isDark = root.classList.contains('dark-mode');
+            if (isDark) {
+                themeText.innerText = "暗黑模式";
+                moonIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+                showToast("已切换为护眼暗黑模式");
+            } else {
+                themeText.innerText = "白昼模式";
+                moonIcon.innerHTML = '<path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 12h1m16 0h1M12 3v1m0 16v1M5.6 5.6l.7.7m11.4 11.4l.7.7M5.6 18.4l.7-.7m11.4-11.4l.7-.7"/>';
+                showToast("已切换为极简浅色（白昼）模式");
+            }
+        }
+
+        // 5. 统一吐司调用
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            toast.innerText = text;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

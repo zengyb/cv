@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>林栖 Evelyn Lin | 资深视觉设计师作品集与求职简历</title>
+    <!-- 引入高级感 Google 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 核心变量及重置 --- */
+        :root {
+            --bg-color: #F5F3EF;          /* 画廊米白 */
+            --text-primary: #1C1B19;      /* 深炭灰 */
+            --text-secondary: #706B63;    /* 柔和大地褐 */
+            --accent-color: #A38A73;      /* 冷铜色 */
+            --border-color: #E6E2DA;      /* 线条分界 */
+            
+            --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* --- 页面渐入动画 --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- 布局容器 --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* --- 顶栏：实现高级磨砂玻璃固定效果 --- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            /* 采用带有 0.8 透明度的底色 */
+            background-color: rgba(245, 243, 239, 0.82); 
+            /* 核心：磨砂玻璃滤镜效果 */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            padding-bottom: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        /* 滚动时缩小麦头边距，提升视野面积 */
+        body.scrolled .header-container {
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .brand {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        nav {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-link {
+            font-size: 0.88rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+            position: relative;
+            padding: 4px 0;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* 磁性横线动效 */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--text-primary);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s var(--ease-smooth);
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* --- 个人介绍区 (Hero) --- */
+        .hero {
+            padding: 80px 0 60px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
+            opacity: 0;
+            animation: fadeInUp 1s var(--ease-smooth) 0.1s forwards;
+        }
+
+        .avatar {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 24px;
+            filter: grayscale(15%);
+            border: 1px solid var(--border-color);
+            background-color: var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', Georgia, "Songti SC", serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            line-height: 1.3;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        .hero h1 span {
+            font-style: italic;
+            color: var(--accent-color);
+        }
+
+        .hero .bio-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 60px;
+            width: 100%;
+        }
+
+        .hero .bio-text {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .hero .job-intent {
+            border-left: 1px solid var(--border-color);
+            padding-left: 24px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .hero .job-intent h4 {
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* --- 筛选过滤器 --- */
+        .filter-container {
+            padding: 40px 0 24px 0;
+            display: flex;
+            gap: 24px;
+            opacity: 0;
+            animation: fadeInUp 1s var(--ease-smooth) 0.2s forwards;
+        }
+
+        .filter-btn {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px 0;
+            position: relative;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: var(--transition-smooth);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .filter-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1.5px;
+            background-color: var(--text-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s var(--ease-smooth);
+        }
+
+        .filter-btn.active::after {
+            transform: scaleX(1);
+        }
+
+        /* --- 大图作品集展示网格 --- */
+        .portfolio-section {
+            padding-bottom: 80px;
+            border-bottom: 1px solid var(--border-color);
+            opacity: 0;
+            animation: fadeInUp 1s var(--ease-smooth) 0.3s forwards;
+        }
+
+        /* 3列网格自适应布局 */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px 30px;
+        }
+
+        .portfolio-item {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            overflow: hidden;
+            background-color: #E6E2DA;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(95%);
+            transition: transform 1.2s var(--ease-smooth), filter 1.2s ease;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.04);
+            filter: contrast(100%) brightness(95%);
+        }
+
+        .portfolio-info {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .portfolio-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .portfolio-category {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .portfolio-item.hidden {
+            display: none;
+        }
+
+        /* --- 简历文字内容区块 --- */
+        .resume-section {
+            padding: 100px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .resume-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 80px;
+        }
+
+        .resume-left {
+            position: sticky;
+            top: 120px; /* 固定在粘性导航栏下方 */
+            height: fit-content;
+        }
+
+        .resume-left h2 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 2.4rem;
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .resume-left p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            max-width: 280px;
+            margin-bottom: 40px;
+        }
+
+        .skills-container h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background-color: rgba(28, 27, 25, 0.05);
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            color: var(--text-secondary);
+        }
+
+        .resume-right {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        .resume-block h3 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 24px;
+            border-left: 1px solid var(--border-color);
+            padding-bottom: 40px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+            border-left: 1px solid transparent;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -4px;
+            top: 8px;
+            width: 7px;
+            height: 7px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .timeline-role {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .timeline-company {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: var(--accent-color);
+            font-size: 1.15rem;
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* --- 合作客户 --- */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .client-item {
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background-color: rgba(28, 27, 25, 0.01);
+            transition: var(--transition-smooth);
+        }
+
+        .client-item:hover {
+            background-color: #FAF9F6;
+            color: var(--text-primary);
+        }
+
+        /* --- 联系与页脚 --- */
+        footer {
+            padding: 80px 0 60px 0;
+            text-align: center;
+        }
+
+        .footer-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+
+        .footer-email {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--text-primary);
+            padding-bottom: 2px;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-email:hover {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        .social-links {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .social-link {
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            transition: var(--transition-smooth);
+        }
+
+        .social-link:hover {
+            color: var(--text-primary);
+        }
+
+        .copyright {
+            margin-top: 40px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+        }
+
+        /* --- 大图预览 (Lightbox) --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(245, 243, 239, 0.98);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s var(--ease-smooth);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-content {
+            max-width: 85%;
+            max-height: 80vh;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.5s var(--ease-smooth);
+        }
+
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        /* ==========================================================================
+           🎨 移动端与平板端响应式极致优化 (Media Queries)
+           ========================================================================== */
+
+        /* 中等屏幕（如 iPad 等平板设备 - 992px以下） */
+        @media (max-width: 992px) {
+            .resume-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            .resume-left {
+                position: relative;
+                top: 0;
+            }
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr); /* 平板转为双列 */
+                gap: 30px;
+            }
+        }
+
+        /* 手机端深度优化（768px以下） */
+        @media (max-width: 768px) {
+            /* 全局间距收窄，留出屏幕空间 */
+            .container {
+                padding: 0 24px;
+            }
+
+            /* 磨砂导航栏适配手机端 */
+            .header-container {
+                padding-top: 16px;
+                padding-bottom: 16px;
+            }
+            .brand {
+                font-size: 1.2rem;
+            }
+            nav {
+                gap: 16px; /* 收窄手机端导航间距 */
+            }
+            .nav-link {
+                font-size: 0.82rem;
+            }
+
+            /* 介绍区适配 */
+            .hero {
+                padding: 40px 0;
+            }
+            .hero h1 {
+                font-size: 1.9rem;
+                line-height: 1.35;
+            }
+            .hero .bio-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .hero .job-intent {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px solid var(--border-color);
+                padding-top: 20px;
+            }
+
+            /* 🏆 手机端作品过滤器优化：支持触摸滑动流且隐藏滚动条 */
+            .filter-container {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 24px 0 16px 0;
+                margin-right: -24px; /* 让滑动延伸至屏幕边缘 */
+                padding-right: 24px;
+                -webkit-overflow-scrolling: touch; /* 流畅手势滑动 */
+            }
+            /* 隐藏原生滚动条 */
+            .filter-container::-webkit-scrollbar {
+                display: none;
+            }
+            .filter-btn {
+                flex-shrink: 0;
+                font-size: 0.8rem;
+            }
+
+            /* 🏆 手机端作品集布局优化：转为整洁优雅的单列全宽大图 */
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .portfolio-info {
+                margin-top: 12px;
+            }
+            .portfolio-title {
+                font-size: 1.1rem;
+            }
+
+            /* 简历板块适配 */
+            .resume-section {
+                padding: 60px 0;
+            }
+            .resume-left h2 {
+                font-size: 1.9rem;
+            }
+            .timeline-header {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .timeline-date {
+                margin-top: 2px;
+            }
+            .clients-grid {
+                grid-template-columns: repeat(2, 1fr); /* 客户网格收缩为两列 */
+            }
+
+            /* 大图弹窗手势优化 */
+            .lightbox-content {
+                max-width: 92%;
+            }
+            .lightbox-close {
+                top: -45px;
+                font-size: 1.3rem;
+            }
+        }
+
+        /* 针对超小屏幕手机（480px以下） */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+            .header-container {
+                padding-top: 14px;
+                padding-bottom: 14px;
+            }
+            .brand {
+                font-size: 1.1rem;
+            }
+            nav {
+                gap: 12px;
+            }
+            .nav-link {
+                font-size: 0.78rem;
+            }
+            .hero h1 {
+                font-size: 1.65rem;
+            }
+            .filter-container {
+                margin-right: -16px;
+                padding-right: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航栏（已启用 sticky 与半透明磨砂玻璃质感） -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="brand">Evelyn Lin</a>
+            <nav>
+                <a href="#portfolio" class="nav-link">作品 / Works</a>
+                <a href="#resume" class="nav-link">简历 / Resume</a>
+                <a href="#contact" class="nav-link">联络 / Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 个人介绍/求职意向区 -->
+    <section class="container hero" id="about">
+        <img class="avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Evelyn Lin Portrait">
+        <h1>
+            你好，我是林栖。<br>
+            专注于探索光影、空间与器物间的<span>静谧叙事</span>。
+        </h1>
+        <div class="bio-grid">
+            <p class="bio-text">
+                我是一名拥有五年经验的资深视觉设计师与美术指导。我的核心能力在于生活方式品牌、美术画册、艺术机构的空间视觉及商业摄影包装。我笃信 “Less, but better”，擅长用留白与克制的材质纹理表达最饱满的视觉情绪。
+            </p>
+            <div class="job-intent">
+                <h4>求职意向 / Role</h4>
+                <p>资深视觉设计师 / 艺术指导</p>
+                <p>意向城市：上海 / 杭州（支持远程）</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 作品过滤筛选器（手机端支持顺滑触摸横滑） -->
+    <div class="container filter-container">
+        <button class="filter-btn active" data-filter="all">全部 / All (9)</button>
+        <button class="filter-btn" data-filter="branding">品牌 / Branding</button>
+        <button class="filter-btn" data-filter="editorial">装帧 / Book</button>
+        <button class="filter-btn" data-filter="space">空间 / Spaces</button>
+    </div>
+
+    <!-- 海量作品展示区（自适应网格：电脑端3列、平板端2列、手机端单幅铺满） -->
+    <main class="container portfolio-section" id="portfolio">
+        <div class="portfolio-grid">
+            
+            <!-- 作品 1 -->
+            <div class="portfolio-item" data-category="branding">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" alt="无相茶舍 品牌视觉重塑">
+                </div>
+                <div class="portfolio-info">
+                    <span class="portfolio-title">无相茶舍 品牌视觉</span>
+                    <span class="portfolio-category">Branding</span>
+                </div>
+            </div>
+
+            <!-- 作品 2 -->
+            <div class="portfolio-item" data-category="space">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=600&q=80" alt="混凝土画廊 导视设计">
+                </div>
+                <div class="portfolio-info">
+                    <span class="portfolio-title">混凝土画廊 导视系统</span>
+                    <span class="portfolio-category">Spaces</span>
+                </div>
+            </div>
+
+            <!-- 作品 3 -->
+            <div class="portfolio-item" data-category="editorial">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80" alt="独立杂志《野性》特刊装帧">
+                </div>
+                <div class="portfolio-info">
+                    <span class="portfolio-title">独立杂志《野性》</span>
+                    <span class="portfolio-category">Book</span>
+                </div>
+            </div>
+
+            <!-- 作品 4 -->
+            <div class="portfolio-item" data-category="branding">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80" alt="慢陶泥工坊 形象企划">
+                </div>
+                <div class="portfolio-info">
+                    <span class="portfolio-title">慢陶泥工坊 形象企划</span>
+                    <span class="portfolio-category">Branding</span>
+                </div>
+            </div>
+
+            <!-- 作品 5 -->
+            <div class="portfolio-item" data-category="space">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=600&q=80" alt="MUJI 合作居住概念展">
+                </div>
+                <div class="portfolio-info">
+                    <span class="portfolio-title">MUJI 合作居住概念展</span>
+                    <span class="portfolio-category">Spaces</span>
+                </div>
+            </div>
+
+            <!-- 作品 6 -->
+            <div class="portfolio-item" data-category="editorial">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1494438639946-1ebd1d2038b5?auto=format&fit=crop&w=600&q=80" alt="《寻找寂静》诗集包装">
+                </div>
+                <div class="portfolio-info">
+                    <span class="portfolio-title">《寻找寂静》诗集包装</span>
+                    <span class="portfolio-category">Book</span>
+                </div>
+            </div>
+
+            <!-- 作品 7 -->
+            <div class="portfolio-item" data-category="branding">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=600&q=80" alt="ATELIER 极简家居视觉体系">
+                </div>
+                <div class="portfolio-info">
+                    <span class="portfolio-title">ATELIER 家具视觉</span>
+                    <span class="portfolio-category">Branding</span>
+                </div>
+            </div>
+
+            <!-- 作品 8 -->
+            <div class="portfolio-item" data-category="space">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&w=600&q=80" alt="植物学家美学工作室">
+                </div>
+                <div class="portfolio-info">
+                    <span class="portfolio-title">植物学家美学工作室</span>
+                    <span class="portfolio-category">Spaces</span>
+                </div>
+            </div>
+
+            <!-- 作品 9 -->
+            <div class="portfolio-item" data-category="editorial">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=600&q=80" alt="实验视觉集 印刷测试">
+                </div>
+                <div class="portfolio-info">
+                    <span class="portfolio-title">实验视觉集 印刷媒介</span>
+                    <span class="portfolio-category">Book</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 简历详细信息板块 -->
+    <section class="container resume-section" id="resume">
+        <div class="resume-grid">
+            
+            <!-- 简历左侧：技能看板（手机端自动折叠合并） -->
+            <div class="resume-left">
+                <h2>Resume &amp;<br>Background</h2>
+                <p>致力于创造具有恒久艺术价值的商业设计，在严谨的排版逻辑与有机的情感表达中寻找折中点。</p>
+                
+                <div class="skills-container">
+                    <h3>专业技能 / Core Skills</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">艺术指导 Art Direction</span>
+                        <span class="skill-tag">品牌视觉系统 Brand Identity</span>
+                        <span class="skill-tag">书籍装帧设计 Editorial</span>
+                        <span class="skill-tag">商业摄影企划 Imagery Art</span>
+                        <span class="skill-tag">Figma / UI</span>
+                        <span class="skill-tag">Adobe Suite</span>
+                        <span class="skill-tag">C4D 3D渲染</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 简历右侧：工作经历、教育背景与客户 -->
+            <div class="resume-right">
+                
+                <!-- 工作经历 -->
+                <div class="resume-block">
+                    <h3>工作经历 / Experience</h3>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-header">
+                            <span class="timeline-role">资深视觉设计师 / 艺术指导</span>
+                            <span class="timeline-company">ORA 创意设计中心</span>
+                            <span class="timeline-date">2023.08 - 至今</span>
+                        </div>
+                        <p class="timeline-desc">
+                            作为视觉组核心，主导了 12 个生活方式及艺术基金会客户的品牌升级项目。主导商业静物摄影的美术设定及片场调度，成功提升客户整体线上媒介质感。
+                        </p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-header">
+                            <span class="timeline-role">视觉平面设计师</span>
+                            <span class="timeline-company">KALEIDO 工作室</span>
+                            <span class="timeline-date">2021.03 - 2023.07</span>
+                        </div>
+                        <p class="timeline-desc">
+                            专注于艺术类图书的装帧与特种纸张印刷工艺，作品曾获得业内装帧设计奖入围提名。负责画廊实体展览的视觉设计，包括主KV和展厅内墙体导视规划。
+                        </p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-header">
+                            <span class="timeline-role">平面设计助理</span>
+                            <span class="timeline-company">MATT 整合广告集团</span>
+                            <span class="timeline-date">2019.07 - 2021.02</span>
+                        </div>
+                        <p class="timeline-desc">
+                            负责跨国快消品牌的大型整合营销线下物料和线上主KV延展，快速积累了深厚的多媒介排版经验。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 教育背景 -->
+                <div class="resume-block">
+                    <h3>教育背景 / Education</h3>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-header">
+                            <span class="timeline-role">视觉传达设计 · 本科学士学位</span>
+                            <span class="timeline-company">中国美术学院 (CAA)</span>
+                            <span class="timeline-date">2015 - 2019</span>
+                        </div>
+                        <p class="timeline-desc">主攻现代字体排印与书籍装帧方向。优秀毕业设计作品被学校艺术馆留藏。</p>
+                    </div>
+                </div>
+
+                <!-- 服务客户 -->
+                <div class="resume-block">
+                    <h3>曾服务商业客户 / Clients</h3>
+                    <div class="clients-grid">
+                        <div class="client-item">MUJI 概念店</div>
+                        <div class="client-item">无相画廊</div>
+                        <div class="client-item">上善生活茶器</div>
+                        <div class="client-item">言几又书店</div>
+                        <div class="client-item">ATELIER 空间</div>
+                        <div class="client-item">野性独立杂志</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚与联系方式 -->
+    <footer id="contact">
+        <div class="container">
+            <h2 class="footer-title">有新的商业合作或职位虚位以待？</h2>
+            <a href="mailto:hello@evelynlin.com" class="footer-email">hello@evelynlin.com</a>
+            
+            <div class="social-links">
+                <a href="#" class="social-link" target="_blank">Instagram</a>
+                <a href="#" class="social-link" target="_blank">Behance</a>
+                <a href="#" class="social-link" target="_blank">小红书</a>
+            </div>
+            
+            <p class="copyright">&copy; 2026 Evelyn Lin. Minimalist Craft.</p>
+        </div>
+    </footer>
+
+    <!-- 大图预览 Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightbox-close">Close</button>
+            <img src="" alt="Preview" class="lightbox-img" id="lightbox-img">
+        </div>
+    </div>
+
+    <!-- JS 逻辑控制交互 -->
+    <script>
+        // 1. 监测滚动事件，微调顶栏内边距
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
+        });
+
+        // 2. 作品集分类过滤
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filterValue = button.getAttribute('data-filter');
+
+                portfolioItems.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category');
+                    if (filterValue === 'all' || itemCategory === filterValue) {
+                        item.classList.remove('hidden');
+                        item.style.opacity = '0';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                        }, 50);
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // 3. 大图预览 (Lightbox)
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        portfolioItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const imgSrc = item.querySelector('img').src;
+                lightboxImg.src = imgSrc;
+                lightbox.classList.add('active');
+            });
+        });
+
+        const closeLightbox = () => {
+            lightbox.classList.remove('active');
+            setTimeout(() => {
+                lightboxImg.src = '';
+            }, 500);
+        };
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
