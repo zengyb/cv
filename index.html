@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- [修改提示]：这里修改网页的标题，显示在浏览器标签页上 -->
     <title>AI定制化个人网站服务 - 极速拥有高级质感主页</title>
     
-    <!-- 引入 Tailwind CSS (无需安装，直接使用) -->
+    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- 引入 Lucide 图标库 -->
@@ -31,85 +30,128 @@
             }
         }
     </script>
+    
+    <!-- 引入外部模版数据配置文件 -->
+    <script src="templates-config.js"></script>
+
     <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
+        /* 半透明磨砂玻璃质感 */
         .glass-nav {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
 
-        .animate-fade-in {
+        /* 隐藏滚动条 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* 全局高级渐现 */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-element.visible {
             opacity: 1;
             transform: translateY(0);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
-        .animate-fade-in-delay-1 {
-            transition-delay: 0.1s;
-        }
-
-        .animate-fade-in-delay-2 {
-            transition-delay: 0.2s;
-        }
-
-        .animate-fade-in-delay-3 {
-            transition-delay: 0.3s;
-        }
-
-        .animate-fade-in-delay-4 {
-            transition-delay: 0.4s;
-        }
-
-        #templates-scroll-container::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        #templates-scroll-container::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
-        }
-
-        #templates-scroll-container::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        #templates-scroll-container::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        .animate-slide-left {
+        .reveal-left {
             opacity: 0;
-            transform: translateX(-30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateX(-24px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
         }
 
-        .animate-slide-left.visible {
+        .reveal-left.visible {
             opacity: 1;
             transform: translateX(0);
         }
 
-        .animate-slide-right {
+        .reveal-right {
             opacity: 0;
-            transform: translateX(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateX(24px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
         }
 
-        .animate-slide-right.visible {
+        .reveal-right.visible {
             opacity: 1;
             transform: translateX(0);
         }
 
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+
+        /* 卡片鼠标悬浮：细外廓、彩色柔和环境光阴影 */
+        .glow-card {
+            border: 1px solid #f1f5f9;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glow-card:hover {
+            transform: translateY(-6px);
+            border-color: #818cf8; /* 细外廓：浅靛蓝 */
+            box-shadow: 0 20px 30px -8px rgba(79, 70, 229, 0.12), 0 0 15px rgba(129, 140, 248, 0.05); /* 彩色光影阴影 */
+        }
+
+        /* 3D 偏转卡片预设 */
+        .interactive-video-card {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+        }
+
+        /* 按钮光影掠过自主、循环流光特效 (Shine Loop Effect) */
+        @keyframes shineLoop {
+            0% { left: -100%; }
+            15% { left: 140%; }
+            100% { left: 140%; }
+        }
+        .shine-btn-loop {
+            position: relative;
+            overflow: hidden;
+        }
+        .shine-btn-loop::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -100%;
+            width: 30%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.35) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(25deg);
+            animation: shineLoop 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 底部磁吸按钮优化 */
         .magnetic-btn {
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            will-change: transform;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
         .magnetic-btn::before {
             content: '';
             position: absolute;
@@ -117,40 +159,58 @@
             left: 50%;
             width: 0;
             height: 0;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1), height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
         .magnetic-btn:hover::before {
-            width: 300px;
-            height: 300px;
+            width: 380px;
+            height: 380px;
         }
-
-        .magnetic-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 20px 40px rgba(255, 36, 66, 0.3), 0 0 60px rgba(255, 36, 66, 0.2);
+        
+        /* 导航标签下划线同步 */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 14px;
+            height: 2px;
+            background-color: #4F46E5;
+            border-radius: 9999px;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-link.active-nav {
+            color: #4F46E5 !important;
+        }
+        .nav-link.active-nav::after {
+            transform: translateX(-50%) scaleX(1);
         }
     </style>
 </head>
-<body class="font-sans text-gray-800 bg-gray-50 antialiased selection:bg-secondary selection:text-white">
+<body class="font-sans text-gray-800 bg-gray-50/50 antialiased selection:bg-secondary selection:text-white">
 
-    <!-- 导航栏 -->
-    <nav class="fixed w-full z-50 glass-nav border-b border-gray-100 transition-all duration-300">
+    <!-- 导航栏 (贴顶且无顶部间距) -->
+    <nav class="fixed top-0 left-0 right-0 w-full z-50 glass-nav border-b border-gray-100 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <i data-lucide="layers" class="w-8 h-8 text-secondary"></i>
+            <div class="flex justify-between items-center h-20 transition-all duration-500" id="nav-inner">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <i data-lucide="layers" class="w-7 h-7 text-secondary"></i>
                     <span class="font-bold text-xl tracking-tight text-primary">闪建艺术</span>
-                    <span class="hidden sm:inline text-xs text-gray-400">闪电般建站是一门艺术</span>
+                    <span class="hidden sm:inline text-xs text-gray-400 font-medium">闪电般建站是一门艺术</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#why-us" class="text-sm font-medium text-gray-600 hover:text-primary transition-colors">我们的优势</a>
-                    <a href="#gallery" class="text-sm font-medium text-gray-600 hover:text-primary transition-colors">模板展示</a>
-                    <a href="#pricing" class="text-sm font-medium text-gray-600 hover:text-primary transition-colors">价格方案</a>
-                    <a href="#faq" class="text-sm font-medium text-gray-600 hover:text-primary transition-colors">常见问题</a>
-                    <a href="#" class="bg-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ml-4">
+                    <a href="#why-us" class="nav-link text-sm font-medium text-gray-500 hover:text-primary">我们的优势</a>
+                    <a href="#gallery" class="nav-link text-sm font-medium text-gray-500 hover:text-primary">模板展示</a>
+                    <a href="#pricing" class="nav-link text-sm font-medium text-gray-500 hover:text-primary">价格方案</a>
+                    <a href="#faq" class="nav-link text-sm font-medium text-gray-500 hover:text-primary">常见问题</a>
+                    <a href="#contact" class="bg-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ml-4">
                         立即定制
                     </a>
                 </div>
@@ -159,22 +219,25 @@
                 </button>
             </div>
         </div>
-        <div class="md:hidden hidden mobile-menu bg-white border-t border-gray-100">
-            <div class="px-6 py-4 space-y-4">
-                <a href="#why-us" class="block py-2 text-gray-600 hover:text-primary transition-colors" onclick="toggleMobileMenu()">我们的优势</a>
-                <a href="#gallery" class="block py-2 text-gray-600 hover:text-primary transition-colors" onclick="toggleMobileMenu()">模板展示</a>
-                <a href="#pricing" class="block py-2 text-gray-600 hover:text-primary transition-colors" onclick="toggleMobileMenu()">价格方案</a>
-                <a href="#faq" class="block py-2 text-gray-600 hover:text-primary transition-colors" onclick="toggleMobileMenu()">常见问题</a>
-                <a href="#" class="block mt-4 bg-primary text-white text-center px-5 py-3 rounded-full font-semibold">立即定制</a>
+        <div class="md:hidden hidden mobile-menu bg-white/95 backdrop-blur-md border-t border-gray-100">
+            <div class="px-6 py-4 space-y-3">
+                <a href="#why-us" class="block py-2 text-gray-600 hover:text-primary font-medium transition-colors" onclick="toggleMobileMenu()">我们的优势</a>
+                <a href="#gallery" class="block py-2 text-gray-600 hover:text-primary font-medium transition-colors" onclick="toggleMobileMenu()">模板展示</a>
+                <a href="#pricing" class="block py-2 text-gray-600 hover:text-primary font-medium transition-colors" onclick="toggleMobileMenu()">价格方案</a>
+                <a href="#faq" class="block py-2 text-gray-600 hover:text-primary font-medium transition-colors" onclick="toggleMobileMenu()">常见问题</a>
+                <a href="#contact" class="block mt-4 bg-primary text-white text-center px-5 py-3 rounded-full font-semibold transition-transform active:scale-95" onclick="toggleMobileMenu()">立即定制</a>
             </div>
         </div>
     </nav>
 
     <!-- 1. 首屏 (Hero Section) -->
-    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+    <section class="relative pt-36 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-200/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+        <div class="absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-purple-200/15 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.02]"></div>
+        
         <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-secondary text-sm font-medium mb-8 border border-indigo-100 animate-fade-in">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50/80 text-secondary text-xs font-semibold mb-8 border border-indigo-100/60 reveal-element">
                 <span class="relative flex h-2 w-2">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
@@ -182,43 +245,46 @@
                 最快48小时极速交付
             </div>
             
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-primary mb-8 leading-[1.1] animate-fade-in animate-fade-in-delay-1">
-                零代码 不用部署<br class="hidden md:block">
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-purple-600">
+            <h1 class="text-4xl md:text-5xl lg:text-6.5xl font-extrabold tracking-tight text-primary mb-8 leading-[1.15] reveal-element delay-100">
+                零代码 免部署<br class="hidden md:block">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary via-indigo-500 to-purple-600">
                     快速拥有你的专属个人主页
                 </span>
             </h1>
             
-            <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-500 mb-10 leading-relaxed animate-fade-in animate-fade-in-delay-2">
-                你只需提供一份 Word 简历或打包的作品图，即可获得一个在线个人主页<br>无论是应届生、求职者、设计师和自由职业者，都可以快速获得高级交互式个人主页
+            <p class="max-w-2xl mx-auto text-base md:text-lg text-gray-500/90 mb-10 leading-relaxed reveal-element delay-200">
+                你只需提供一份 Word 简历或打包的作品图，即可获得一个在线个人主页<br class="hidden sm:block">无论是求职者、设计师还是自由职业者，都可以快速获得极具高级感的交互个人页
             </p>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in animate-fade-in-delay-3">
-                <a href="#gallery" class="flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-800 transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
-                    <i data-lucide="zap" class="w-5 h-5"></i>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 reveal-element delay-300">
+                <a href="#gallery" class="flex items-center justify-center gap-2 bg-primary text-white px-8 py-3.5 rounded-full text-base font-semibold hover:bg-gray-800 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0">
+                    <i data-lucide="zap" class="w-4 h-4"></i>
                     立即挑选模板
                 </a>
-                <a href="#why-us" class="flex items-center justify-center gap-2 bg-white text-primary border border-gray-200 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-50 transition-all">
+                <a href="#why-us" class="flex items-center justify-center gap-2 bg-white text-primary border border-gray-200 px-8 py-3.5 rounded-full text-base font-semibold hover:bg-gray-50/50 hover:border-gray-300 transition-all duration-300">
                     查看对比优势
                 </a>
             </div>
 
-            <div class="mt-20 relative max-w-5xl mx-auto">
-                <div class="absolute -inset-1 bg-gradient-to-r from-secondary to-purple-600 rounded-2xl blur opacity-20"></div>
-                <video 
-                    src="images/录屏2026-05-25 15.45.50.mov" 
-                    alt="网站展示效果" 
-                    class="relative rounded-2xl shadow-2xl border border-gray-100 w-full"
-                    width="100%"
-                    height="400"
-                    autoplay 
-                    muted 
-                    loop 
-                    playsinline
-                    poster="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=2072"
-                >
-                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=2072" alt="网站展示效果" class="relative rounded-2xl shadow-2xl border border-gray-100 object-cover h-[400px] w-full object-top">
-                </video>
+            <!-- 首屏视频容器 (带3D微特效) -->
+            <div class="mt-16 relative max-w-4xl mx-auto reveal-element delay-400">
+                <div class="absolute -inset-1.5 bg-gradient-to-r from-secondary to-purple-600 rounded-2xl blur-xl opacity-15 pointer-events-none"></div>
+                <div class="interactive-video-card bg-white p-2 rounded-2xl border border-gray-100 shadow-2xl overflow-hidden cursor-pointer">
+                    <video 
+                        src="images/录屏2026-05-25 15.45.50.mov" 
+                        alt="网站展示效果" 
+                        class="rounded-xl w-full"
+                        width="100%"
+                        height="400"
+                        autoplay 
+                        muted 
+                        loop 
+                        playsinline
+                        poster="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=2072"
+                    >
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=2072" alt="网站展示效果" class="rounded-xl object-cover h-[400px] w-full object-top">
+                    </video>
+                </div>
             </div>
         </div>
     </section>
@@ -226,84 +292,84 @@
     <!-- 2. 痛点对比 (Why Us) -->
     <section id="why-us" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">不用浪费时间在排版、部署、服务器</h2>
-                <p class="text-gray-500 text-lg">只需要选择模版、提供资料，即可快速上线</p>
+            <div class="text-center mb-16 reveal-element">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4">不用浪费时间在排版、部署、服务器</h2>
+                <p class="text-gray-400 text-sm md:text-base">只需要选择模版、提供资料，即可快速上线</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <!-- DIY 卡片 (痛点) -->
-                <div class="bg-red-50/50 border border-red-100 rounded-3xl p-8 lg:p-10 animate-slide-left transition-all duration-300 hover:scale-102 hover:-translate-y-1 hover:shadow-xl">
+                <div class="bg-red-50/20 rounded-2xl p-8 lg:p-10 border border-red-100/60 shadow-sm reveal-left hover:shadow-lg transition-all duration-500">
                     <div class="flex items-center gap-3 mb-8 text-red-500">
-                        <i data-lucide="x-circle" class="w-8 h-8"></i>
-                        <h3 class="text-2xl font-bold">自己折腾建站 (DIY)</h3>
+                        <i data-lucide="x-circle" class="w-7 h-7"></i>
+                        <h3 class="text-xl font-bold text-gray-900">自己折腾建站 (DIY)</h3>
                     </div>
                     <ul class="space-y-6">
                         <li class="flex gap-4">
-                            <span class="text-red-400 mt-1">✕</span>
+                            <span class="text-red-400 mt-0.5">✕</span>
                             <div>
-                                <strong class="block text-gray-900 mb-1">学习成本高</strong>
-                                <span class="text-gray-600 text-sm">摸索各类建站软件，耗费一整个周末也做不出满意的效果。</span>
+                                <strong class="block text-gray-900 text-sm mb-1">学习成本高、费时费力</strong>
+                                <span class="text-gray-500 text-xs md:text-sm">摸索各种复杂的建站软件，耗费一整个周末也做不出满意的排版。</span>
                             </div>
                         </li>
                         <li class="flex gap-4">
-                            <span class="text-red-400 mt-1">✕</span>
+                            <span class="text-red-400 mt-0.5">✕</span>
                             <div>
-                                <strong class="block text-gray-900 mb-1">审美灾难</strong>
-                                <span class="text-gray-600 text-sm">模版老旧，哪怕套了模板，自己一调字体、改颜色就容易变得杂乱难看。</span>
+                                <strong class="block text-gray-900 text-sm mb-1">审美灾难</strong>
+                                <span class="text-gray-500 text-xs md:text-sm">模版老旧，自己稍微改动一下排版或配色就容易变得杂乱难看。</span>
                             </div>
                         </li>
                         <li class="flex gap-4">
-                            <span class="text-red-400 mt-1">✕</span>
+                            <span class="text-red-400 mt-0.5">✕</span>
                             <div>
-                                <strong class="block text-gray-900 mb-1">服务器、域名头疼</strong>
-                                <span class="text-gray-600 text-sm">还要懂部署、解析、服务器购买，稍微配错就打不开。</span>
+                                <strong class="block text-gray-900 text-sm mb-1">服务器、域名繁杂</strong>
+                                <span class="text-gray-500 text-xs md:text-sm">需要购买服务器、配置解析域名、懂代码部署，出丁点差错网页就彻底打不开。</span>
                             </div>
                         </li>
                         <li class="flex gap-4">
-                            <span class="text-red-400 mt-1">✕</span>
+                            <span class="text-red-400 mt-0.5">✕</span>
                             <div>
-                                <strong class="block text-gray-900 mb-1">费用高昂</strong>
-                                <span class="text-gray-600 text-sm">平台月费和服务器费动辄上千元，启动成本高</span>
+                                <strong class="block text-gray-900 text-sm mb-1">费用高昂</strong>
+                                <span class="text-gray-500 text-xs md:text-sm">平台订阅费与服务器长期租赁成本动辄上千，成本居高不下。</span>
                             </div>
                         </li>
                     </ul>
                 </div>
 
-                <!-- DFY 卡片 (卖点) -->
-                <div class="bg-white border border-gray-100 shadow-xl rounded-3xl p-8 lg:p-10 relative overflow-hidden animate-slide-right transition-all duration-300 hover:scale-102 hover:-translate-y-1 hover:shadow-2xl">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full -z-10"></div>
+                <!-- DFY 卡片 (卖点 - 增强高亮 & 细节对比) -->
+                <div class="bg-white rounded-2xl p-8 lg:p-10 relative overflow-hidden glow-card reveal-right">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50/50 rounded-bl-full -z-10"></div>
                     <div class="flex items-center gap-3 mb-8 text-secondary">
-                        <i data-lucide="check-circle-2" class="w-8 h-8"></i>
-                        <h3 class="text-2xl font-bold">我们的服务</h3>
+                        <i data-lucide="check-circle-2" class="w-7 h-7"></i>
+                        <h3 class="text-xl font-bold text-gray-900">我们的服务</h3>
                     </div>
                     <ul class="space-y-6">
                         <li class="flex gap-4">
-                            <i data-lucide="check" class="text-green-500 w-5 h-5 mt-0.5 shrink-0"></i>
+                            <i data-lucide="check" class="text-green-500 w-4 h-4 mt-1 shrink-0"></i>
                             <div>
-                                <strong class="block text-gray-900 mb-1">一步操作，极度省心</strong>
-                                <span class="text-gray-600 text-sm">选择模版，发送相关资料，最快48小时内直接验收上线。</span>
+                                <strong class="block text-gray-900 text-sm mb-1">一步操作，极度省心</strong>
+                                <span class="text-gray-500 text-xs md:text-sm">选好模板、发送简历资料，<strong class="text-secondary font-bold text-base">最快48小时</strong>内直接验收并上线。</span>
                             </div>
                         </li>
                         <li class="flex gap-4">
-                            <i data-lucide="check" class="text-green-500 w-5 h-5 mt-0.5 shrink-0"></i>
+                            <i data-lucide="check" class="text-green-500 w-4 h-4 mt-1 shrink-0"></i>
                             <div>
-                                <strong class="block text-gray-900 mb-1">精选高级设计</strong>
-                                <span class="text-gray-600 text-sm">告别土气的传统网页。精选高级设计风格模板，自动完美适配手机和电脑。</span>
+                                <strong class="block text-gray-900 text-sm mb-1">精选高级设计</strong>
+                                <span class="text-gray-500 text-xs md:text-sm">告别传统古板网页。精选多套极简主义与前沿风格的<strong class="text-secondary font-bold text-base">现代美学模版</strong>，自动完美适配手机与电脑。</span>
                             </div>
                         </li>
                         <li class="flex gap-4">
-                            <i data-lucide="check" class="text-green-500 w-5 h-5 mt-0.5 shrink-0"></i>
+                            <i data-lucide="check" class="text-green-500 w-4 h-4 mt-1 shrink-0"></i>
                             <div>
-                                <strong class="block text-gray-900 mb-1">一站式免费托管</strong>
-                                <span class="text-gray-600 text-sm">网页永久在线，不管 HR 在哪里，随时随地都能秒级打开。</span>
+                                <strong class="block text-gray-900 text-sm mb-1">一站式托管服务</strong>
+                                <span class="text-gray-500 text-xs md:text-sm"><strong class="text-secondary font-bold text-base">下单即刻获得</strong>专属的在线可访问域名。免去自己配置服务器、域名的繁杂工序，不管是发给 HR 还是写入简历，点击即刻加载访问。</span>
                             </div>
                         </li>
                         <li class="flex gap-4">
-                            <i data-lucide="check" class="text-green-500 w-5 h-5 mt-0.5 shrink-0"></i>
+                            <i data-lucide="check" class="text-green-500 w-4 h-4 mt-1 shrink-0"></i>
                             <div>
-                                <strong class="block text-gray-900 mb-1">付费透明</strong>
-                                <span class="text-gray-600 text-sm">低至 <B> 68 </B> 元起,两杯咖啡钱，搞定整个求职季。</span>
+                                <strong class="block text-gray-900 text-sm mb-1">付费透明</strong>
+                                <span class="text-gray-500 text-xs md:text-sm">低至 <strong class="text-secondary font-bold text-base">¥68 元</strong>起，两杯咖啡的支出，搞定整个求职季个人数字化门面。</span>
                             </div>
                         </li>
                     </ul>
@@ -313,19 +379,33 @@
     </section>
 
     <!-- 3. 模板展示区 (Template Gallery) -->
-    <section id="gallery" class="py-24 bg-gray-50">
+    <section id="gallery" class="py-24 bg-gray-50/50 border-y border-gray-100">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">精选模板库</h2>
-                <p class="text-gray-500 text-lg">每一套都经过精心打磨，总有一款适合你的需要</p>
+            <div class="text-center mb-10 reveal-element">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4">精选模板库</h2>
+                <p class="text-gray-400 text-sm md:text-base">精心打磨每一套模板，高级感满满，优秀的多端适配浏览体验<br>web端浏览体验更加</p>
             </div>
 
-            <div class="flex flex-wrap justify-center gap-3 mb-12" id="category-filters">
+            <!-- 分类标签 -->
+            <div class="flex flex-wrap justify-center gap-2 mb-10 reveal-element" id="category-filters">
             </div>
 
-            <div class="overflow-x-auto pb-6" id="templates-scroll-container">
-                <div class="flex flex-col gap-8 w-max" id="templates-container">
+            <!-- 单行滚动容器 (已优化内边距以解决顶部遮挡问题) -->
+            <div class="relative group/scroll reveal-element">
+                <!-- 左右控制器按键 -->
+                <button id="scroll-left-btn" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white/95 backdrop-blur border border-gray-200/50 shadow-xl rounded-full p-2.5 z-30 opacity-0 group-hover/scroll:opacity-100 group-hover/scroll:translate-x-2 transition-all duration-300 focus:outline-none">
+                    <i data-lucide="chevron-left" class="w-5 h-5 text-gray-600 hover:text-secondary"></i>
+                </button>
+                
+                <div class="overflow-x-auto pt-6 pb-6 no-scrollbar scroll-smooth" id="templates-scroll-container">
+                    <div class="flex gap-6 w-max items-stretch" id="templates-container">
+                        <!-- JS 渲染单行模板卡片与客服引导卡片 -->
+                    </div>
                 </div>
+
+                <button id="scroll-right-btn" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white/95 backdrop-blur border border-gray-200/50 shadow-xl rounded-full p-2.5 z-30 opacity-0 group-hover/scroll:opacity-100 group-hover/scroll:-translate-x-2 transition-all duration-300 focus:outline-none">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-gray-600 hover:text-secondary"></i>
+                </button>
             </div>
         </div>
     </section>
@@ -333,195 +413,276 @@
     <!-- 4. 服务流程 (How It Works) -->
     <section class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">只需简单的三步</h2>
-                <p class="text-gray-500 text-lg">让个人网站变得人人都触手可及</p>
+            <div class="text-center mb-16 reveal-element">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4">只需简单的三步</h2>
+                <p class="text-gray-400 text-sm md:text-base">让个人网站变得人人触手可及</p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto relative">
-                <!-- 连线 (仅桌面端显示) -->
-                <div class="hidden md:block absolute top-12 left-[16%] right-[16%] h-[2px] bg-gray-100 -z-10"></div>
+            <div class="grid md:grid-cols-3 gap-10 max-w-4xl mx-auto relative">
+                <div class="hidden md:block absolute top-12 left-[15%] right-[15%] h-[1.5px] bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 -z-10"></div>
 
                 <!-- 步骤 1 -->
-                <div class="text-center">
-                    <div class="w-24 h-24 mx-auto bg-indigo-50 rounded-full flex items-center justify-center text-secondary mb-6 border-8 border-white shadow-sm">
-                        <i data-lucide="mouse-pointer-click" class="w-10 h-10"></i>
+                <div class="text-center reveal-element">
+                    <div class="w-16 h-16 mx-auto bg-indigo-50/50 rounded-full flex items-center justify-center text-secondary mb-6 border-4 border-white shadow hover:scale-110 hover:shadow-indigo-100 transition-all duration-300">
+                        <i data-lucide="mouse-pointer-click" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">1. 挑模板发资料</h3>
-                    <p class="text-gray-500 text-sm">选好喜欢的模板款式，把你的 Word 简历或图片素材直接打包发给客服。</p>
+                    <h3 class="text-lg font-bold mb-2 text-gray-900">1. 挑模板发资料</h3>
+                    <p class="text-gray-500 text-xs md:text-sm px-4 leading-relaxed">选好喜欢的模板款式，把你的 Word 简历或图片素材直接打包发给客服。</p>
                 </div>
 
                 <!-- 步骤 2 -->
-                <div class="text-center">
-                    <div class="w-24 h-24 mx-auto bg-indigo-50 rounded-full flex items-center justify-center text-secondary mb-6 border-8 border-white shadow-sm">
-                        <i data-lucide="cpu" class="w-10 h-10"></i>
+                <div class="text-center reveal-element delay-100">
+                    <div class="w-16 h-16 mx-auto bg-indigo-50/50 rounded-full flex items-center justify-center text-secondary mb-6 border-4 border-white shadow hover:scale-110 hover:shadow-indigo-100 transition-all duration-300">
+                        <i data-lucide="cpu" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">2. 我们来帮你搞定</h3>
-                    <p class="text-gray-500 text-sm">最快48小时内，我们完成资料转换、排版优化、手机端适配，生成专属链接。</p>
+                    <h3 class="text-lg font-bold mb-2 text-gray-900">2. 我们来帮你搞定</h3>
+                    <p class="text-gray-500 text-xs md:text-sm px-4 leading-relaxed">最快48小时内，我们完成资料转换、排版优化、多屏自适应，并生成预览链接。</p>
                 </div>
 
                 <!-- 步骤 3 -->
-                <div class="text-center">
-                    <div class="w-24 h-24 mx-auto bg-indigo-50 rounded-full flex items-center justify-center text-secondary mb-6 border-8 border-white shadow-sm">
-                        <i data-lucide="shield-check" class="w-10 h-10"></i>
+                <div class="text-center reveal-element delay-200">
+                    <div class="w-16 h-16 mx-auto bg-indigo-50/50 rounded-full flex items-center justify-center text-secondary mb-6 border-4 border-white shadow hover:scale-110 hover:shadow-indigo-100 transition-all duration-300">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">3. 满意后再付款</h3>
-                    <p class="text-gray-500 text-sm">点开链接看效果。满意后，在淘宝/小红书平台确认收货，安全无忧。</p>
+                    <h3 class="text-lg font-bold mb-2 text-gray-900">3. 满意后再付款</h3>
+                    <p class="text-gray-500 text-xs md:text-sm px-4 leading-relaxed">在线点击预览效果。满意后再确认收货，安全省心。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 5. 价格方案 (Pricing Table) -->
-    <section id="pricing" class="py-24 bg-primary text-white">
+    <!-- 5. 价格方案 (Pricing Table - 新版原价换行 & 常亮流光动效) -->
+    <section id="pricing" class="py-24 bg-white border-t border-gray-100">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">透明的价格，极致的服务</h2>
-                <p class="text-gray-400 text-lg">一次性付费，拒绝隐形消费。支持第三方平台担保交易。</p>
+            <div class="text-center mb-16 reveal-element">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-950 mb-4">透明的价格，极致的服务</h2>
+                <p class="text-gray-400 text-sm md:text-base">付费透明，拒绝隐形消费。支持第三方平台担保交易。</p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
                 
                 <!-- 套餐 1 -->
-                <div class="bg-gray-800 rounded-3xl p-8 border border-gray-700 transition-all duration-300 hover:scale-102 hover:-translate-y-1 hover:shadow-xl">
-                    <h3 class="text-xl font-semibold text-gray-300 mb-2">求职季冲刺</h3>
-                    <div class="flex flex-wrap items-baseline gap-2 mb-6">
-                        <span class="text-xs text-green-400">限时促销价：</span>
-                        <span class="text-4xl font-extrabold">¥68</span>
-                        <span class="text-gray-400">/季</span>
-                        <span class="text-xs text-gray-500 line-through">原价：¥99/季</span>
+                <div class="bg-white rounded-2xl p-8 flex flex-col justify-between glow-card reveal-left">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-600 mb-1">求职季冲刺</h3>
+                        <div class="mb-6">
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-xs text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded mr-1">限时特惠</span>
+                                <span class="text-5.5xl font-black text-secondary tracking-tight">¥68</span>
+                                <span class="text-gray-500 text-sm">/季</span>
+                            </div>
+                            <div class="mt-2 text-sm text-gray-400 font-bold">
+                                原价：<span class="line-through">¥99</span>
+                            </div>
+                        </div>
+                        <p class="text-xs md:text-sm text-gray-500 mb-8 leading-relaxed h-12">最适合毕业生求职、考研/申博/留学复试等短周期展示，极速上线不等待。</p>
+                        <ul class="space-y-4 mb-8 text-xs md:text-sm">
+                            <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 1 套精选高级模板</li>
+                            <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 简历内容优化</li>
+                            <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 免费且稳定的托管服务</li>
+                            <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 二级域名随机分配（附二维码）</li>
+                            <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 赠送 1 次后期内容微调</li>
+                        </ul>
                     </div>
-                    <p class="text-sm text-gray-400 mb-8 h-10">适合应届毕业生求职、考研/出国复试、国外院校申请等短期展示需求。</p>
-                    <ul class="space-y-4 mb-8 text-sm">
-                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-secondary shrink-0"></i> 1 套精选模板</li>
-                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-secondary shrink-0"></i> 简历内容细节优化</li>
-                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-secondary shrink-0"></i> 随机分配网址</li>
-                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-secondary shrink-0"></i> 赠送1次免费内容微调更新</li>
-                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-secondary shrink-0"></i> 网站免费稳定托管在线</li>
-                    </ul>
-                    <a href="#" class="block w-full text-center bg-gray-700 hover:bg-gray-600 text-white py-3 rounded-xl font-semibold transition-colors">
+                    <a href="#contact" class="shine-btn-loop block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 mt-auto">
                         立即下单
                     </a>
                 </div>
 
                 <!-- 套餐 2 (推荐) -->
-                <div class="relative rounded-3xl p-1 md:scale-105 transform shadow-2xl transition-all duration-300 hover:scale-107 hover:-translate-y-1">
-                    <div class="absolute inset-0 rounded-3xl bg-gradient-to-b from-indigo-600 to-secondary opacity-80 animate-pulse"></div>
-                    <div class="absolute inset-[2px] rounded-[26px] bg-gradient-to-b from-indigo-600 to-secondary"></div>
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide z-10">
+                <div class="relative rounded-2xl p-[1.5px] bg-gradient-to-b from-indigo-400 via-secondary to-purple-500 shadow-xl hover:-translate-y-1.5 transition-all duration-500 reveal-element">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-yellow-400 to-amber-500 text-yellow-950 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10 shadow">
                         最受欢迎
                     </div>
-                    <div class="relative bg-gray-900 rounded-[22px] p-8 h-full">
-                        <h3 class="text-xl font-semibold text-indigo-400 mb-2">创作者长期计划</h3>
-                        <div class="flex flex-wrap items-baseline gap-2 mb-6">
-                            <span class="text-xs text-green-400">限时促销价：</span>
-                            <span class="text-4xl font-extrabold">¥199</span>
-                            <span class="text-gray-400">首年</span>
-                            <span class="text-xs text-gray-500 line-through">原价：¥299首年</span>
+                    <div class="bg-white rounded-[14px] p-8 h-full flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold text-indigo-600 mb-1">创作者长期计划</h3>
+                            <div class="mb-6">
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-xs text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded mr-1">限时特惠</span>
+                                    <span class="text-5.5xl font-black text-indigo-600 tracking-tight">¥199</span>
+                                    <span class="text-gray-500 text-sm">首年</span>
+                                </div>
+                                <div class="mt-2 text-sm text-gray-400 font-bold">
+                                    原价：<span class="line-through">¥299</span>
+                                </div>
+                            </div>
+                            <p class="text-xs md:text-sm text-gray-500 mb-8 leading-relaxed h-12">次年续费限时99元/年。适合设计师、自由职业者及个人IP形象持久搭建。</p>
+                            <ul class="space-y-4 mb-8 text-xs md:text-sm">
+                                <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-indigo-500 shrink-0"></i> 1 套精选静态网页定制</li>
+                                <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-indigo-500 shrink-0"></i> 支持页面内容、色调微调</li>
+                                <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-indigo-500 shrink-0"></i> 每年 4 次免费内容更新微调</li>
+                                <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-indigo-500 shrink-0"></i> 支持定制二级域名名称</li>
+                            </ul>
                         </div>
-                        <p class="text-sm text-gray-400 mb-8 h-10">次年起仅需 99元/年。适合自由职业者、设计师、个人 IP 打造。</p>
-                        <ul class="space-y-4 mb-8 text-sm">
-                            <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-indigo-400 shrink-0"></i> 1 套精选静态模板（支持微调）</li>
-                            <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-indigo-400 shrink-0"></i> 简历内容细节优化</li>
-                            <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-indigo-400 shrink-0"></i> 每年 3 次免费内容微调更新</li>
-                            <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-indigo-400 shrink-0"></i> 支持绑定专属后缀域名</li>
-                        </ul>
-                        <a href="#" class="block w-full text-center bg-indigo-500 hover:bg-indigo-400 text-white py-3 rounded-xl font-bold transition-colors shadow-lg">
+                        <a href="#contact" class="shine-btn-loop block w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white py-3.5 rounded-xl font-bold text-sm transition-all duration-300 shadow-md shadow-indigo-600/10 mt-auto">
                             立即下单
                         </a>
                     </div>
                 </div>
 
                 <!-- 套餐 3 -->
-                <div class="bg-gray-800 rounded-3xl p-8 border border-gray-700 transition-all duration-300 hover:scale-102 hover:-translate-y-1 hover:shadow-xl">
-                    <h3 class="text-xl font-semibold text-gray-300 mb-2">终身源码买断</h3>
-                    <div class="flex flex-wrap items-baseline gap-2 mb-6">
-                        <span class="text-xs text-green-400">限时促销价：</span>
-                        <span class="text-4xl font-extrabold">¥499</span>
-                        <span class="text-gray-400">一次性</span>
-                        <span class="text-xs text-gray-500 line-through">原价：¥799一次性</span>
+                <div class="bg-white rounded-2xl p-8 flex flex-col justify-between glow-card reveal-right">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-600 mb-1">尊享设计套餐</h3>
+                        <div class="mb-6">
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-xs text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded mr-1">限时特惠</span>
+                                <span class="text-5.5xl font-black text-secondary tracking-tight">¥599</span>
+                                <span class="text-gray-500 text-sm">起/次</span>
+                            </div>
+                            <div class="mt-2 text-sm text-gray-400 font-bold">
+                                原价：<span class="line-through">¥999</span>
+                            </div>
+                        </div>
+                        <p class="text-xs md:text-sm text-gray-500 mb-8 leading-relaxed h-12">适合需要深度定制页面及功能的客户</p>
+                        <ul class="space-y-4 mb-8 text-xs md:text-sm">
+                            <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 打包全站网页源代码</li>
+                            <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 升级个人专属定制域名</li>
+                            <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 提供部署后的站点维护指南</li>
+                            <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 域名访问优化，提供更快、更稳定的访问服务</li>
+                        </ul>
                     </div>
-                    <p class="text-sm text-gray-400 mb-8 h-10">适合想要自己完全掌控网页，或拥有技术基础的专业人士。</p>
-                    <ul class="space-y-4 mb-8 text-sm">
-                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-secondary shrink-0"></i> 基于模版的设计定制功能</li>
-                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-secondary shrink-0"></i> 优化访问速度、图片资源加载</li>
-                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-secondary shrink-0"></i> 提供内容更新指南（自行维护更新网站）</li>
-                        <li class="flex gap-3 items-start"><i data-lucide="check" class="w-5 h-5 text-secondary shrink-0"></i> 部署至个人服务器</li>
-                    </ul>
-                    <a href="#" class="block w-full text-center bg-gray-700 hover:bg-gray-600 text-white py-3 rounded-xl font-semibold transition-colors">
+                    <a href="#contact" class="shine-btn-loop block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 mt-auto">
                         立即下单
                     </a>
                 </div>
 
             </div>
             
-            <div class="mt-12 text-center text-sm text-gray-400 flex items-center justify-center gap-2">
+            <div class="mt-12 text-center text-xs text-gray-400 flex items-center justify-center gap-1.5 reveal-element">
                 <i data-lucide="shield" class="w-4 h-4"></i>
-                支持电商平台担保交易，预览满意后再确认收货。
+                支持电商第三方担保支付渠道，点击满意确认无误后再付款。
             </div>
         </div>
     </section>
 
-    <!-- 6. 常见问题 (FAQ) -->
-    <section id="faq" class="py-24 bg-gray-50">
-        <div class="max-w-3xl mx-auto px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">常见问题解答</h2>
+    <!-- 6. 常见问题 (FAQ - 重构为双列网格布局，共6个问题) -->
+    <section id="faq" class="py-24 bg-gray-50/50">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 reveal-element">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4">常见问题解答</h2>
             </div>
 
-            <!-- FAQ 列表 -->
-            <div class="space-y-4">
-                <!-- 问题 1 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden faq-item cursor-pointer">
-                    <div class="px-6 py-5 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
-                        <h4 class="font-bold text-gray-900">以后我的工作经历变了，要怎么修改网站？</h4>
-                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transform transition-transform faq-icon"></i>
+            <!-- FAQ 双列网格结构 -->
+            <div class="grid md:grid-cols-2 gap-6 items-start reveal-element">
+                
+                <!-- 左列问题 -->
+                <div class="space-y-4">
+                    <!-- 问题 1 -->
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-indigo-200/80 hover:shadow-lg hover:shadow-gray-100/30 transition-all duration-300 group">
+                        <div class="px-6 py-5 flex justify-between items-center bg-white transition-colors">
+                            <h4 class="font-semibold text-gray-900 group-hover:text-secondary transition-colors text-sm md:text-base">以后我的工作经历变了，要怎么修改网站？</h4>
+                            <div class="p-1 rounded-full bg-gray-50 text-gray-400 group-hover:bg-indigo-50 group-hover:text-secondary transition-all">
+                                <i data-lucide="chevron-down" class="w-4 h-4 transform transition-transform duration-300 faq-icon"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="px-6 pb-5 text-gray-500 text-xs md:text-sm leading-relaxed border-t border-gray-50 pt-4">
+                                别担心！套餐中包含了不同次数的<strong>免费内容更新服务</strong>。您只需把要修改的字或图按要求打包发给我们，我们帮你免费更新。如果超过了免费更新次数，我们也提供价格极其实惠的单次更新服务，请随时联系客服。
+                            </div>
+                        </div>
                     </div>
-                    <div class="px-6 pb-5 text-gray-600 hidden faq-answer text-sm leading-relaxed border-t border-gray-100 pt-4">
-                        别担心！套餐中包含了不同次数的免费内容更新服务。只需把要修改的字或图按要求打包发给我们，我们帮你免费更新。如果需要额外次数的更新服务，我们也提供价格实惠的服务，请联系客服。
+
+                    <!-- 问题 2 -->
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-indigo-200/80 hover:shadow-lg hover:shadow-gray-100/30 transition-all duration-300 group">
+                        <div class="px-6 py-5 flex justify-between items-center bg-white transition-colors">
+                            <h4 class="font-semibold text-gray-900 group-hover:text-secondary transition-colors text-sm md:text-base">网站能用手机打开吗？国内打开卡不卡？</h4>
+                            <div class="p-1 rounded-full bg-gray-50 text-gray-400 group-hover:bg-indigo-50 group-hover:text-secondary transition-all">
+                                <i data-lucide="chevron-down" class="w-4 h-4 transform transition-transform duration-300 faq-icon"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="px-6 pb-5 text-gray-500 text-xs md:text-sm leading-relaxed border-t border-gray-50 pt-4">
+                                每一个模板我们都经过了严苛的手机端适配，在微信、手机浏览器、电脑等多设备上体验均十分出色。我们部署的节点支持多区域自适应分发，确保在国内或海外访问都能秒级加载。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 问题 3 -->
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-indigo-200/80 hover:shadow-lg hover:shadow-gray-100/30 transition-all duration-300 group">
+                        <div class="px-6 py-5 flex justify-between items-center bg-white transition-colors">
+                            <h4 class="font-semibold text-gray-900 group-hover:text-secondary transition-colors text-sm md:text-base">需要我自己去买域名和服务器吗？</h4>
+                            <div class="p-1 rounded-full bg-gray-50 text-gray-400 group-hover:bg-indigo-50 group-hover:text-secondary transition-all">
+                                <i data-lucide="chevron-down" class="w-4 h-4 transform transition-transform duration-300 faq-icon"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="px-6 pb-5 text-gray-500 text-xs md:text-sm leading-relaxed border-t border-gray-50 pt-4">
+                                <strong>完全不需要！</strong> 我们为任意套餐提供基础且长效的专属免费托管服务与域名链接，即拿即用。如果您希望绑定个人的自定义专属域名（如 www.yourname.com），也可以联系客服，我们提供全套域名解析接入服务。
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 问题 2 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden faq-item cursor-pointer">
-                    <div class="px-6 py-5 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
-                        <h4 class="font-bold text-gray-900">网站能用手机打开吗？国内打开卡不卡？</h4>
-                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transform transition-transform faq-icon"></i>
+                <!-- 右列问题 -->
+                <div class="space-y-4">
+                    <!-- 问题 4 -->
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-indigo-200/80 hover:shadow-lg hover:shadow-gray-100/30 transition-all duration-300 group">
+                        <div class="px-6 py-5 flex justify-between items-center bg-white transition-colors">
+                            <h4 class="font-semibold text-gray-900 group-hover:text-secondary transition-colors text-sm md:text-base">制作周期一般多久？有什么加急服务吗？</h4>
+                            <div class="p-1 rounded-full bg-gray-50 text-gray-400 group-hover:bg-indigo-50 group-hover:text-secondary transition-all">
+                                <i data-lucide="chevron-down" class="w-4 h-4 transform transition-transform duration-300 faq-icon"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="px-6 pb-5 text-gray-500 text-xs md:text-sm leading-relaxed border-t border-gray-50 pt-4">
+                                标准设计方案的排版制作周期一般为 2 至 3 个工作日（最快 48 小时内交付）。若您急于应对即将开始的面试、考研/海外院校申请，可联系客服沟通绿色特快通道，最快可在<strong> 24 小时内</strong>交付上线。
+                            </div>
+                        </div>
                     </div>
-                    <div class="px-6 pb-5 text-gray-600 hidden faq-answer text-sm leading-relaxed border-t border-gray-100 pt-4">
-                        每一个模板我们都经过了严苛的手机端适配，用微信或手机浏览器打开体验极佳。对于不同的访问需求，我们也支持提供不同的部署服务，确保访问的可靠性。
+
+                    <!-- 问题 5 -->
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-indigo-200/80 hover:shadow-lg hover:shadow-gray-100/30 transition-all duration-300 group">
+                        <div class="px-6 py-5 flex justify-between items-center bg-white transition-colors">
+                            <h4 class="font-semibold text-gray-900 group-hover:text-secondary transition-colors text-sm md:text-base">支持定制自己的个性化排版和特殊功能吗？</h4>
+                            <div class="p-1 rounded-full bg-gray-50 text-gray-400 group-hover:bg-indigo-50 group-hover:text-secondary transition-all">
+                                <i data-lucide="chevron-down" class="w-4 h-4 transform transition-transform duration-300 faq-icon"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="px-6 pb-5 text-gray-500 text-xs md:text-sm leading-relaxed border-t border-gray-50 pt-4">
+                                <strong>完全支持</strong>。标准方案基于模版微调，但如果您需要更具个性化的图文排版、定制特定交互（如画廊弹窗、特定展示板块、访客统计等），都可随时将您的布局构想和客服沟通，我们将提供高性价比的增值定制支持。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 问题 6 -->
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-indigo-200/80 hover:shadow-lg hover:shadow-gray-100/30 transition-all duration-300 group">
+                        <div class="px-6 py-5 flex justify-between items-center bg-white transition-colors">
+                            <h4 class="font-semibold text-gray-900 group-hover:text-secondary transition-colors text-sm md:text-base">预览不满意可以退款吗？交易是否有保障？</h4>
+                            <div class="p-1 rounded-full bg-gray-50 text-gray-400 group-hover:bg-indigo-50 group-hover:text-secondary transition-all">
+                                <i data-lucide="chevron-down" class="w-4 h-4 transform transition-transform duration-300 faq-icon"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="px-6 pb-5 text-gray-500 text-xs md:text-sm leading-relaxed border-t border-gray-50 pt-4">
+                                我们全面支持淘宝、小红书官方等主流电商担保平台进行支付交易。在我们将搭建完成的专属预览链接发送给您之前，您无需支付任何尾款资金；对实际成品的视觉与交互排版满意后，再进行确认，全程安全无忧。
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 问题 3 -->
-                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden faq-item cursor-pointer">
-                    <div class="px-6 py-5 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
-                        <h4 class="font-bold text-gray-900">购买服务需要我自己去买域名和服务器吗？</h4>
-                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transform transition-transform faq-icon"></i>
-                    </div>
-                    <div class="px-6 pb-5 text-gray-600 hidden faq-answer text-sm leading-relaxed border-t border-gray-100 pt-4">
-                        <strong>完全不需要！</strong> 任意套餐都可以获得一个专属访问链接，直接访问即可，对于有专属域名需求的客户，也可以联系我们购买域名服务。
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
     <!-- 7. 底部召唤与页脚 (Footer & CTA) -->
     <footer id="contact" class="bg-white border-t border-gray-100 pt-20 pb-10">
-        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center mb-16">
-            <h2 class="text-3xl font-bold text-primary mb-6">你的下一个好机会，从一个高级感满满的专属个人页开始。</h2>
-            <p class="text-xl text-gray-500 mb-10">互联网的新时代，人人都可以打造专属的个人页</p>
+        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center mb-16 reveal-element">
+            <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6">专属的高级感个人页面，让出众的你更快被看见。</h2>
+            <p class="text-base md:text-lg text-gray-400 mb-10">极速开启数字化个人形象，告别千篇一律的传统简历</p>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#" class="magnetic-btn flex items-center justify-center gap-2 bg-[#ff2442] text-white px-12 py-5 rounded-full text-lg font-bold transition-all shadow-xl">
-                    <i data-lucide="message-circle" class="w-5 h-5"></i>
-                    咨询客服/下单
-                </a>
+            <div class="flex justify-center">
+                <!-- 饱满立体的咨询磁吸大按钮 (带全时流光常亮动效) -->
+                <button class="magnetic-btn shine-btn-loop flex items-center justify-center gap-3 bg-[#ff2442] hover:bg-[#e01f3a] text-white px-16 py-6 rounded-full text-lg font-extrabold transition-all duration-300 shadow-xl hover:shadow-[0_25px_50px_-12px_rgba(255,36,66,0.3)] hover:-translate-y-0.5 active:translate-y-0">
+                    <i data-lucide="message-circle" class="w-6 h-6"></i>
+                    咨询客服 / 极速下单
+                </button>
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center text-sm text-gray-400 border-t border-gray-50 pt-8">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center text-xs text-gray-400 border-t border-gray-50 pt-8">
             <p>© 2026 闪建艺术. All rights reserved.</p>
         </div>
     </footer>
@@ -544,30 +705,36 @@
             lucide.createIcons();
         }
 
-        // FAQ 手风琴逻辑
+        // FAQ 丝滑高度过渡手风琴
         const faqItems = document.querySelectorAll('.faq-item');
         faqItems.forEach(item => {
             item.addEventListener('click', () => {
                 const answer = item.querySelector('.faq-answer');
                 const icon = item.querySelector('.faq-icon');
+                const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
                 
-                const isHidden = answer.classList.contains('hidden');
-                
-                if (isHidden) {
-                    answer.classList.remove('hidden');
+                // 收起其他已展开的 FAQ，实现高级联动感
+                faqItems.forEach(otherItem => {
+                    const otherAnswer = otherItem.querySelector('.faq-answer');
+                    const otherIcon = otherItem.querySelector('.faq-icon');
+                    otherAnswer.style.maxHeight = '0px';
+                    otherIcon.classList.remove('rotate-180');
+                    otherItem.classList.remove('border-indigo-200');
+                });
+
+                if (!isOpen) {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
                     icon.classList.add('rotate-180');
-                } else {
-                    answer.classList.add('hidden');
-                    icon.classList.remove('rotate-180');
+                    item.classList.add('border-indigo-200');
                 }
             });
         });
 
-        // 滚动动画效果
+        // 精细化的滚动显现
         const observerOptions = {
             root: null,
-            rootMargin: '0px 0px -50px 0px',
-            threshold: 0.1
+            rootMargin: '0px 0px -40px 0px',
+            threshold: 0.05
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -578,258 +745,54 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.animate-fade-in, .animate-slide-left, .animate-slide-right').forEach(el => {
+        document.querySelectorAll('.reveal-element, .reveal-left, .reveal-right').forEach(el => {
             observer.observe(el);
         });
 
-        // 模板数据和渲染
-        const templatesData = {
-            "categories": [
-                {"id": "all", "name": "全部"},
-                {"id": "text", "name": "文字主导 (求职/考研)"},
-                {"id": "visual", "name": "视觉主导 (作品集)"},
-                {"id": "animation", "name": "高级动效"}
-            ],
-            "templates": [
-                {
-                    "id": "github-style-backend",
-                    "name": "GitHub风格后端开发简历",
-                    "description": "极客范十足的开发者简历，展示你的技术栈和项目贡献，让技术面试官眼前一亮。",
-                    "image": "images/github风格后端开发简历.png",
-                    "demoUrl": "templets/github风格后端开发简历.html",
-                    "tags": ["开发者", "技术简历", "GitHub"],
-                    "category": "text",
-                    "htmlFile": "github风格后端开发简历.html"
-                },
-                {
-                    "id": "notion-style-literature",
-                    "name": "Notion风格文学专业个人简历",
-                    "description": "简洁的 Notion 风格设计，适合文学专业和内容创作者展示个人作品。",
-                    "image": "images/notion风格文学专业个人简历.png",
-                    "demoUrl": "templets/notion风格文学专业个人简历.html",
-                    "tags": ["极简", "笔记风格", "文学"],
-                    "category": "text",
-                    "htmlFile": "notion风格文学专业个人简历.html"
-                },
-                {
-                    "id": "bento-pm",
-                    "name": "便当盒风格产品经理简历",
-                    "description": "将你的产品经历、项目成果完美整合在苹果风的精美网格中。",
-                    "image": "images/便当盒风格产品经理简历.png",
-                    "demoUrl": "templets/便当盒风格产品经理简历.html",
-                    "tags": ["文字简历", "便当盒风", "产品经理"],
-                    "category": "text",
-                    "htmlFile": "便当盒风格产品经理简历.html"
-                },
-                {
-                    "id": "bento-backend",
-                    "name": "便当盒风格后端开发简历",
-                    "description": "将你的个人技能、项目经历完美整合在苹果风的精美网格中，让 HR 眼前一亮。",
-                    "image": "images/便当盒风格后端开发简历.png",
-                    "demoUrl": "templets/便当盒风格后端开发简历.html",
-                    "tags": ["文字简历", "极客便当盒风", "后端开发"],
-                    "category": "text",
-                    "htmlFile": "便当盒风格后端开发简历.html"
-                },
-                {
-                    "id": "giant-font-morandi",
-                    "name": "巨型字体莫兰迪色简历",
-                    "description": "艺术感十足的巨型字体搭配莫兰迪配色，彰显独特个性。",
-                    "image": "images/巨型字体莫兰迪色简历.png",
-                    "demoUrl": "templets/巨型字体莫兰迪色简历.html",
-                    "tags": ["莫兰迪色", "艺术感", "巨型字体"],
-                    "category": "visual",
-                    "htmlFile": "巨型字体莫兰迪色简历.html"
-                },
-                {
-                    "id": "brutal-frontend",
-                    "name": "新粗野主义风格前端开发个人简历",
-                    "description": "个性十足的新粗野主义风格，适合富有创意的前端开发者。",
-                    "image": "images/新粗野主义风格前端开发个人简历.png",
-                    "demoUrl": "templets/新粗野主义风格前端开发个人简历.html",
-                    "tags": ["前端", "粗野主义", "创意"],
-                    "category": "text",
-                    "htmlFile": "新粗野主义风格前端开发个人简历.html"
-                },
-                {
-                    "id": "horizontal-gallery",
-                    "name": "横向滚动图片作品集简历",
-                    "description": "无损画质加载，支持大图弹窗，让你的作品自己说话。",
-                    "image": "images/横向滚动图片作品集简历.png",
-                    "demoUrl": "templets/横向滚动图片作品集简历.html",
-                    "tags": ["视觉大图", "作品集", "横向滚动"],
-                    "category": "visual",
-                    "htmlFile": "横向滚动图片作品集简历.html"
-                },
-                {
-                    "id": "kanban-pm",
-                    "name": "看板风格产品经理个人主页",
-                    "description": "用看板形式展示你的产品能力和项目成果。",
-                    "image": "images/看板风格产品经理个人主页.png",
-                    "demoUrl": "templets/看板风格产品经理个人主页.html",
-                    "tags": ["产品经理", "看板", "项目管理"],
-                    "category": "text",
-                    "htmlFile": "看板风格产品经理个人主页.html"
-                },
-                {
-                    "id": "bold-lines-illustration",
-                    "name": "粗线条风儿童插画师作品集",
-                    "description": "可爱的粗线条风格，适合儿童插画师展示作品。",
-                    "image": "images/粗线条风儿童插画师作品集.png",
-                    "demoUrl": "templets/粗线条风儿童插画师作品集.html",
-                    "tags": ["插画", "儿童风格", "粗线条"],
-                    "category": "visual",
-                    "htmlFile": "粗线条风儿童插画师作品集.html"
-                },
-                {
-                    "id": "classic-oxford-finance",
-                    "name": "经典牛津风格金融行业个人简历",
-                    "description": "用极其干净的白底黑字和清晰的成长时间轴，展示专业能力。",
-                    "image": "images/经典牛津风格金融行业个人简历.png",
-                    "demoUrl": "templets/经典牛津风格金融行业个人简历.html",
-                    "tags": ["极简清爽", "金融", "经典风格"],
-                    "category": "text",
-                    "htmlFile": "经典牛津风格金融行业个人简历.html"
-                },
-                {
-                    "id": "art-school-portfolio",
-                    "name": "艺术院校申请莫兰迪色作品集主页",
-                    "description": "优雅的莫兰迪配色，专为艺术院校申请打造的作品集展示。",
-                    "image": "images/艺术院校申请莫兰迪色作品集主页.png",
-                    "demoUrl": "templets/艺术院校申请莫兰迪色作品集主页.html",
-                    "tags": ["艺术院校", "作品集", "莫兰迪色"],
-                    "category": "visual",
-                    "htmlFile": "艺术院校申请莫兰迪色作品集主页.html"
-                },
-                {
-                    "id": "morandi-ux-design",
-                    "name": "莫兰迪交互设计个人主页",
-                    "description": "优雅的莫兰迪配色，专为UI/UX设计师打造的作品集展示页面。",
-                    "image": "images/莫兰迪交互设计个人主页.png",
-                    "demoUrl": "templets/莫兰迪交互设计个人主页.html",
-                    "tags": ["UI设计", "莫兰迪色", "交互设计"],
-                    "category": "visual",
-                    "htmlFile": "莫兰迪交互设计个人主页.html"
-                },
-                {
-                    "id": "morandi-children-literature",
-                    "name": "莫兰迪儿童文学个人主页",
-                    "description": "温馨的莫兰迪配色，适合儿童文学创作者展示作品。",
-                    "image": "images/莫兰迪儿童文学个人主页.png",
-                    "demoUrl": "templets/莫兰迪儿童文学个人主页.html",
-                    "tags": ["儿童文学", "莫兰迪色", "温馨"],
-                    "category": "text",
-                    "htmlFile": "莫兰迪儿童文学个人主页.html"
-                },
-                {
-                    "id": "morandi-ui-designer",
-                    "name": "莫兰迪风UI设计师简历",
-                    "description": "优雅的莫兰迪配色，专为UI/UX设计师打造的作品集展示页面。",
-                    "image": "images/莫兰迪风UI设计师简历.png",
-                    "demoUrl": "templets/莫兰迪风UI设计师简历.html",
-                    "tags": ["UI设计", "莫兰迪色", "设计师"],
-                    "category": "visual",
-                    "htmlFile": "莫兰迪风UI设计师简历.html"
-                },
-                {
-                    "id": "parallax-homepage",
-                    "name": "视差滚动风格个人主页",
-                    "description": "高级视差滚动效果，沉浸式的视觉体验，适合高端作品集展示。",
-                    "image": "images/视差滚动风格个人主页.png",
-                    "demoUrl": "templets/视差滚动风格个人主页.html",
-                    "tags": ["高级动效", "视差滚动", "个人主页"],
-                    "category": "animation",
-                    "htmlFile": "视差滚动风格个人主页.html"
-                },
-                {
-                    "id": "bilingual-cv",
-                    "name": "院校申请中英个人简历主页",
-                    "description": "中英双语简历，适合院校申请和海外求职。",
-                    "image": "images/院校申请中英个人简历主页.png",
-                    "demoUrl": "templets/院校申请中英个人简历主页.html",
-                    "tags": ["中英双语", "院校申请", "海外求职"],
-                    "category": "text",
-                    "htmlFile": "院校申请中英个人简历主页.html"
-                },
-                {
-                    "id": "macaron-children-illustrator",
-                    "name": "马卡龙色儿童插画师个人主页",
-                    "description": "甜美马卡龙配色，专为儿童插画师打造的作品集页面。",
-                    "image": "images/马卡龙色儿童插画师个人主页.png",
-                    "demoUrl": "templets/马卡龙色儿童插画师个人主页.html",
-                    "tags": ["插画", "马卡龙色", "儿童风格"],
-                    "category": "visual",
-                    "htmlFile": "马卡龙色儿童插画师个人主页.html"
-                },
-                {
-                    "id": "high-end-portfolio-graduate",
-                    "name": "高级图片作品集毕业生",
-                    "description": "高级图片展示风格，适合毕业生展示作品集。",
-                    "image": "images/高级图片作品集毕业生.png",
-                    "demoUrl": "templets/高级图片作品集毕业生.html",
-                    "tags": ["毕业生", "作品集", "高级风格"],
-                    "category": "visual",
-                    "htmlFile": "高级图片作品集毕业生.html"
-                },
-                {
-                    "id": "academic-scholar",
-                    "name": "高级学术风格主页",
-                    "description": "严谨的学术风格设计，适合研究生申请和学者个人主页。",
-                    "image": "images/高级学术风格主页.png",
-                    "demoUrl": "templets/高级学术风格主页.html",
-                    "tags": ["学术", "研究", "学者"],
-                    "category": "text",
-                    "htmlFile": "高级学术风格主页.html"
-                },
-                {
-                    "id": "fashion-magazine-cv",
-                    "name": "高级时尚杂志风格个人简历",
-                    "description": "高级时尚杂志排版风格，适合时尚行业从业者和模特个人主页。",
-                    "image": "images/高级时尚杂志风格个人简历.png",
-                    "demoUrl": "templets/高级时尚杂志风格个人简历.html",
-                    "tags": ["时尚", "杂志风", "模特"],
-                    "category": "visual",
-                    "htmlFile": "高级时尚杂志风格个人简历.html"
-                },
-                {
-                    "id": "bw-designer-avatar",
-                    "name": "高级黑白风带头像设计师",
-                    "description": "高级黑白风格，适合设计师展示专业形象。",
-                    "image": "images/高级黑白风带头像设计师.png",
-                    "demoUrl": "templets/高级黑白风带头像设计师.html",
-                    "tags": ["黑白风格", "设计师", "带头像"],
-                    "category": "visual",
-                    "htmlFile": "高级黑白风带头像设计师.html"
-                },
-                {
-                    "id": "bw-graduate-cv",
-                    "name": "高级黑白风毕业生求职简历",
-                    "description": "高级黑白风格，简洁专业，适合毕业生求职。",
-                    "image": "images/高级黑白风毕业生求职简历.png",
-                    "demoUrl": "templets/高级黑白风毕业生求职简历.html",
-                    "tags": ["黑白风格", "毕业生", "求职"],
-                    "category": "text",
-                    "htmlFile": "高级黑白风毕业生求职简历.html"
-                },
-                {
-                    "id": "bw-lawyer-text",
-                    "name": "高级黑白风纯文字律师",
-                    "description": "高级黑白纯文字风格，适合律师展示专业形象。",
-                    "image": "images/高级黑白风纯文字律师.png",
-                    "demoUrl": "templets/高级黑白风纯文字律师.html",
-                    "tags": ["黑白风格", "律师", "纯文字"],
-                    "category": "text",
-                    "htmlFile": "高级黑白风纯文字律师.html"
+        // 导航条随着页面滑动的交互 (贴顶，无缝收缩 + 增强磨砂)
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            const navInner = document.getElementById('nav-inner');
+            if (nav && navInner) {
+                if (window.scrollY > 25) {
+                    nav.classList.add('shadow-sm', 'bg-white/90', 'border-gray-200/50');
+                    nav.classList.remove('bg-white/65', 'border-gray-100');
+                    navInner.classList.replace('h-20', 'h-16');
+                } else {
+                    nav.classList.remove('shadow-sm', 'bg-white/90', 'border-gray-200/50');
+                    nav.classList.add('bg-white/65', 'border-gray-100');
+                    navInner.classList.replace('h-16', 'h-20');
                 }
-            ]
-        };
+            }
+        });
+
+        // 导航锚点活动状态监听
+        const sections = document.querySelectorAll('section[id], footer[id]');
+        const navLinks = document.querySelectorAll('nav .hidden.md\\:flex a.nav-link');
+        
+        window.addEventListener('scroll', () => {
+            let currentActiveSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    currentActiveSection = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active-nav');
+                if (link.getAttribute('href') === `#${currentActiveSection}`) {
+                    link.classList.add('active-nav');
+                }
+            });
+        });
+
         let activeCategory = 'all';
 
         function loadTemplates() {
-            console.log('Loading templates...');
-            console.log('Templates loaded:', templatesData);
             renderCategories();
             renderTemplates();
+            initHorizontalScrollControls();
         }
 
         function renderCategories() {
@@ -837,92 +800,98 @@
             templatesData.categories.forEach((category, index) => {
                 const button = document.createElement('button');
                 button.className = index === 0 
-                    ? 'px-5 py-2 rounded-full bg-primary text-white text-sm font-medium' 
-                    : 'px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors';
+                    ? 'px-5 py-2 rounded-full bg-primary text-white text-xs font-semibold shadow-md shadow-gray-900/10 transition-all duration-300' 
+                    : 'px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-semibold hover:text-primary hover:border-gray-300 transition-all duration-300';
                 button.textContent = category.name;
                 button.dataset.category = category.id;
                 button.addEventListener('click', () => {
                     activeCategory = category.id;
                     document.querySelectorAll('#category-filters button').forEach(btn => {
-                        btn.className = 'px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors';
+                        btn.className = 'px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-500 text-xs font-semibold hover:text-primary hover:border-gray-300 transition-all duration-300';
                     });
-                    button.className = 'px-5 py-2 rounded-full bg-primary text-white text-sm font-medium';
-                    renderTemplates();
+                    button.className = 'px-5 py-2 rounded-full bg-primary text-white text-xs font-semibold shadow-md shadow-gray-900/10 transition-all duration-300';
+                    
+                    // 模板切换淡入
+                    const scrollContainer = document.getElementById('templates-scroll-container');
+                    scrollContainer.style.opacity = '0';
+                    scrollContainer.style.transform = 'translateY(6px)';
+                    setTimeout(() => {
+                        renderTemplates();
+                        scrollContainer.style.opacity = '1';
+                        scrollContainer.style.transform = 'translateY(0)';
+                    }, 200);
                 });
                 container.appendChild(button);
             });
         }
 
+        // 单行排列且在队列末尾放置客服引导卡片
         function renderTemplates() {
             const container = document.getElementById('templates-container');
             container.innerHTML = '';
             
-            const filteredTemplates = activeCategory === 'all' 
-                ? templatesData.templates 
-                : templatesData.templates.filter(t => t.category === activeCategory);
+            // 过滤：1. 只展示 visible !== false 的模版 2. 根据分类筛选 3. 根据 order 字段从小到大排序
+            const filteredTemplates = templatesData.templates
+                .filter(t => t.visible !== false)
+                .filter(t => activeCategory === 'all' || t.category === activeCategory)
+                .sort((a, b) => {
+                    const orderA = a.order !== undefined ? a.order : 999;
+                    const orderB = b.order !== undefined ? b.order : 999;
+                    return orderA - orderB;
+                });
             
-            // 分成2行
-            const firstRow = document.createElement('div');
-            firstRow.className = 'flex gap-8';
-            
-            const secondRow = document.createElement('div');
-            secondRow.className = 'flex gap-8';
+            // 单行 flex 容器
+            const flexRow = document.createElement('div');
+            flexRow.className = 'flex gap-6 items-stretch pb-4';
             
             filteredTemplates.forEach((template, index) => {
                 const templateCard = document.createElement('div');
-                templateCard.className = `group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col w-96 animate-fade-in animate-fade-in-delay-${(index % 4) + 1}`;
+                templateCard.className = `group bg-white rounded-2xl overflow-hidden glow-card flex flex-col w-80 shrink-0 reveal-element`;
                 templateCard.innerHTML = `
-                    <div class="relative h-52 overflow-hidden bg-gray-100">
-                        <img src="${template.image}" alt="${template.name}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                            <a href="${template.demoUrl}" target="_blank" class="bg-white text-primary px-4 py-2 rounded-full text-sm font-bold hover:scale-105 transition-transform">看演示</a>
+                    <div class="relative h-44 overflow-hidden bg-gray-50">
+                        <img src="${template.image}" alt="${template.name}" class="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                            <a href="${template.demoUrl}" target="_blank" class="bg-white/95 backdrop-blur text-primary px-5 py-2 rounded-full text-xs font-bold shadow-lg hover:scale-105 transition-transform duration-300">在线模版</a>
                         </div>
                     </div>
-                    <div class="p-5 flex-1 flex flex-col">
-                        <div class="flex gap-2 mb-2 flex-wrap">
-                            ${template.tags.map(tag => `<span class="text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-1 rounded">${tag}</span>`).join('')}
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex gap-1.5 mb-3 flex-wrap">
+                                ${template.tags.map(tag => `<span class="text-[10px] font-bold bg-gray-50 text-gray-500 border border-gray-100 px-2 py-0.5 rounded-full">${tag}</span>`).join('')}
+                            </div>
+                            <h3 class="text-base font-bold text-primary mb-1.5 group-hover:text-secondary transition-colors duration-300">${template.name}</h3>
+                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2">${template.description}</p>
                         </div>
-                        <h3 class="text-lg font-bold text-primary mb-2">${template.name}</h3>
-                        <p class="text-gray-500 text-sm flex-1 text-xs">${template.description}</p>
-                        <button class="mt-4 w-full text-center bg-gray-50 text-primary border border-gray-200 py-2.5 rounded-xl font-semibold hover:bg-primary hover:text-white transition-colors copy-template-btn" data-template-id="${template.id}" data-template-name="${template.name}">
-                            <i data-lucide="copy" class="w-4 h-4 inline-block mr-2"></i>
-                            复制模板ID
+                        <button class="mt-4 w-full flex items-center justify-center gap-1.5 bg-gray-50/50 hover:bg-primary hover:text-white text-primary border border-gray-100 py-2.5 rounded-xl text-xs font-semibold transition-all duration-300 copy-template-btn" data-template-id="${template.id}" data-template-name="${template.name}">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                            <span class="btn-text">复制模板 ID</span>
                         </button>
                     </div>
                 `;
                 
-                // 分到不同行
-                if (index % 2 === 0) {
-                    firstRow.appendChild(templateCard);
-                } else {
-                    secondRow.appendChild(templateCard);
-                }
-                
+                flexRow.appendChild(templateCard);
                 observer.observe(templateCard);
             });
             
-            // 添加联系客服卡片到最后一个位置
+            // 队列尾部的独立“联系客服获取更多”精致卡片
             const contactCard = document.createElement('div');
-            contactCard.className = `bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl overflow-hidden shadow-xl border border-indigo-300 flex flex-col w-96 animate-fade-in animate-fade-in-delay-4`;
+            contactCard.className = `bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl border border-indigo-300/30 flex flex-col w-80 shrink-0 justify-between p-6 text-white reveal-element`;
             contactCard.innerHTML = `
-                <div class="p-5 flex-1 flex flex-col items-center justify-center text-center">
-                    <i data-lucide="message-circle-heart" class="w-14 h-14 text-white mb-4"></i>
-                    <h3 class="text-lg font-bold text-white mb-2">更多模板</h3>
-                    <p class="text-indigo-100 text-sm mb-4">联系客服获取更多专属定制模板</p>
-                    <a href="#contact" class="w-full bg-white text-indigo-600 border border-white py-2.5 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
-                        联系客服
-                    </a>
+                <div class="flex-1 flex flex-col items-center justify-center text-center my-auto">
+                    <div class="p-3 bg-white/10 rounded-full mb-4 animate-pulse">
+                        <i data-lucide="message-circle-heart" class="w-7 h-7 text-white"></i>
+                    </div>
+                    <h3 class="text-base font-bold mb-1.5">想要更专属的设计？</h3>
+                    <p class="text-indigo-100 text-xs px-4 leading-relaxed">我们后台另存有数十款尚未公开发售的私藏高级模版，并提供深度个性化定制服务。</p>
                 </div>
+                <a href="#contact" class="w-full text-center bg-white text-secondary py-3 rounded-xl text-xs font-bold hover:bg-gray-50 transition-colors duration-300 shadow mt-6">
+                    更多模版联系客服
+                </a>
             `;
+            flexRow.appendChild(contactCard);
+            observer.observe(contactCard);
             
-            if (filteredTemplates.length % 2 === 0) {
-                secondRow.appendChild(contactCard);
-            } else {
-                firstRow.appendChild(contactCard);
-            }
-            
-            container.appendChild(firstRow);
-            container.appendChild(secondRow);
+            container.appendChild(flexRow);
             
             lucide.createIcons();
             
@@ -931,37 +900,99 @@
             });
         }
 
-        // 复制模板ID功能
+        // 初始化横向平滑控制器逻辑
+        function initHorizontalScrollControls() {
+            const container = document.getElementById('templates-scroll-container');
+            const leftBtn = document.getElementById('scroll-left-btn');
+            const rightBtn = document.getElementById('scroll-right-btn');
+            
+            if (!container || !leftBtn || !rightBtn) return;
+
+            leftBtn.addEventListener('click', () => {
+                container.scrollBy({ left: -360, behavior: 'smooth' });
+            });
+
+            rightBtn.addEventListener('click', () => {
+                container.scrollBy({ left: 360, behavior: 'smooth' });
+            });
+
+            const toggleButtonsVisibility = () => {
+                const scrollLeft = container.scrollLeft;
+                const maxScrollLeft = container.scrollWidth - container.clientWidth;
+                
+                leftBtn.style.opacity = scrollLeft <= 10 ? '0' : '1';
+                leftBtn.style.pointerEvents = scrollLeft <= 10 ? 'none' : 'auto';
+                
+                rightBtn.style.opacity = scrollLeft >= maxScrollLeft - 10 ? '0' : '1';
+                rightBtn.style.pointerEvents = scrollLeft >= maxScrollLeft - 10 ? 'none' : 'auto';
+            };
+
+            container.addEventListener('scroll', toggleButtonsVisibility);
+            window.addEventListener('resize', toggleButtonsVisibility);
+            setTimeout(toggleButtonsVisibility, 500);
+        }
+
+        // 复制逻辑
         async function copyTemplateId(e) {
-            const templateId = e.currentTarget.dataset.templateId;
-            const templateName = e.currentTarget.dataset.templateName;
-            const textToCopy = `${templateName}\n${templateId}`;
+            const btn = e.currentTarget;
+            const templateId = btn.dataset.templateId;
+            const templateName = btn.dataset.templateName;
+            const textToCopy = `我想选用这套模板：\n名称: ${templateName}\nID: ${templateId}`;
+            
             try {
                 await navigator.clipboard.writeText(textToCopy);
                 
-                const originalText = e.currentTarget.innerHTML;
-                e.currentTarget.innerHTML = '<i data-lucide="check" class="w-4 h-4 inline-block mr-2"></i>已复制！';
-                e.currentTarget.classList.remove('bg-gray-50', 'text-primary', 'border-gray-200');
-                e.currentTarget.classList.add('bg-green-500', 'text-white', 'border-green-500');
+                const originalTextContent = btn.querySelector('.btn-text').textContent;
+                const icon = btn.querySelector('svg');
                 
-                lucide.createIcons();
+                btn.querySelector('.btn-text').textContent = '已成功复制 ID';
+                btn.classList.remove('bg-gray-50/50', 'text-primary', 'border-gray-100');
+                btn.classList.add('bg-green-500', 'text-white', 'border-green-500');
+                
+                if (icon) {
+                    icon.setAttribute('data-lucide', 'check');
+                    lucide.createIcons();
+                }
                 
                 setTimeout(() => {
-                    e.currentTarget.innerHTML = originalText;
-                    e.currentTarget.classList.remove('bg-green-500', 'text-white', 'border-green-500');
-                    e.currentTarget.classList.add('bg-gray-50', 'text-primary', 'border-gray-200');
-                    lucide.createIcons();
+                    btn.querySelector('.btn-text').textContent = originalTextContent;
+                    btn.classList.remove('bg-green-500', 'text-white', 'border-green-500');
+                    btn.classList.add('bg-gray-50/50', 'text-primary', 'border-gray-100');
+                    if (icon) {
+                        icon.setAttribute('data-lucide', 'copy');
+                        lucide.createIcons();
+                    }
                 }, 2000);
             } catch (err) {
-                alert('复制失败，请手动复制:\n' + textToCopy);
+                alert('复制失败，您可以手动复制:\n' + textToCopy);
             }
         }
 
-        // 页面加载时加载模板
-        document.addEventListener('DOMContentLoaded', loadTemplates);
-
-        // 磁吸按钮效果
+        // 页面初始化
         document.addEventListener('DOMContentLoaded', () => {
+            loadTemplates();
+
+            // 3D 偏转反馈
+            const videoCard = document.querySelector('.interactive-video-card');
+            if (videoCard) {
+                videoCard.addEventListener('mousemove', (e) => {
+                    const rect = videoCard.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    const rX = -(y / rect.height) * 8; 
+                    const rY = (x / rect.width) * 8;
+                    
+                    videoCard.style.transform = `perspective(1000px) rotateX(${rX}deg) rotateY(${rY}deg) scale3d(1.01, 1.01, 1.01)`;
+                    videoCard.style.boxShadow = `0 30px 60px -15px rgba(79, 70, 229, 0.15)`;
+                });
+
+                videoCard.addEventListener('mouseleave', () => {
+                    videoCard.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    videoCard.style.boxShadow = ``;
+                });
+            }
+
+            // 磁吸按钮
             const magneticBtn = document.querySelector('.magnetic-btn');
             if (magneticBtn) {
                 magneticBtn.addEventListener('mousemove', (e) => {
@@ -970,14 +1001,16 @@
                     const y = e.clientY - rect.top;
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    const deltaX = (x - centerX) * 0.3;
-                    const deltaY = (y - centerY) * 0.3;
+                    const deltaX = (x - centerX) * 0.35; 
+                    const deltaY = (y - centerY) * 0.35;
                     
-                    magneticBtn.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(1.05)`;
+                    magneticBtn.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(1.02)`;
+                    magneticBtn.style.boxShadow = `0 25px 45px rgba(255, 36, 66, 0.22)`;
                 });
 
                 magneticBtn.addEventListener('mouseleave', () => {
-                    magneticBtn.style.transform = 'translate(0, 0) scale(1)';
+                    magneticBtn.style.transform = 'translate3d(0, 0, 0) scale(1)';
+                    magneticBtn.style.boxShadow = '';
                 });
             }
         });
