@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>程霖 博士 | 个人学术主页</title>
+    <style>
+        /* --- 顶尖莫兰迪学术配色系统 --- */
+        :root {
+            --bg-page: #F4F3EF;        /* 极低饱和度石膏纸张色 */
+            --bg-card: #FAF9F6;        /* 润白色（卡片及侧边栏底色） */
+            --primary: #2C3A47;        /* 莫兰迪矿黛蓝（主色，显深沉专业） */
+            --secondary: #8E7F70;      /* 莫兰迪冷赭色（副色，用于时间与机构） */
+            --accent: #6E7E70;         /* 莫兰迪鼠尾草绿（强调色，用于标签与边框） */
+            --text-main: #232B32;      /* 深砚灰（正文阅读，高易读性） */
+            --text-muted: #6C757D;     /* 雾霾灰（辅助信息） */
+            --border-color: #E6E4DD;   /* 极细沙色边框线 */
+            
+            --font-serif: "Georgia", "Noto Serif SC", "Playfair Display", serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* --- 基础与滚动行为 --- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.75;
+            letter-spacing: 0.02em;
+        }
+
+        /* 当弹窗开启时禁止底层 body 滚动 */
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- 顶部极细阅读进度条 --- */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background-color: var(--accent);
+            width: 0;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* --- 导航栏 --- */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(244, 243, 239, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 65px;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 4px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links a.active::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* --- 核心学术双栏布局 --- */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 48px;
+            padding-top: 40px;
+            align-items: start;
+        }
+
+        /* 左栏：固定展示的个人名片卡 */
+        aside.sidebar {
+            position: sticky;
+            top: 105px;
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            padding: 30px 24px;
+            box-shadow: 0 4px 20px rgba(44, 58, 71, 0.02);
+            text-align: center;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px auto;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            border: 3px solid #FFF;
+            box-shadow: 0 8px 20px rgba(44, 58, 71, 0.08);
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .profile-title {
+            font-size: 0.88rem;
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .sidebar-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: left;
+        }
+
+        .contact-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            transition: var(--transition);
+            padding: 6px;
+            border-radius: 6px;
+        }
+
+        .contact-row:hover {
+            background-color: rgba(110, 126, 112, 0.08);
+            color: var(--accent);
+        }
+
+        .contact-icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--primary);
+            flex-shrink: 0;
+        }
+
+        /* 右栏：滚动内容区 */
+        .content-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .section-block {
+            scroll-margin-top: 100px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(44, 58, 71, 0.02);
+            transition: var(--transition);
+        }
+
+        @media (min-width: 769px) {
+            .card:hover {
+                box-shadow: 0 12px 30px rgba(44, 58, 71, 0.04);
+                transform: translateY(-2px);
+            }
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            color: var(--primary);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 3px solid var(--accent);
+            padding-left: 14px;
+        }
+
+        /* --- 学术时间线 --- */
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+            border-left: 1.5px solid var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -26px;
+            top: 7px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            border: 2px solid var(--bg-card);
+        }
+
+        .timeline-time {
+            font-size: 0.85rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .timeline-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .timeline-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* --- 论文分类过滤器 --- */
+        .pub-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            background-color: rgba(142, 154, 142, 0.08);
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover {
+            background-color: rgba(142, 154, 142, 0.15);
+            color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent);
+            color: #FFF;
+        }
+
+        .filter-btn:active, .contact-row:active, .pub-item:active {
+            transform: scale(0.98);
+        }
+
+        /* --- 学术发表列表与悬停动效 --- */
+        .publications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .pub-item {
+            display: flex;
+            gap: 16px;
+            padding: 18px 12px;
+            border-radius: 10px;
+            border-bottom: 1px dashed var(--border-color);
+            cursor: pointer; /* 提示可点击 */
+            transition: var(--transition);
+        }
+
+        /* 悬停高亮暗示可以点击查看摘要 */
+        .pub-item:hover {
+            background-color: rgba(110, 126, 112, 0.05);
+            border-bottom-style: solid;
+            border-bottom-color: rgba(110, 126, 112, 0.3);
+        }
+
+        .pub-item.hidden {
+            display: none;
+        }
+
+        .pub-index {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .pub-body {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .pub-authors {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .pub-authors .self {
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: underline;
+            text-decoration-color: var(--accent);
+        }
+
+        .pub-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin: 4px 0;
+            color: var(--text-main);
+        }
+
+        .pub-venue {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .pub-action-hint {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: var(--secondary);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .pub-item:hover .pub-action-hint {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        /* --- 徽章标签 --- */
+        .badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .badge {
+            background-color: rgba(110, 126, 112, 0.08);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
+        /* --- 学术摘要弹窗样式 (Premium Modal) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(35, 43, 50, 0.5); /* 遮罩色 */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        /* 打开状态下的遮罩 */
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 680px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 36px;
+            box-shadow: 0 20px 50px rgba(44, 58, 71, 0.15);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* 打开状态下的容器向上平滑平移 */
+        .modal-overlay.open .modal-container {
+            transform: translateY(0);
+        }
+
+        /* 关闭按钮 */
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background-color: rgba(110, 126, 112, 0.1);
+            color: var(--primary);
+        }
+
+        /* 弹窗内容排版 */
+        .modal-venue {
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .modal-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            line-height: 1.4;
+            color: var(--primary);
+            margin-bottom: 12px;
+            padding-right: 20px; /* 避开关闭按钮 */
+        }
+
+        .modal-authors {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+        }
+
+        .modal-abstract-header {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .modal-abstract-body {
+            font-size: 0.92rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            text-align: justify;
+        }
+
+        /* --- 手机移动端自适应适配样式 --- */
+        @media (max-width: 768px) {
+            .nav-wrapper {
+                height: 55px;
+            }
+
+            .nav-links {
+                gap: 16px;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding-top: 24px;
+            }
+
+            aside.sidebar {
+                position: relative;
+                top: 0;
+                padding: 24px 16px;
+            }
+
+            .avatar-container {
+                width: 90px;
+                height: 90px;
+                margin-bottom: 15px;
+            }
+
+            .profile-name {
+                font-size: 1.35rem;
+            }
+
+            .sidebar-contacts {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .contact-row {
+                padding: 4px;
+                font-size: 0.8rem;
+            }
+
+            .card {
+                padding: 20px;
+                border-radius: 12px;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+                margin-bottom: 18px;
+            }
+
+            .pub-item {
+                gap: 12px;
+                padding: 12px 8px;
+            }
+
+            /* 弹窗手机端优化 */
+            .modal-container {
+                padding: 28px 20px;
+                max-height: 85vh;
+            }
+            .modal-close {
+                top: 12px;
+                right: 12px;
+            }
+            .modal-title {
+                font-size: 1.15rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar-contacts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部进度条 -->
+    <div id="progress-bar"></div>
+
+    <!-- 顶栏导航 -->
+    <header>
+        <div class="container nav-wrapper">
+            <a href="#" class="logo">Lin Chen</a>
+            <nav class="nav-links">
+                <a href="#about" class="active" data-section="about">关于</a>
+                <a href="#research" data-section="research">研究</a>
+                <a href="#publications" data-section="publications">成果</a>
+                <a href="#recruitment" data-section="recruitment">招生</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-layout">
+        
+        <!-- 左侧栏：常驻个人名片 -->
+        <aside class="sidebar">
+            <div class="avatar-container">
+                <svg class="avatar" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" fill="#8E7F70"/>
+                    <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Georgia" font-size="32" fill="#FAF9F6">LC</text>
+                </svg>
+            </div>
+            <h1 class="profile-name">程霖 博士</h1>
+            <p class="profile-title">副教授 · 博士生导师<br>智能计算与交叉生命科学</p>
+            
+            <div class="sidebar-contacts">
+                <a href="mailto:linchen@university.edu" class="contact-row">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span class="contact-text">linchen@univ.edu</span>
+                </a>
+                <a href="https://scholar.google.com" target="_blank" class="contact-row">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <span class="contact-text">Google Scholar</span>
+                </a>
+                <a href="https://github.com" target="_blank" class="contact-row">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                    <span class="contact-text">GitHub</span>
+                </a>
+                <div class="contact-row">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span class="contact-text">交叉科学楼402室</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧栏：纵向滚动内容 -->
+        <div class="content-flow">
+            
+            <!-- 1. 关于区块 -->
+            <section id="about" class="section-block">
+                <div class="card">
+                    <h2 class="section-title">教育与工作经历</h2>
+                    <p style="font-size: 0.95rem; margin-bottom: 24px; color: var(--text-main);">
+                        致力于将前沿深度学习方法应用于蛋白质结构预测与表观遗传学解析。目前于交叉科学研究院主持国家自然科学基金等多个重点研发课题，主要研究成果发表在 Nature 子刊及计算生物学核心期刊上。
+                    </p>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <p class="timeline-time">2023 - 至今</p>
+                            <p class="timeline-title">副教授，博导</p>
+                            <p class="timeline-subtitle">交叉科学研究院 · 智能计算研究中心</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <p class="timeline-time">2020 - 2023</p>
+                            <p class="timeline-title">博士后研究员</p>
+                            <p class="timeline-subtitle">斯坦福大学 · 计算机科学与系统生物学实验室</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <p class="timeline-time">2015 - 2020</p>
+                            <p class="timeline-title">理学博士</p>
+                            <p class="timeline-subtitle">清华大学 · 计算机科学与技术系</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. 学术研究区块 -->
+            <section id="research" class="section-block">
+                <div class="card">
+                    <h2 class="section-title">研究方向与项目</h2>
+                    <p style="margin-bottom: 20px; font-size: 0.95rem; color: var(--text-main);">
+                        本实验室旨在结合生成式人工智能（Generative AI）与高通量生物组学，解决宏观与微观大分子动力学的核心难题：
+                    </p>
+                    
+                    <h3 style="font-size: 1.05rem; margin-top: 15px; color: var(--primary);">· 蛋白质相互作用图谱预测</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px; padding-left: 10px;">
+                        研发基于生成式流匹配（Flow Matching）的高通量复合物空间构象预测算法，解决多聚体组装路径不确定的科学难题。
+                    </p>
+
+                    <h3 style="font-size: 1.05rem; margin-top: 15px; color: var(--primary);">· 单细胞多组学数据整合</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; padding-left: 10px;">
+                        结合非平衡态统计物理模型与大语言模型表征，探索单细胞转录组与空间表观遗传修饰的协同演化机制。
+                    </p>
+                    
+                    <div class="badge-group">
+                        <span class="badge">结构生物学</span>
+                        <span class="badge">生成式AI</span>
+                        <span class="badge">三维基因组学</span>
+                        <span class="badge">图神经网络</span>
+                    </div>
+
+                    <h3 style="font-size: 1.1rem; margin-top: 32px; margin-bottom: 16px; color: var(--primary);">在研项目</h3>
+                    <div class="timeline" style="border-left-color: rgba(110,126,112,0.3);">
+                        <div class="timeline-item">
+                            <div class="timeline-marker" style="background-color: var(--secondary)"></div>
+                            <p class="timeline-time">2024 - 2027</p>
+                            <p class="timeline-title">国家自然科学基金面上项目 (主持)</p>
+                            <p class="timeline-subtitle">基于多模态扩散模型的动态蛋白质复合物构象表征算法研究</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker" style="background-color: var(--secondary)"></div>
+                            <p class="timeline-time">2023 - 2025</p>
+                            <p class="timeline-title">科技创新2030“脑科学与类脑研究”青年科学家项目 (核心骨干)</p>
+                            <p class="timeline-subtitle">神经元网络表观基因组动态图谱重建</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. 学术成果区块 -->
+            <section id="publications" class="section-block">
+                <div class="card">
+                    <h2 class="section-title">论文成果</h2>
+                    
+                    <div class="pub-filters">
+                        <button class="filter-btn active" onclick="filterPublications('all')">All</button>
+                        <button class="filter-btn" onclick="filterPublications('journal')">Journals</button>
+                        <button class="filter-btn" onclick="filterPublications('conf')">Conferences</button>
+                    </div>
+                    
+                    <div class="publications-list">
+                        <!-- 论文 1 -->
+                        <!-- 通过 data- 属性将摘要内容嵌入到 HTML 中，供 JS 弹窗抓取 -->
+                        <div class="pub-item" data-type="journal" 
+                             data-abstract="De novo macromolecular complex structural refinement is a critical bottleneck in structural biology. In this paper, we present an end-to-end framework leveraging multi-modal flow matching models designed to predict complex macromolecular topologies without template structures. Our model generates candidate states with high conformational accuracy and outperforms baseline methodologies by integrating physical energy functions and co-evolutionary signals. We validate our approach on several standard benchmarks and demonstrate a significant reduction in computational overhead while maintaining atomic-level resolution accuracy. This system provides a new avenue for rapid structural profiling in drug discovery pipelines.">
+                            <div class="pub-index">01</div>
+                            <div class="pub-body">
+                                <p class="pub-authors">
+                                    <span class="self">Chen, L.</span>, Wang, S.*, &amp; Adams, J.#
+                                </p>
+                                <p class="pub-title">Diffusion models for de novo macromolecular complex structural refinement.</p>
+                                <p class="pub-venue">Nature Machine Intelligence, 2024, 6(3), 214-225.</p>
+                                <div class="badge-group">
+                                    <span class="badge">IF: 18.8</span>
+                                    <span class="badge">Selected Cover</span>
+                                </div>
+                                <span class="pub-action-hint">查看摘要 / View Abstract →</span>
+                            </div>
+                        </div>
+
+                        <!-- 论文 2 -->
+                        <div class="pub-item" data-type="conf"
+                             data-abstract="Single-cell spatial genomics provides a revolutionary window into transcriptional regulation and cell identity. However, interpreting sparse chromatin accessibility data within their spatial tissue contexts remains highly challenging. Here, we present a novel graph attention architecture designed specifically for non-Euclidean genomic space representations. By aggregating local signaling domains with spatial coordinate networks, our model successfully imputes missing epigenetic signals and denoises structural chromatin peaks. The experimental results across human cortical datasets highlight superior performance in identifying subtle cellular subpopulations and state-specific regulatory elements, achieving the Best Paper nomination at ISMB.">
+                            <div class="pub-index">02</div>
+                            <div class="pub-body">
+                                <p class="pub-authors">
+                                    Zhang, H., <span class="self">Chen, L.</span>, &amp; Liu, X.#
+                                </p>
+                                <p class="pub-title">Graph attention networks decode single-cell spatial chromatin accessibility.</p>
+                                <p class="pub-venue">Bioinformatics / ISMB 2022 Oral Presentation.</p>
+                                <div class="badge-group">
+                                    <span class="badge">Best Paper Candidate</span>
+                                </div>
+                                <span class="pub-action-hint">查看摘要 / View Abstract →</span>
+                            </div>
+                        </div>
+
+                        <!-- 论文 3 -->
+                        <div class="pub-item" data-type="journal"
+                             data-abstract="Reconstruction of 3D chromosomal architecture from chromosome conformation capture (Hi-C) contact maps is fundamental to understanding transcriptional regulation and spatial genome organization. We formulate the reconstruction problem as a deep neural network-driven representation task. By enforcing structural rigidity priors and smooth spatial transitions within a continuous latent space representation, our method maps high-noise contact profiles into coordinates with high reproducibility. Extensive tests against imaging and biophysical simulation benchmarks demonstrate that our method produces stable and biologically plausible 3D DNA folds, offering a robust and scalable computational toolkit for computational biology researchers.">
+                            <div class="pub-index">03</div>
+                            <div class="pub-body">
+                                <p class="pub-authors">
+                                    <span class="self">Chen, L.</span>, &amp; Zhao, Q.#
+                                </p>
+                                <p class="pub-title">Deep representation learning of 3D genome architectures from Hi-C contact maps.</p>
+                                <p class="pub-venue">IEEE Transactions on Pattern Analysis and Machine Intelligence, 2021, 43(8), 2680-2694.</p>
+                                <div class="badge-group">
+                                    <span class="badge">IEEE TPAMI</span>
+                                </div>
+                                <span class="pub-action-hint">查看摘要 / View Abstract →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. 招生招募区块 -->
+            <section id="recruitment" class="section-block">
+                <div class="card">
+                    <h2 class="section-title">招生与学术合作</h2>
+                    <p style="font-size: 0.95rem; margin-bottom: 16px; color: var(--text-main);">
+                        课题组每年招收 <strong>1-2名博士研究生、2名硕士研究生</strong>，并长期招聘生物信息、深度学习领域的 <strong>博士后（年薪优厚，可议）</strong>。
+                    </p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                        我们希望候选人具备扎实的编程基础（Python/PyTorch）、良好的数学或生物学背景。欢迎对人工智能交叉生命科学感兴趣的同学发送简历、成绩单及代表作至我的邮箱。
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- --- 学术摘要弹出窗口 (Modal Backdrop & Box) --- -->
+    <div id="abstract-modal" class="modal-overlay">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <p id="modal-venue" class="modal-venue">Nature Machine Intelligence</p>
+            <h3 id="modal-title" class="modal-title">Diffusion models for de novo macromolecular complex structural refinement.</h3>
+            <p id="modal-authors" class="modal-authors">Chen, L., Wang, S.*, &amp; Adams, J.#</p>
+            <div class="modal-abstract-header">Abstract / 摘要</div>
+            <p id="modal-abstract-body" class="modal-abstract-body">
+                De novo macromolecular complex structural refinement is...
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // --- 核心逻辑1：顶栏滚动进度条 ---
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        // --- 核心逻辑2：Scroll-Spy (滚动双向联动) ---
+        const sections = document.querySelectorAll('.section-block');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        const scrollSpy = () => {
+            let currentActiveSectionId = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 120) {
+                    currentActiveSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === currentActiveSectionId) {
+                    link.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', scrollSpy);
+        window.addEventListener('load', scrollSpy);
+
+        // --- 核心逻辑3：论文轻量级无感过滤 ---
+        function filterPublications(type) {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const pubItems = document.querySelectorAll('.pub-item');
+            pubItems.forEach(item => {
+                item.style.opacity = '0';
+                setTimeout(() => {
+                    if (type === 'all' || item.getAttribute('data-type') === type) {
+                        item.classList.remove('hidden');
+                        setTimeout(() => item.style.opacity = '1', 50);
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                }, 150);
+            });
+        }
+
+        // --- 核心逻辑4：摘要弹窗管理器 (Modal Controller) ---
+        const modal = document.getElementById('abstract-modal');
+        const modalVenue = document.getElementById('modal-venue');
+        const modalTitle = document.getElementById('modal-title');
+        const modalAuthors = document.getElementById('modal-authors');
+        const modalAbstractBody = document.getElementById('modal-abstract-body');
+
+        // 绑定论文列表点击事件
+        document.querySelectorAll('.pub-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // 提取学术卡片内部元素的值
+                const title = this.querySelector('.pub-title').innerText;
+                const authors = this.querySelector('.pub-authors').innerHTML;
+                const venue = this.querySelector('.pub-venue').innerText;
+                const abstract = this.getAttribute('data-abstract');
+
+                // 填充弹窗
+                modalTitle.innerText = title;
+                modalAuthors.innerHTML = authors;
+                modalVenue.innerText = venue;
+                modalAbstractBody.innerText = abstract;
+
+                // 打开弹窗并限制背景 body 滚动
+                modal.classList.add('open');
+                document.body.classList.add('modal-open');
+            });
+        });
+
+        // 关闭弹窗函数
+        function closeModal() {
+            modal.classList.remove('open');
+            document.body.classList.remove('modal-open');
+        }
+
+        // 交互加强：点击背景暗化区、按下 ESC 键均可关闭弹窗
+        modal.addEventListener('click', function(e) {
+            // 确保点击发生在 Overlay 本身，而不是它内部的 Container
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('open')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

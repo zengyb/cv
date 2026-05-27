@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>林深 | Senior Interaction Designer Portfolio</title>
+    <!-- 引入Google字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. 莫兰迪配色体系定义 */
+        :root {
+            --bg-color: #F3EFE9;        /* 温暖浅沙灰 */
+            --card-bg: #FAF8F5;         /* 柔和陶瓷白 */
+            --text-main: #3C403E;       /* 烟灰黑 */
+            --text-sub: #7A807D;        /* 浅石灰 */
+            --accent-sage: #8FA89B;     /* 鼠尾草绿 */
+            --accent-rose: #C5A89E;     /* 浅暮粉/浅干玫瑰 */
+            --accent-blue: #97A7B3;     /* 雾霾蓝 */
+            --border-color: #E6E1D8;    /* 框线色 */
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-luxury: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* 2. 基础重置 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* 3. 全局布局样式 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 4. 磁吸光标效果 */
+        #custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--accent-rose);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            display: none;
+        }
+
+        @media (pointer: fine) {
+            #custom-cursor {
+                display: block;
+            }
+        }
+
+        /* 5. 导航栏 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 20px 0;
+            background: rgba(243, 239, 233, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(230, 225, 216, 0.5);
+            transition: var(--transition-smooth);
+        }
+
+        header.scrolled {
+            padding: 12px 0;
+            background: rgba(243, 239, 233, 0.9);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* 6. Hero 模块 */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            position: relative;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-text h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .hero-text h1 span {
+            color: var(--accent-rose);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-sub);
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* 莫兰迪抽象互动区域 */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 440px;
+        }
+
+        /* 背景液态流动动效 */
+        .abstract-shape {
+            position: absolute;
+            mix-blend-mode: multiply;
+            opacity: 0.65;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, border-radius;
+        }
+
+        .shape-1 {
+            width: 260px;
+            height: 260px;
+            background-color: var(--accent-sage);
+            top: 5%;
+            left: 5%;
+            border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+            animation: liquid-morph-1 12s infinite alternate ease-in-out;
+        }
+
+        .shape-2 {
+            width: 220px;
+            height: 220px;
+            background-color: var(--accent-rose);
+            bottom: 10%;
+            right: 5%;
+            border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%;
+            animation: liquid-morph-2 15s infinite alternate ease-in-out;
+        }
+
+        .shape-3 {
+            width: 180px;
+            height: 180px;
+            background-color: var(--accent-blue);
+            bottom: 20%;
+            left: 15%;
+            border-radius: 50% 50% 30% 70% / 50% 60% 40% 50%;
+            animation: liquid-morph-3 10s infinite alternate ease-in-out;
+        }
+
+        /* 半透明头像框体 (带有悬浮极细描边) */
+        .hero-avatar-frame {
+            position: relative;
+            width: 280px;
+            height: 380px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(250, 248, 245, 0.35); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 120px 120px 30px 30px;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 25px 35px 25px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.03), inset 0 0 20px rgba(255, 255, 255, 0.2);
+            transition: var(--transition-luxury);
+        }
+
+        /* 鼠标悬浮时一圈精密细线的生成动效 */
+        .hero-avatar-frame::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 1px solid var(--accent-rose);
+            border-radius: 122px 122px 32px 32px;
+            opacity: 0;
+            transform: scale(0.98);
+            transition: var(--transition-luxury);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .hero-avatar-frame:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0); 
+            box-shadow: 0 35px 70px rgba(143, 168, 155, 0.1), inset 0 0 30px rgba(255, 255, 255, 0.4);
+        }
+
+        .hero-avatar-frame:hover::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* 头像容器 */
+        .avatar-container {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            position: relative;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            transition: var(--transition-smooth);
+        }
+
+        .avatar-container:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        /* 渲染为黑白高阶质感头像 */
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(100%) contrast(1.15) brightness(0.95); 
+            background-color: var(--accent-sage);
+        }
+
+        .hero-avatar-info {
+            text-align: center;
+        }
+
+        .hero-avatar-info h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-main);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .hero-avatar-info p {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* 磁吸按钮 */
+        .magnetic-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 35px;
+            background-color: var(--text-main);
+            color: var(--card-bg);
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 10px 25px rgba(60, 64, 62, 0.15);
+        }
+
+        .magnetic-btn:hover {
+            background-color: var(--accent-rose);
+        }
+
+        /* 7. 作品展示区域 */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-rose);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 120px;
+        }
+
+        .portfolio-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .portfolio-item:nth-child(even) {
+            direction: rtl;
+        }
+
+        .portfolio-item:nth-child(even) .portfolio-info,
+        .portfolio-item:nth-child(even) .mockup-wrapper {
+            direction: ltr;
+        }
+
+        .portfolio-info {
+            max-width: 480px;
+        }
+
+        .project-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-sage);
+            margin-bottom: 15px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .portfolio-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .portfolio-info p {
+            color: var(--text-sub);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* 8. 高保真模型展示区 */
+        .mockup-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* iOS 手机外壳高保真 */
+        .phone-mockup {
+            width: 280px;
+            height: 570px;
+            border: 11px solid #333635;
+            border-radius: 42px;
+            background: #fff;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .phone-mockup:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.15);
+        }
+
+        .phone-island {
+            width: 90px;
+            height: 25px;
+            background: #333635;
+            border-radius: 15px;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .phone-screen {
+            height: 100%;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 45px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            user-select: none;
+        }
+
+        /* 音乐交互原型演示 */
+        .music-app {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .music-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+        }
+
+        .album-cover-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #EAE6DF;
+            margin: 15px 0;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        .album-cover {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent-rose), var(--accent-blue));
+            border-radius: 15px;
+            transition: transform 0.5s ease;
+        }
+
+        .playing .album-cover {
+            animation: spin 12s linear infinite;
+        }
+
+        .music-info {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .music-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .music-artist {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 3px;
+            background: var(--border-color);
+            border-radius: 2px;
+            position: relative;
+            margin: 15px 0;
+            cursor: pointer;
+        }
+
+        .progress-fill {
+            width: 30%;
+            height: 100%;
+            background: var(--accent-sage);
+            border-radius: 2px;
+            transition: width 0.1s linear;
+        }
+
+        .playing .progress-fill {
+            animation: fill-up 8s linear infinite;
+        }
+
+        .music-controls {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+        }
+
+        .control-btn.play-btn {
+            background: var(--accent-rose);
+            color: white;
+            box-shadow: 0 5px 15px rgba(197, 168, 158, 0.4);
+        }
+
+        .control-btn.play-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Web浏览器高保真外壳 */
+        .browser-mockup {
+            width: 100%;
+            max-width: 500px;
+            height: 340px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.06);
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .browser-mockup:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.1);
+        }
+
+        .browser-header {
+            height: 30px;
+            background: #EAE6DF;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-rose);
+        }
+        .dot:nth-child(2) { background: var(--accent-sage); }
+        .dot:nth-child(3) { background: var(--accent-blue); }
+
+        .browser-screen {
+            height: calc(100% - 30px);
+            overflow-y: scroll;
+            background: #FAF8F5;
+            position: relative;
+        }
+
+        .browser-screen::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 模拟精美B端界面 */
+        .mock-dashboard {
+            padding: 20px;
+        }
+
+        .dash-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0,0,0,0.02);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fade-slide-up 0.8s forwards;
+        }
+
+        .dash-card:nth-child(2) { animation-delay: 0.2s; }
+        .dash-card:nth-child(3) { animation-delay: 0.4s; }
+
+        .dash-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dash-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+        }
+
+        .dash-lines {
+            flex: 1;
+        }
+
+        .dash-line-long {
+            height: 8px;
+            background: #E6E1D8;
+            border-radius: 4px;
+            width: 70%;
+            margin-bottom: 6px;
+        }
+
+        .dash-line-short {
+            height: 6px;
+            background: #EBE6DF;
+            border-radius: 3px;
+            width: 40%;
+        }
+
+        /* 9. 设计方法论区 (全新重塑：方向感知多层级视差飘移系统) */
+        .methodology {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 选项卡导航 */
+        .method-tabs {
+            display: inline-flex;
+            position: relative;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+            padding-bottom: 5px;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1rem;
+            color: var(--text-sub);
+            cursor: pointer;
+            position: relative;
+            white-space: nowrap;
+            transition: var(--transition-smooth);
+            z-index: 2;
+        }
+
+        .tab-btn.active {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* iOS 滑动指示条 */
+        .tab-indicator {
+            position: absolute;
+            bottom: 3px;
+            left: 0;
+            height: 2px;
+            background-color: var(--text-main);
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1), width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1;
+        }
+
+        /* 叠层视口 */
+        .tab-content-wrapper {
+            position: relative;
+            display: grid;
+            width: 100%;
+            min-height: 280px; /* 锁死高度，防止切换抖动 */
+        }
+
+        /* 核心：叠层重合，依靠物理类进行视差滑动 */
+        .tab-content {
+            grid-area: 1 / 1; /* 重叠在第一行第一列 */
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity;
+        }
+
+        /* 内部两个元素：文字区和卡片区，拥有不同的位移速度与延迟，形成视差浮动感 */
+        .tab-content-text {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .schematic-box {
+            opacity: 0;
+            transform: translateX(50px); /* 移动更长，形成视差浮动 */
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.01);
+            /* 细微的异步触发延迟 */
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition-delay: 0.05s; 
+            will-change: transform, opacity;
+        }
+
+        /* Active：滑入原点落位 */
+        .tab-content.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 5;
+        }
+        .tab-content.active .tab-content-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .tab-content.active .schematic-box {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* --- 动态注入的方向感知平移动效 --- */
+        
+        /* 1. 向右点击切入新卡片 (从右往左浮动) */
+        .tab-content.enter-right .tab-content-text {
+            transform: translateX(30px);
+            opacity: 0;
+        }
+        .tab-content.enter-right .schematic-box {
+            transform: translateX(50px);
+            opacity: 0;
+        }
+
+        /* 2. 向左点击切入新卡片 (从左往右浮动) */
+        .tab-content.enter-left .tab-content-text {
+            transform: translateX(-30px);
+            opacity: 0;
+        }
+        .tab-content.enter-left .schematic-box {
+            transform: translateX(-50px);
+            opacity: 0;
+        }
+
+        /* 3. 往左滑出老卡片 */
+        .tab-content.exit-left {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .tab-content.exit-left .tab-content-text {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tab-content.exit-left .schematic-box {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* 4. 往右滑出老卡片 */
+        .tab-content.exit-right {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .tab-content.exit-right .tab-content-text {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tab-content.exit-right .schematic-box {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* 原型示意图样式 */
+        .schematic-box:hover {
+            border-color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.02);
+        }
+
+        .schematic-svg {
+            width: 100%;
+            max-width: 220px;
+            height: 100px;
+            margin-bottom: 15px;
+        }
+
+        .schematic-box span {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* 概念图形波动环 */
+        .pulse-ring {
+            transform-origin: center;
+            animation: pulse-zoom 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse-zoom {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 0.2; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+
+        /* 网格骨架 */
+        .wireframe-grid {
+            width: 180px;
+            height: 100px;
+            border: 1px dashed var(--accent-rose);
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .wf-header {
+            height: 14px;
+            background: rgba(197, 168, 158, 0.2);
+            border-radius: 4px;
+        }
+
+        .wf-body {
+            display: flex;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .wf-col {
+            flex: 1;
+            background: rgba(197, 168, 158, 0.1);
+            border-radius: 4px;
+            border: 1px dashed rgba(197, 168, 158, 0.4);
+            animation: wf-shimmer 2s infinite ease-in-out;
+        }
+        .wf-col:nth-child(2) { animation-delay: 1s; }
+
+        @keyframes wf-shimmer {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.9; }
+            100% { opacity: 0.4; }
+        }
+
+        /* 10. 页脚与联系模块 */
+        footer {
+            padding: 80px 0 40px 0;
+            text-align: center;
+        }
+
+        .contact-box {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .contact-box h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-box p {
+            color: var(--text-sub);
+            margin-bottom: 35px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .social-links a {
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+        }
+
+        .social-links a:hover {
+            color: var(--accent-rose);
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        /* 11. 关键帧液态变形 */
+        @keyframes liquid-morph-1 {
+            0% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; transform: translateY(0) rotate(0deg); }
+            50% { border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%; transform: translateY(-10px) rotate(5deg); }
+            100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; transform: translateY(0) rotate(0deg); }
+        }
+
+        @keyframes liquid-morph-2 {
+            0% { border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%; transform: translateY(0) rotate(0deg); }
+            50% { border-radius: 40% 60% 30% 70% / 40% 50% 50% 60%; transform: translateY(12px) rotate(-8deg); }
+            100% { border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%; transform: translateY(0) rotate(0deg); }
+        }
+
+        @keyframes liquid-morph-3 {
+            0% { border-radius: 50% 50% 30% 70% / 50% 60% 40% 50%; transform: scale(1); }
+            50% { border-radius: 35% 65% 65% 35% / 60% 35% 65% 40%; transform: scale(1.08); }
+            100% { border-radius: 50% 50% 30% 70% / 50% 60% 40% 50%; transform: scale(1); }
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes fill-up { 0% { width: 30%; } 100% { width: 100%; } }
+        @keyframes fade-slide-up { to { transform: translateY(0); opacity: 1; } }
+
+        /* 滚动进入动画 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 12. 移动端自适应 */
+        @media (max-width: 768px) {
+            html { font-size: 14px; }
+            .container { width: 88%; }
+            header { padding: 15px 0; }
+            .nav-links { display: none; }
+            .hero { padding-top: 80px; }
+            .hero-grid { grid-template-columns: 1fr; gap: 50px; text-align: center; }
+            .hero-visual { height: auto; order: -1; }
+            .hero-avatar-frame { width: 240px; height: 330px; padding: 30px 20px 25px 20px; }
+            .avatar-container { width: 120px; height: 120px; }
+            .portfolio-grid { gap: 60px; }
+            .portfolio-item { grid-template-columns: 1fr; gap: 30px; }
+            .portfolio-item:nth-child(even) { direction: ltr; }
+            .mockup-wrapper { order: -1; width: 100%; }
+            .phone-mockup { width: 240px; height: 490px; border-width: 8px; border-radius: 34px; }
+            .phone-island { width: 75px; height: 20px; }
+            .browser-mockup { width: 100%; height: 240px; }
+            
+            /* 方法论重叠网格自适应 */
+            .tab-content { grid-template-columns: 1fr; gap: 30px; }
+            .tab-content-wrapper { min-height: 480px; } /* 移动端双列变单列，增加垂直安全高度 */
+            .schematic-box { min-height: 180px; }
+            .contact-box { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 磁吸光标 -->
+    <div id="custom-cursor"></div>
+
+    <!-- 导航栏 -->
+    <header id="header">
+        <div class="container nav-wrapper">
+            <a href="#" class="logo">L.SHEN</a>
+            <ul class="nav-links">
+                <li><a href="#projects">精选作品</a></li>
+                <li><a href="#about">设计方法论</a></li>
+                <li><a href="#contact">联系我</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero 模块 -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <h1>Crafting <span>Digital</span> Experiences.</h1>
+                <p class="hero-subtitle">我是林深，一名交互设计师。我热衷于在严谨的代码逻辑与细腻的视觉美学之间架起桥梁，为移动端与Web端注入触手可及的生命力。</p>
+                <a href="#projects" class="magnetic-btn" id="hero-btn">精选作品 ↓</a>
+            </div>
+            <div class="hero-visual" id="hero-visual-area">
+                <!-- 抽象莫兰迪背景液态色块 -->
+                <div class="abstract-shape shape-1"></div>
+                <div class="abstract-shape shape-2"></div>
+                <div class="abstract-shape shape-3"></div>
+                
+                <!-- 精细悬浮框半透明卡片 -->
+                <div class="hero-avatar-frame">
+                    <div class="avatar-container">
+                        <!-- 黑白年轻男性头像（Unsplash艺术肖像，已应用灰度校正滤镜） -->
+                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&h=300&q=80" alt="林深" class="avatar-img">
+                    </div>
+                    <div class="hero-avatar-info">
+                        <h3>林深</h3>
+                        <p>INTERACTION DESIGNER</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精选作品区 -->
+    <section class="section container" id="projects">
+        <h2 class="section-title reveal">精选交互作品</h2>
+        <div class="portfolio-grid">
+            
+            <!-- 案例一：手机端交互 -->
+            <div class="portfolio-item reveal">
+                <div class="portfolio-info">
+                    <span class="project-tag">iOS Mobile App</span>
+                    <h3>Vibe - 沉浸式律动音乐应用</h3>
+                    <p>“Vibe” 是一项致力于重谱数字音乐交互的产品方案。结合重力反馈与微交互动效，创造出跟随音乐旋律而呼吸的感官共鸣。点击右侧手机模型中的 播放 (▶) 按钮，可体验微动效演示。</p>
+                </div>
+                <div class="mockup-wrapper">
+                    <div class="phone-mockup" id="music-device">
+                        <div class="phone-island"></div>
+                        <div class="phone-screen">
+                            <div class="music-app">
+                                <div class="music-header">
+                                    <span>Vibe Player</span>
+                                    <span>9:41</span>
+                                </div>
+                                <div class="album-cover-wrapper">
+                                    <div class="album-cover">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FAF8F5" stroke-width="1.5">
+                                            <circle cx="12" cy="12" r="9"/>
+                                            <circle cx="12" cy="12" r="3"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="music-info">
+                                    <div class="music-title">Autumn Breeze</div>
+                                    <div class="music-artist">Morandi Ensemble</div>
+                                </div>
+                                <div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"></div>
+                                    </div>
+                                    <div class="music-controls">
+                                        <button class="control-btn">⏮</button>
+                                        <button class="control-btn play-btn" id="music-play-trigger">▶</button>
+                                        <button class="control-btn">⏭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 案例二：Web端交互 -->
+            <div class="portfolio-item reveal">
+                <div class="portfolio-info">
+                    <span class="project-tag">SaaS / Web Interface</span>
+                    <h3>Muse - 极简策展人工作台</h3>
+                    <p>针对独立策展人和艺术家设计的无边框式网页画布，支持丝滑的文件拖拽、多维看板切换和流畅的排版栅格动效。网页高保真模拟支持平滑的组件加载体验。</p>
+                </div>
+                <div class="mockup-wrapper">
+                    <div class="browser-mockup">
+                        <div class="browser-header">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                        <div class="browser-screen">
+                            <div class="mock-dashboard">
+                                <div class="dash-card">
+                                    <div class="dash-row">
+                                        <div class="dash-avatar" style="background-color: var(--accent-sage);"></div>
+                                        <div class="dash-lines">
+                                            <div class="dash-line-long"></div>
+                                            <div class="dash-line-short"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="dash-row">
+                                        <div class="dash-avatar" style="background-color: var(--accent-rose);"></div>
+                                        <div class="dash-lines">
+                                            <div class="dash-line-long" style="width: 85%;"></div>
+                                            <div class="dash-line-short"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-card">
+                                    <div class="dash-row">
+                                        <div class="dash-avatar" style="background-color: var(--accent-blue);"></div>
+                                        <div class="dash-lines">
+                                            <div class="dash-line-long" style="width: 60%;"></div>
+                                            <div class="dash-line-short"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 设计方法论区 (全新重塑：多层级视差飘移系统) -->
+    <section class="section methodology" id="about">
+        <div class="container">
+            <h2 class="section-title reveal">设计方法论</h2>
+            
+            <!-- 选项卡导航 -->
+            <div class="method-tabs reveal">
+                <button class="tab-btn active" data-index="0">01/ 用户探究</button>
+                <button class="tab-btn" data-index="1">02/ 低保真推演</button>
+                <button class="tab-btn" data-index="2">03/ 微动效设计</button>
+                <div class="tab-indicator" id="tab-line"></div>
+            </div>
+
+            <!-- 叠层视窗包装器 -->
+            <div class="tab-content-wrapper reveal">
+                
+                <!-- Tab Content 1 (默认选中) -->
+                <div class="tab-content active" id="tab-research">
+                    <div class="tab-content-text">
+                        <h4>共情理解，定义核心价值。</h4>
+                        <p>我认为交互的核心不是炫技，而是对用户习惯的温柔体贴。在项目前期，通过定性访谈和痛点测图，把繁复的数据抽象为简洁的卡片模型，挖掘用户真实的底层动力。</p>
+                    </div>
+                    <div class="schematic-box">
+                        <svg viewBox="0 0 200 100" fill="none" class="schematic-svg">
+                            <path d="M10 80 C 40 10, 60 10, 100 50 C 130 80, 160 80, 190 20" stroke="var(--accent-sage)" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="100" cy="50" r="4" fill="var(--accent-sage)" />
+                            <circle cx="100" cy="50" r="8" stroke="var(--accent-sage)" stroke-width="1" class="pulse-ring"/>
+                        </svg>
+                        <span>Empathy & Mind Map</span>
+                    </div>
+                </div>
+
+                <!-- Tab Content 2 -->
+                <div class="tab-content" id="tab-wireframe">
+                    <div class="tab-content-text">
+                        <h4>严谨的骨架，支撑畅快的旅程。</h4>
+                        <p>低保真原型是不可逾越的基础。在这个阶段，我会聚焦于信息层级的清晰呈现、极易触达的操作热区（Fitts's Law 费茨法则运用）以及多设备流式自适应规则的配置。</p>
+                    </div>
+                    <div class="schematic-box">
+                        <div class="wireframe-grid">
+                            <div class="wf-header"></div>
+                            <div class="wf-body">
+                                <div class="wf-col"></div>
+                                <div class="wf-col"></div>
+                            </div>
+                        </div>
+                        <span>Wireframing & Flowcharts</span>
+                    </div>
+                </div>
+
+                <!-- Tab Content 3 -->
+                <div class="tab-content" id="tab-interact">
+                    <div class="tab-content-text">
+                        <h4>微动效：赋予静态界面生命力。</h4>
+                        <p>当手势滑过，卡片应具有自然的物理阻尼。所有的转场动画都应符合惯性物理法则。我致力于运用合理的贝塞尔曲线和手势反馈，让界面更加善解人意。</p>
+                    </div>
+                    <div class="schematic-box">
+                        <svg viewBox="0 0 200 100" fill="none" class="schematic-svg">
+                            <path d="M20 80 C 120 80, 80 20, 180 20" stroke="var(--accent-blue)" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="20" y1="80" x2="180" y2="80" stroke="var(--border-color)" stroke-dasharray="2 2"/>
+                            <circle cx="180" cy="20" r="4" fill="var(--accent-blue)"/>
+                        </svg>
+                        <span>Transitions & Easings</span>
+                    </div>
+                </div>
+
+            </div> <!-- End of Wrapper -->
+
+        </div>
+    </section>
+
+    <!-- 页脚与联系 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="contact-box reveal">
+                <h3>一起探讨下一个精彩设计</h3>
+                <p>无论是一个创新的移动端构想，还是复杂的B端系统流程，我都期待您的来信。</p>
+                <a href="mailto:hello@example.com" class="magnetic-btn">联系我 (hello@example.com)</a>
+                
+                <div class="social-links">
+                    <a href="#">Dribbble</a>
+                    <a href="#">Behance</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">GitHub</a>
+                </div>
+            </div>
+            
+            <p class="copyright">&copy; 2026 L.SHEN. Built with passion & minimal Morandi Aesthetic.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript 交互 -->
+    <script>
+        // 1. 磁吸光标效果
+        const cursor = document.getElementById('custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            if (cursor) {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }
+        });
+
+        const hoverables = document.querySelectorAll('a, button, .tab-btn, .phone-mockup, .browser-mockup, .avatar-container');
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.width = '40px';
+                cursor.style.height = '40px';
+                cursor.style.backgroundColor = 'rgba(197, 168, 158, 0.15)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.width = '20px';
+                cursor.style.height = '20px';
+                cursor.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // 2. 桌面端首屏背景液态色块鼠标悬停视差 (Parallax)
+        const visualArea = document.getElementById('hero-visual-area');
+        const shapes = document.querySelectorAll('.abstract-shape');
+
+        if (visualArea && window.innerWidth > 768) {
+            visualArea.addEventListener('mousemove', (e) => {
+                const rect = visualArea.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                shapes.forEach((shape, index) => {
+                    const factor = (index + 1) * 0.08;
+                    shape.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+                });
+            });
+
+            visualArea.addEventListener('mouseleave', () => {
+                shapes.forEach(shape => {
+                    shape.style.transform = 'translate(0px, 0px)';
+                });
+            });
+        }
+
+        // 3. 导航栏滑动效果
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 4. 音乐播放模拟器
+        const playBtn = document.getElementById('music-play-trigger');
+        const musicDevice = document.getElementById('music-device');
+
+        if (playBtn && musicDevice) {
+            playBtn.addEventListener('click', () => {
+                musicDevice.classList.toggle('playing');
+                if (musicDevice.classList.contains('playing')) {
+                    playBtn.textContent = '⏸';
+                } else {
+                    playBtn.textContent = '▶';
+                }
+            });
+        }
+
+        // 5. 设计方法论：方向感知多层级视差飘移切换逻辑
+        const tabLine = document.getElementById('tab-line');
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        let currentIndex = 0; // 全局索引追踪器
+
+        // 下划指示条对齐
+        function alignIndicator(activeBtn) {
+            if (tabLine && activeBtn) {
+                tabLine.style.width = `${activeBtn.offsetWidth}px`;
+                tabLine.style.left = `${activeBtn.offsetLeft}px`;
+            }
+        }
+
+        // 核心切换引擎 (视差飘移调度)
+        function switchTab(nextIndex) {
+            if (nextIndex === currentIndex) return;
+
+            const direction = nextIndex > currentIndex ? 'right' : 'left';
+            const currentSlide = tabContents[currentIndex];
+            const nextSlide = tabContents[nextIndex];
+
+            // 1. 处理老卡片的优雅淡出 (带方向感知)
+            currentSlide.classList.remove('active', 'enter-left', 'enter-right');
+            if (direction === 'right') {
+                currentSlide.classList.add('exit-left'); // 往左退出
+            } else {
+                currentSlide.classList.add('exit-right'); // 往右退出
+            }
+
+            // 清理上一张卡片的过场状态
+            const tempCurrent = currentSlide;
+            setTimeout(() => {
+                tempCurrent.classList.remove('exit-left', 'exit-right');
+            }, 600);
+
+            // 2. 准备并渲染新卡片
+            nextSlide.classList.remove('active', 'exit-left', 'exit-right');
+            
+            // 瞬间预置新卡片滑入前的反向偏差
+            if (direction === 'right') {
+                nextSlide.classList.add('enter-right'); // 从右侧外面准备
+                nextSlide.classList.remove('enter-left');
+            } else {
+                nextSlide.classList.add('enter-left'); // 从左侧外面准备
+                nextSlide.classList.remove('enter-right');
+            }
+
+            // 强制触发浏览器回流重绘 (Reflow) 确保预置偏移生效
+            nextSlide.offsetHeight;
+
+            // 激活平移滑入
+            nextSlide.classList.remove('enter-left', 'enter-right');
+            nextSlide.classList.add('active');
+
+            // 同步更新当前索引
+            currentIndex = nextIndex;
+        }
+
+        // 监听导航按钮
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const index = parseInt(btn.getAttribute('data-index'), 10);
+                if (index === currentIndex) return;
+
+                // 切换指示条
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                alignIndicator(btn);
+
+                // 触发视差平移切换
+                switchTab(index);
+            });
+        });
+
+        // 首次加载初始化
+        window.addEventListener('load', () => {
+            const initialActiveBtn = document.querySelector('.tab-btn.active');
+            alignIndicator(initialActiveBtn);
+        });
+
+        // 自适应缩放重置
+        window.addEventListener('resize', () => {
+            const activeBtn = document.querySelector('.tab-btn.active');
+            alignIndicator(activeBtn);
+        });
+
+        // 6. 滚动过渡检测器
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOnScroll = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        revealElements.forEach(el => {
+            revealOnScroll.observe(el);
+        });
+
+        // 7. 磁吸按钮效果
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const position = this.getBoundingClientRect();
+                const x = e.clientX - position.left - position.width / 2;
+                const y = e.clientY - position.top - position.height / 2;
+                this.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+
+            btn.addEventListener('mouseout', function() {
+                this.style.transform = 'translate(0px, 0px)';
+            });
+        });
+    </script>
+</body>
+</html>

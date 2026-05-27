@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>陆修远 | Senior Creative Director</title>
+    <!-- 引入高质感字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. 变量定义 */
+        :root {
+            --bg-color: #fcfcfc;
+            --text-color: #121212;
+            --text-secondary: #666666;
+            --border-color: #e5e5e5;
+            --hover-bg: #f5f5f5;
+            --header-bg: rgba(252, 252, 252, 0.82);
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0d0d0d;
+            --text-color: #f5f5f5;
+            --text-secondary: #888888;
+            --border-color: #222222;
+            --hover-bg: #1a1a1a;
+            --header-bg: rgba(13, 13, 13, 0.82);
+        }
+
+        /* 2. 基础重置 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.625;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color var(--transition-smooth), color var(--transition-smooth);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* 3. 动态顶部导航栏 */
+        .site-header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            /* 初始状态：完全透明、无底边 */
+            background-color: transparent;
+            border-bottom: 1px solid transparent;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            padding: 24px 0; 
+            transition: 
+                background-color var(--transition-smooth), 
+                border-color var(--transition-smooth), 
+                backdrop-filter var(--transition-smooth),
+                -webkit-backdrop-filter var(--transition-smooth),
+                padding var(--transition-smooth);
+        }
+
+        /* 滚动后的激活状态：过渡为磨砂玻璃，提供保护层 */
+        .site-header.scrolled {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 16px 0; 
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 导航栏左侧姓名及职位：初始隐藏 */
+        .header-profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* 滚动至首屏下方后渐显 */
+        .header-profile.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .header-dot {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .header-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 400;
+        }
+
+        /* 主题切换按钮：为其增加底色支持，解决未触发tab时的穿透遮挡问题 */
+        .theme-toggle {
+            background-color: var(--bg-color); /* 使用实体背景色避免穿透 */
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            transition: var(--transition-fast), background-color var(--transition-smooth);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--text-color);
+            transform: scale(1.05);
+        }
+
+        /* 4. 个人主视觉区 (Hero Section) */
+        .hero {
+            padding: 80px 0;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-info {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .hero-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* 极简动态下划线 */
+        .hover-underline {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--text-color);
+            transform-origin: bottom right;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hover-underline:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* 5. 头像 */
+        .avatar-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            aspect-ratio: 4 / 5;
+            overflow: hidden;
+            border-radius: 4px;
+            background-color: var(--border-color);
+            justify-self: center;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.05);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .avatar-wrapper:hover .avatar-img {
+            transform: scale(1.04);
+        }
+
+        /* 6. 关于与哲学 */
+        .section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .about {
+            padding: 80px 0;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 40px;
+        }
+
+        .about-philosophy {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 2.2rem;
+            line-height: 1.3;
+            font-style: italic;
+        }
+
+        .about-text {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 7. 工作经历 */
+        .experience {
+            padding: 80px 0;
+        }
+
+        .exp-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition-fast);
+        }
+
+        .exp-item:hover {
+            padding-left: 15px;
+        }
+
+        .exp-meta {
+            font-size: 0.95rem;
+        }
+
+        .exp-year {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .exp-company {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.8rem;
+        }
+
+        .exp-details h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .exp-details p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* 8. 精选案例 */
+        .works {
+            padding: 80px 0;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .work-card {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            cursor: pointer;
+        }
+
+        .work-img-holder {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background-color: var(--border-color);
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .work-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+        }
+
+        .work-card:hover .work-img {
+            transform: scale(1.03);
+            filter: grayscale(100%) brightness(0.9);
+        }
+
+        .work-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .work-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .work-category {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* 9. 专业技能及联系方式 */
+        .skills-contact {
+            padding: 80px 0 120px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .skill-tag {
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            border-radius: 30px;
+            transition: var(--transition-fast);
+        }
+
+        .skill-tag:hover {
+            border-color: var(--text-color);
+            background-color: var(--hover-bg);
+        }
+
+        .contact-cta {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .contact-link {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            display: inline-block;
+            width: fit-content;
+        }
+
+        /* 10. 滚动显现动效 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 11. 响应式适配 */
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 40px 0;
+            }
+            .avatar-wrapper {
+                order: -1;
+                max-width: 280px;
+            }
+            .hero-title {
+                font-size: 3rem;
+            }
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            .exp-item {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+            .skills-contact {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* 手机端隐藏多余修饰信息，仅展示核心姓名，避免布局拥挤 */
+            .header-dot, .header-title {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航栏 -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <!-- 滚动后展示的信息区 -->
+            <div class="header-profile">
+                <span class="logo">陆修远 Lu Xuyuan</span>
+                <span class="header-dot">•</span>
+                <span class="header-title">资深创意总监 / Experience Architect</span>
+            </div>
+            <!-- 主题切换按钮 -->
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
+                <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- 主视觉区 -->
+        <section class="hero">
+            <div class="hero-info">
+                <span class="hero-tag">Portfolio & CV</span>
+                <h1 class="hero-title">陆修远</h1>
+                <p class="hero-subtitle">资深创意总监 / 体验架构师</p>
+                <p style="color: var(--text-secondary); max-width: 500px; font-size: 0.95rem;">
+                    专注于艺术、设计与商业的交叉点。为全球品牌打造兼具人文温度与工业化细节的数字产品，坚信极简能传递最深邃的力量。
+                </p>
+            </div>
+            <!-- 高级黑白头像 -->
+            <div class="avatar-wrapper">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop&sat=-100" alt="陆修远" class="avatar-img">
+            </div>
+        </section>
+
+        <!-- 关于与哲学 -->
+        <section class="about reveal">
+            <h2 class="section-title">Philosophy / 哲学</h2>
+            <div class="about-content">
+                <div class="about-philosophy">
+                    “化繁为简并不是抹去细节，而是让有价值的内容以最自然的秩序呈现。”
+                </div>
+                <div class="about-text">
+                    <p>在十余年的职业生涯中，我帮助从先锋艺术画廊到500强科技巨头的客户重新定义其视觉与交互标准。我认为优秀的体验应当如同静水流深，无需喧哗，却深入人心。</p>
+                    <p>目前我带领着一支跨学科的设计团队，探索人工智能与未来空间计算（Spatial Computing）的交互语境。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 职业经历 -->
+        <section class="experience reveal">
+            <h2 class="section-title">Experience / 经历</h2>
+            
+            <div class="exp-item">
+                <div class="exp-meta">
+                    <span class="exp-year">2022 - PRESENT</span>
+                    <span class="exp-company">STUDIO CARBON / 上海</span>
+                </div>
+                <div class="exp-details">
+                    <h3>资深创意合伙人兼体验总监</h3>
+                    <p>主导消费电子品牌下一代操作系统及硬件网联平台的视觉与概念设计。带领12人设计师团队斩获包括德国红点至尊奖在内的数项国际荣誉。</p>
+                </div>
+            </div>
+
+            <div class="exp-item">
+                <div class="exp-meta">
+                    <span class="exp-year">2019 - 2022</span>
+                    <span class="exp-company">MATRIX DESIGN / 纽约</span>
+                </div>
+                <div class="exp-details">
+                    <h3>高级交互架构师</h3>
+                    <p>重构金融科技与奢侈品零售巨头的全球数字版图。通过建立可扩展的全球化设计系统（Design System），将核心转化率及品牌数字资产粘性提升了42%。</p>
+                </div>
+            </div>
+
+            <div class="exp-item">
+                <div class="exp-meta">
+                    <span class="exp-year">2016 - 2019</span>
+                    <span class="exp-company">UNIT 9 LAB / 伦敦</span>
+                </div>
+                <div class="exp-details">
+                    <h3>数字创意研究员</h3>
+                    <p>负责前沿交互装置与WebGL沉浸式虚拟体验的研究。主导并落地多项面向未来科技展馆的动态互动装置和实验性产品。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 精选作品 -->
+        <section class="works reveal">
+            <h2 class="section-title">Selected Works / 精选案例</h2>
+            <div class="works-grid">
+                
+                <div class="work-card">
+                    <div class="work-img-holder">
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop&sat=-100" alt="AETHER" class="work-img">
+                    </div>
+                    <div class="work-info">
+                        <span class="work-title">AETHER — 智能家居轻量级系统</span>
+                        <span class="work-category">Interaction System</span>
+                    </div>
+                </div>
+
+                <div class="work-card">
+                    <div class="work-img-holder">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop&sat=-100" alt="CHRONOS" class="work-img">
+                    </div>
+                    <div class="work-info">
+                        <span class="work-title">CHRONOS — 奢华腕表品牌重构</span>
+                        <span class="work-category">Digital Rebranding</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 技能与联系方式 -->
+        <section class="skills-contact reveal">
+            <div>
+                <h2 class="section-title">Expertise / 核心领域</h2>
+                <div class="skills-list">
+                    <span class="skill-tag">创意指导</span>
+                    <span class="skill-tag">体验架构</span>
+                    <span class="skill-tag">设计系统 (Design Systems)</span>
+                    <span class="skill-tag">品牌重塑</span>
+                    <span class="skill-tag">WebGL & 前端原型</span>
+                    <span class="skill-tag">人机交互研究</span>
+                    <span class="skill-tag">数字策略</span>
+                </div>
+            </div>
+            <div>
+                <h2 class="section-title">Contact / 联络</h2>
+                <p class="contact-cta">让我们共同开启<br>有质感、有深度的项目。</p>
+                <div class="contact-links">
+                    <a href="mailto:xuyuan.lu@example.com" class="contact-link hover-underline">xuyuan.lu@example.com</a>
+                    <a href="#" class="contact-link hover-underline">LinkedIn / 领英</a>
+                    <a href="#" class="contact-link hover-underline">GitHub / 代码开源区</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer style="padding: 40px 0; border-top: 1px solid var(--border-color); font-size: 0.8rem; color: var(--text-secondary); text-align: center; transition: border-color var(--transition-smooth);">
+        <p>© <span id="year">2026</span> LU XUYUAN. ALL RIGHTS RESERVED. KEEP IT MINIMAL.</p>
+    </footer>
+
+    <!-- 核心交互逻辑 -->
+    <script>
+        // 1. 日夜主题切换逻辑
+        const toggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const root = document.documentElement;
+
+        const sunIconHTML = `
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        `;
+        const moonIconHTML = `
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        `;
+
+        toggleBtn.addEventListener('click', () => {
+            const currentTheme = root.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                root.setAttribute('data-theme', 'dark');
+                themeIcon.innerHTML = moonIconHTML;
+            } else {
+                root.setAttribute('data-theme', 'light');
+                themeIcon.innerHTML = sunIconHTML;
+            }
+        });
+
+        // 2. 完美的滚动监测 (多端兼容，杜绝遮挡与信息重复)
+        const header = document.querySelector('.site-header');
+        const headerProfile = document.querySelector('.header-profile');
+        const heroSection = document.querySelector('.hero');
+
+        // 预先缓存首屏高度，避免在滚动中频繁读取 offsetHeight 造成页面卡顿
+        let heroHeight = heroSection.offsetHeight;
+
+        window.addEventListener('resize', () => {
+            heroHeight = heroSection.offsetHeight;
+        });
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY || window.pageYOffset;
+
+            // 阈值一：只要开始滚动 (超过 15px)，便将导航栏转为磨砂玻璃材质，阻挡下方穿透的内容
+            if (scrollY > 15) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            // 阈值二：当大标题和个人信息离开视口时，才优雅渐显顶部的个人信息 (适应多端设备尺寸)
+            if (scrollY > (heroHeight - 64)) {
+                headerProfile.classList.add('visible');
+            } else {
+                headerProfile.classList.remove('visible');
+            }
+        }, { passive: true }); // 使用 passive 属性极大提升移动端滑动流畅度
+
+        // 3. 页面内容滚动渐显 (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOnScroll = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15 
+        });
+
+        revealElements.forEach(element => {
+            revealOnScroll.observe(element);
+        });
+
+        // 4. 年份自动更新
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

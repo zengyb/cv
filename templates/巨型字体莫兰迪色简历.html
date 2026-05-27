@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>林语冰 | 个人主页与深度报道作品集</title>
+  
+  <!-- 引入高级人文感英文字体及现代无衬线中英文字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* 莫兰迪色系配色 */
+      --bg-color: #F4F1EA;       /* 柔和米黄（纸张底色） */
+      --text-main: #3C3F41;      /* 石板深灰 */
+      --text-muted: #7E8285;     /* 哑光中灰 */
+      --accent-rose: #C3A39E;    /* 莫兰迪木槿粉 */
+      --accent-sage: #9CA89E;    /* 莫兰迪灰绿 */
+      --accent-blue: #93A2B5;    /* 莫兰迪灰蓝 */
+      --card-bg: #EAE6DD;        /* 略深于背景的卡片色 */
+      --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* 模拟高级纸张微噪点纹理 */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* 滚动条定制 */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-color);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-rose);
+      border-radius: 3px;
+    }
+
+    /* 桌面端自定义指针效果 */
+    .custom-cursor {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-rose);
+      border-radius: 50%;
+      position: fixed;
+      top: -4px;
+      left: -4px;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate3d(-100px, -100px, 0);
+      transition: transform 0.1s cubic-bezier(0.1, 0.8, 0.3, 1);
+    }
+
+    @media (pointer: coarse) {
+      .custom-cursor {
+        display: none;
+      }
+    }
+
+    /* 全局公共组件 */
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    /* 导航栏 - 优化高度与干净排版，移除多余装饰 */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 0.8rem 4%; 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background-color: rgba(244, 241, 234, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(74, 78, 81, 0.05);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    /* 干净纯粹的Tab栏，无背景色与圆角框 */
+    nav {
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      opacity: 0.6;
+      padding: 0.2rem 0;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--text-main);
+      transition: var(--transition-smooth);
+    }
+
+    nav a:hover {
+      opacity: 1;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* 统一排版规格 */
+    .sync-typography {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      line-height: 1.1; 
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    /* 进场巨型姓名文本 */
+    #giant-text {
+      position: fixed;
+      color: var(--accent-rose);
+      pointer-events: none;
+      z-index: 90;
+      transform-origin: 0 0;
+      user-select: none;
+      -webkit-user-select: none;
+      opacity: 0; 
+      font-size: 14vw; 
+    }
+
+    /* 首屏滚动轨道 */
+    .hero-track {
+      height: 160vh; 
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 10%;
+      overflow: hidden;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6.5vw, 6rem);
+      font-weight: 300;
+      line-height: 1.1;
+      max-width: 1100px;
+      margin-bottom: 2rem;
+    }
+
+    /* 卡位目标文本（在CSS中初始完全透明，大字未到达时不显示） */
+    #target-text {
+      opacity: 0;
+      color: var(--accent-rose);
+    }
+
+    /* 首屏时需要延迟渐显的其余内容背景文字（在CSS中初始完全透明） */
+    .hero-reveal {
+      opacity: 0; 
+      will-change: opacity;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+      color: var(--text-muted);
+      font-weight: 300;
+      max-width: 700px;
+      margin-left: 5px;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 10%;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      animation: bounce 2s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* 通用内容版块 */
+    section {
+      padding: 8rem 10% 4rem 10%;
+      position: relative;
+      background-color: var(--bg-color);
+      z-index: 20; 
+    }
+
+    .section-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      color: var(--accent-sage);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 3.5rem;
+      border-bottom: 1px solid rgba(74, 78, 81, 0.1);
+      padding-bottom: 1rem;
+    }
+
+    /* 关于我 */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+    }
+
+    .about-lead {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+      line-height: 1.4;
+      color: var(--accent-sage);
+    }
+
+    .about-text p {
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      text-align: justify;
+    }
+
+    /* 经历/履历 */
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 0.8fr 2fr;
+      padding: 2.5rem 1rem; /* 使用固定的静态 Padding 内边距 */
+      margin: 0 -1rem;       /* 负边距使卡片与大框架对齐，避免内缩 */
+      border-bottom: 1px solid rgba(74, 78, 81, 0.08);
+      border-radius: 6px;
+      transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 履历内的子文字节点设定平滑偏移，采用 transform 替换 padding 动效防止抖动 */
+    .exp-date, 
+    .exp-detail {
+      will-change: transform;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 作品集 */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .portfolio-card {
+      background: var(--card-bg);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition-smooth);
+      border: 1px solid rgba(74, 78, 81, 0.03);
+    }
+
+    .card-cover {
+      height: 240px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cover-gradient-1 { background: linear-gradient(135deg, #C3A39E 0%, #EAE6DD 100%); }
+    .cover-gradient-2 { background: linear-gradient(135deg, #9CA89E 0%, #EAE6DD 100%); }
+    .cover-gradient-3 { background: linear-gradient(135deg, #93A2B5 0%, #EAE6DD 100%); }
+
+    .card-cover span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      opacity: 0.15;
+      font-weight: 300;
+    }
+
+    .card-content {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-rose);
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .card-link {
+      margin-top: auto;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-link svg {
+      transition: var(--transition-smooth);
+    }
+
+    /* 桌面端悬停动效 */
+    @media (hover: hover) {
+      .exp-item:hover {
+        background-color: rgba(234, 230, 221, 0.4);
+      }
+      .exp-item:hover .exp-date,
+      .exp-item:hover .exp-detail {
+        transform: translate3d(12px, 0, 0); 
+      }
+
+      .portfolio-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(74, 78, 81, 0.04);
+      }
+      .portfolio-card:hover .card-link svg {
+        transform: translateX(4px);
+      }
+    }
+
+    /* 移动端反馈 */
+    @media (hover: none) {
+      .portfolio-card:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+      .exp-item:active {
+        background-color: rgba(234, 230, 221, 0.4);
+      }
+    }
+
+    /* 页脚 */
+    footer {
+      padding: 6rem 10% 4rem 10%;
+      background-color: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 20;
+    }
+
+    .footer-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    .footer-desc {
+      color: var(--text-muted);
+      max-width: 500px;
+      margin-bottom: 2.5rem;
+      font-size: 0.95rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .social-links a {
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      opacity: 0.7;
+    }
+
+    .social-links a:hover {
+      opacity: 1;
+      color: var(--accent-rose);
+    }
+
+    .copyright {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 移动端排版细调 */
+    @media (max-width: 768px) {
+      header {
+        padding: 0.8rem 5%;
+      }
+      nav {
+        gap: 1.2rem;
+      }
+      nav a {
+        font-size: 0.75rem;
+      }
+      .hero {
+        padding: 0 6%;
+      }
+      section {
+        padding: 5rem 6% 3rem 6%;
+      }
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .exp-item {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 2rem 0.5rem; 
+        margin: 0 -0.5rem;
+      }
+      #giant-text {
+        font-size: 12vw; 
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 自定义随动光标 -->
+  <div class="custom-cursor"></div>
+
+  <!-- 进场巨型姓名文本 -->
+  <div id="giant-text" class="sync-typography">LIN YUBING</div>
+
+  <!-- 顶部精简Tab栏 -->
+  <header>
+    <div class="logo">Y.L</div>
+    <nav>
+      <a href="#about">关于</a>
+      <a href="#experience">经历</a>
+      <a href="#portfolio">作品</a>
+      <a href="#contact">联络</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 粘性滚动轨道 -->
+    <div class="hero-track">
+      <section class="hero" id="home">
+        <h1 class="hero-title">
+          <span id="target-text" class="sync-typography">LIN YUBING</span><span class="hero-reveal"> / 林语冰</span>
+        </h1>
+        <p class="hero-subtitle hero-reveal">
+          新闻学学人。致力于深度非虚构写作、纪实影像与数字媒介公共叙事。
+        </p>
+        <div class="scroll-indicator">Scroll down</div>
+      </section>
+    </div>
+
+    <!-- 关于我 -->
+    <section id="about" class="reveal">
+      <span class="section-num">01 / PROFILE</span>
+      <h2 class="section-title">在喧嚣时代，重构安静的真相</h2>
+      <div class="about-grid">
+        <div class="about-lead">
+          “在这个信息过载与算法织造的滤镜泡泡中，我依然固执地相信深度报道与公共价值的力量。”
+        </div>
+        <div class="about-text">
+          <p>我是林语冰，新闻与传播学专业。我习惯将镜头与纸笔对准宏大叙事缝隙中的个体，去聆听、观察和记录那些容易被日常喧嚣所淹没的微小回响。</p>
+          <p>在校期间，我专注于融合新闻与非虚构叙事，熟练掌握深度专访、多媒体纪实制片以及基于 Python 与 Datawrapper 的数据可视化呈现，尝试用多元的媒介技术寻找新闻内容的最优表达形态。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 实践经历 -->
+    <section id="experience" class="reveal">
+      <span class="section-num">02 / EXPERIENCE</span>
+      <h2 class="section-title">新闻实务与学术履历</h2>
+      <div class="exp-list">
+        
+        <div class="exp-item">
+          <div class="exp-date">2024.06 — PRESENT</div>
+          <div class="exp-detail">
+            <h3>新京报·深度报道部 / 非虚构写作工坊</h3>
+            <h4>新闻实习生</h4>
+            <p>协助并深度参与3篇长篇人物专访与社会议题调查，独立完成长文撰写及资料核查工作。参与策划的视觉专题《城市边缘的夜行者》在融媒体渠道获得10万+阅读，负责其中全部纪实摄影与人物口述整理工作。</p>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-date">2023.09 — 2024.05</div>
+          <div class="exp-detail">
+            <h3>校青年融媒体中心</h3>
+            <h4>联合创始人 / 首席出镜摄影</h4>
+            <p>主导策划多期聚焦校园周边城市更新与老龄化问题的多媒体报道项目。应用基础前端技术辅助数据新闻呈现，所主持的《消失的弄堂》项目获得省级青年新闻大赛创意二等奖。</p>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-date">2022.09 — 2023.06</div>
+          <div class="exp-detail">
+            <h3>新闻学国家社科课题小组</h3>
+            <h4>学术研究助理</h4>
+            <p>负责梳理算法推荐下社交媒体“被遗忘权”的相关法理与个案数据，通过文本挖掘和编码分析协助完成两篇学术论文的文献综述撰写。</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 作品集展示 -->
+    <section id="portfolio" class="reveal">
+      <span class="section-num">03 / PROJECTS</span>
+      <h2 class="section-title">选存作品集</h2>
+      <div class="portfolio-grid">
+        
+        <div class="portfolio-card">
+          <div class="card-cover cover-gradient-1">
+            <span>01</span>
+          </div>
+          <div class="card-content">
+            <span class="card-tag">非虚构写作 / 纪实摄影</span>
+            <h3 class="card-title">《水泥森林里的回响：临工群落调查》</h3>
+            <p class="card-desc">对华北地区某自发劳务市场进行的为期一个月的田野调查，以细腻文字与温润光影捕捉零工群体在城市边缘的生存状态及精神褶皱。</p>
+            <a href="#" class="card-link">
+              阅读全文 
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="portfolio-card">
+          <div class="card-cover cover-gradient-2">
+            <span>02</span>
+          </div>
+          <div class="card-content">
+            <span class="card-tag">数据新闻 / 交互设计</span>
+            <h3 class="card-title">《算法时代的“被遗忘权”》</h3>
+            <p class="card-desc">交互式数据报道项目。利用可视化图表解构数字遗迹对现代个体生活的深度缠绕，深度探讨大数据画像下人们“隐入烟尘”的自由边界。</p>
+            <a href="#" class="card-link">
+              浏览交互 
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="portfolio-card">
+          <div class="card-cover cover-gradient-3">
+            <span>03</span>
+          </div>
+          <div class="card-content">
+            <span class="card-tag">声音纪录片 / 特写报道</span>
+            <h3 class="card-title">《消失的方言与最后的守井人》</h3>
+            <p class="card-desc">抢救性地方文化记录项目。采用环境录音（Field Recording）与纪实叙事相结合的手段，追踪记录华北方言区口头文化的流变脉络。</p>
+            <a href="#" class="card-link">
+              收听音频 
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="footer-title">Let's record the world together.</div>
+    <div class="footer-desc">期待与同样相信文字与镜头力量的您相遇。欢迎通过以下渠道与我建立联络。</div>
+    <div class="social-links">
+      <a href="mailto:yubinglin@example.com">Email</a>
+      <a href="#">WeChat</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+    </div>
+    <p class="copyright">© 2026 林语冰 Yubing Lin. All Rights Reserved. Morandi Clean Aesthetics.</p>
+  </footer>
+
+  <script>
+    /* Custom Cursor 逻辑 */
+    const cursor = document.querySelector('.custom-cursor');
+    if (cursor) {
+      window.addEventListener('mousemove', (e) => {
+        cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      });
+      window.addEventListener('touchstart', () => {
+        cursor.style.display = 'none';
+      });
+    }
+
+    /* Typography Intro 精准卡位算法 */
+    let layoutData = null;
+
+    function initTypographyLayout() {
+      const giant = document.getElementById('giant-text');
+      const target = document.getElementById('target-text');
+
+      if (!giant || !target) return;
+
+      // 临时重置样式，以获得排版中纯粹的物理尺寸
+      giant.style.transform = 'none';
+      giant.style.left = '0px';
+      giant.style.top = '0px';
+      giant.style.opacity = '1';
+
+      // 显现目标位置以精确测量
+      target.style.opacity = '1';
+
+      const gRect = giant.getBoundingClientRect();
+      const tRect = target.getBoundingClientRect();
+
+      target.style.opacity = '0'; // 重新隐藏，后续交由渐变算法控制
+
+      const scaleX = tRect.width / gRect.width;
+      const scaleY = tRect.height / gRect.height;
+      const targetScale = scaleY;
+
+      // 计算首屏文字处于视口正中央的起始坐标
+      const initX = (window.innerWidth - gRect.width) / 2;
+      const initY = (window.innerHeight - gRect.height) / 2;
+
+      // 目标卡位点在视口中的常态坐标 (Sticky状态下完全静止)
+      const targetX = tRect.left;
+      const targetY = tRect.top;
+
+      layoutData = {
+        giant,
+        target,
+        initX,
+        initY,
+        targetX,
+        targetY,
+        targetScale
+      };
+    }
+
+    function onScrollAnimate() {
+      if (!layoutData) return;
+
+      const scrollY = window.scrollY;
+      const maxScroll = window.innerHeight * 0.55; 
+      const p = Math.min(Math.max(scrollY / maxScroll, 0), 1);
+
+      // 三次方缓动
+      const easeP = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+
+      // 精确坐标与尺寸插值
+      const currentX = layoutData.initX * (1 - easeP) + layoutData.targetX * easeP;
+      const currentY = layoutData.initY * (1 - easeP) + layoutData.targetY * easeP;
+      const currentScale = 1 * (1 - easeP) + layoutData.targetScale * easeP;
+
+      // --- 核心优化：分阶时间轴渐变逻辑 ---
+      const fadeStart = 0.85; // 渐变触发阈值（当大字已经缩至85%接近目标位置时）
+      let targetOpacity = 0;
+      let giantOpacity = 0.8;
+
+      if (p < fadeStart) {
+        // 第一阶段：纯净收缩，背景无多余文字重影
+        giantOpacity = 0.8;
+        targetOpacity = 0;
+      } else {
+        // 第二阶段：精准卡位对合，进行无缝的双向交接收尾
+        const fadeProgress = (p - fadeStart) / (1 - fadeStart); // 标准化为 0 -> 1
+        
+        giantOpacity = 0.8 * (1 - fadeProgress); // 飞入的大字快速淡出至0
+        targetOpacity = fadeProgress;            // 目标位置的英文名字淡入至1.0
+      }
+
+      // 写入不透明度
+      layoutData.giant.style.opacity = giantOpacity;
+      layoutData.target.style.opacity = targetOpacity;
+
+      // 背景名字衍生内容（中文名及简介文字）完全同步该对合阈值，干净自然地淡入
+      document.querySelectorAll('.hero-reveal').forEach(el => {
+        el.style.opacity = targetOpacity;
+      });
+
+      layoutData.giant.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(${currentScale})`;
+    }
+
+    window.addEventListener('load', () => {
+      initTypographyLayout();
+      onScrollAnimate();
+    });
+
+    window.addEventListener('resize', () => {
+      initTypographyLayout();
+      onScrollAnimate();
+    });
+
+    window.addEventListener('scroll', () => {
+      requestAnimationFrame(onScrollAnimate);
+    });
+
+    /* 元素滚动渐显 */
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, {
+      threshold: 0.12
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>林墨安 | 当代书法与水墨视觉艺术</title>
+    <!-- 引入谷歌字体：思源宋体、手书书法体《织芒星》、《马山正》 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;500;700&family=Noto+Sans+SC:wght@300;400&family=Zhi+Mang+Xing&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS 变量：定义新中式色调与字体 */
+        :root {
+            --bg-paper: #F7F5EE;       /* 宣纸淡金黄 */
+            --ink-black: #1A1A19;      /* 浓墨黑 */
+            --ink-gray: #5C5852;       /* 焦墨灰 */
+            --seal-red: #A82E26;       /* 印泥红 */
+            --line-color: #DFDAD0;     /* 乌丝栏界线 */
+            --font-serif: 'Noto Serif SC', Georgia, serif;
+            --font-sans: 'Noto Sans SC', sans-serif;
+            --font-calligraphy-zhi: 'Zhi Mang Xing', cursive; /* 连笔行草体 */
+            --font-calligraphy-ma: 'Ma Shan Zheng', cursive;   /* 苍劲碑体 */
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* 基础样式重置 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-paper);
+            color: var(--ink-black);
+            font-family: var(--font-sans);
+            font-size: 16px;
+        }
+
+        body {
+            overflow-x: hidden;
+            line-height: 1.8;
+            letter-spacing: 0.08em;
+            /* 乌丝栏：中式纵向稿纸背景纹理 */
+            background-image: linear-gradient(90deg, rgba(223, 218, 208, 0.25) 1px, transparent 1px);
+            background-size: 36px 100%;
+        }
+
+        /* 传统画卷：框线与角落双实线装饰 */
+        .frame-decorator {
+            position: fixed;
+            top: 20px;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            border: 1px solid rgba(223, 218, 208, 0.6);
+            pointer-events: none;
+            z-index: 98;
+        }
+
+        /* 容器定义 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* 优雅的微动效：进入视口时的淡入渐显 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition-smooth);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 巨幅背景书法字 (Watermark) */
+        .bg-calligraphy-watermark {
+            position: absolute;
+            font-family: var(--font-calligraphy-zhi);
+            font-size: clamp(20rem, 40vw, 55rem);
+            color: var(--ink-black);
+            opacity: 0.025; /* 极其隐约的水墨幻影 */
+            pointer-events: none;
+            user-select: none;
+            z-index: -1;
+            line-height: 1;
+        }
+
+        /* 1. 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 110px;
+            padding: 0 5%;
+            background: rgba(247, 245, 238, 0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            border-bottom: 1px double var(--line-color);
+            transition: var(--transition-smooth);
+        }
+
+        /* 滚动后变矮的导航样式 */
+        nav.scrolled {
+            height: 75px;
+            border-bottom: 1px solid var(--line-color);
+        }
+
+        /* 左侧Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--ink-black);
+        }
+
+        /* 左侧姓名：滚动时向左滑动收紧并淡出隐藏 */
+        .logo-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 0.1em;
+            line-height: 1.1;
+            transition: var(--transition-smooth);
+            max-width: 50px;
+            opacity: 1;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        nav.scrolled .logo-text {
+            max-width: 0;
+            opacity: 0;
+            margin-right: -12px; /* 姓名退场后减小间距 */
+            pointer-events: none;
+        }
+
+        /* 方形四字印章（遵循传统右起读序：右上"墨" -> 右下"安" -> 左上"之" -> 左下"印"） */
+        .square-seal {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            width: 42px;
+            height: 42px;
+            background-color: var(--seal-red);
+            color: #FFF;
+            font-family: var(--font-serif);
+            font-weight: bold;
+            font-size: 13px;
+            line-height: 1.1;
+            padding: 4px;
+            border: 2px solid var(--seal-red);
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            /* 仿真泥印微糙效果 */
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.15);
+            border-radius: 2px;
+            transition: var(--transition-smooth);
+        }
+
+        .logo:hover .square-seal {
+            transform: scale(1.08) rotate(-3deg);
+        }
+
+        /* 竖向导航：效仿中式古典挂轴 */
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            height: 80px;
+            align-items: center;
+            transition: var(--transition-smooth);
+        }
+
+        nav.scrolled .nav-links {
+            height: 50px;
+        }
+
+        /* 重构Tab容器：采用Flex垂直列布局，彻底解决1字时偏心问题 */
+        .nav-links a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            text-decoration: none;
+            color: var(--ink-gray);
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+            position: relative;
+            padding: 5px 4px;
+            height: 100%;
+            width: 48px; /* 设固定宽度确保水平向完全居中 */
+        }
+
+        .nav-links a span {
+            display: block;
+            line-height: 1.2;
+        }
+
+        /* 滚动收缩：Tab只留一个字，在桌面端（宽屏）生效 */
+        .nav-links a .extra {
+            display: inline-block;
+            opacity: 1;
+            height: auto;
+            margin-top: 4px; /* 字符间距 */
+            transition: var(--transition-smooth);
+        }
+
+        @media (min-width: 769px) {
+            nav.scrolled .nav-links a .extra {
+                opacity: 0;
+                font-size: 0;
+                height: 0;
+                margin-top: 0;
+                pointer-events: none;
+            }
+        }
+
+        /* 竖向导航线 */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            height: 0;
+            width: 1px;
+            background-color: var(--seal-red);
+            transition: var(--transition-smooth);
+            transform: translateY(-50%);
+        }
+
+        .nav-links a:hover {
+            color: var(--ink-black);
+        }
+
+        .nav-links a:hover::after {
+            height: 80%;
+        }
+
+        /* 移动端菜单按钮 */
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 24px;
+            height: 18px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .burger-menu span {
+            width: 100%;
+            height: 1.5px;
+            background-color: var(--ink-black);
+            transition: var(--transition-smooth);
+        }
+
+        /* 移动端菜单激活状态 */
+        .burger-menu.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .burger-menu.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-menu.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+
+        /* 2. Hero 头部（横版卷轴区） */
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding-top: 140px;
+            padding-bottom: 50px;
+        }
+
+        .hero-top-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2.5rem;
+            width: 100%;
+        }
+
+        .hero-concept {
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            color: var(--seal-red);
+            letter-spacing: 0.3em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .hero-concept::before {
+            content: '';
+            width: 12px;
+            height: 1px;
+            background-color: var(--seal-red);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 300;
+            line-height: 1.4;
+            color: var(--ink-black);
+        }
+
+        .hero-desc {
+            color: var(--ink-gray);
+            max-width: 520px;
+            font-size: 0.95rem;
+            line-height: 1.9;
+            align-self: flex-end;
+            border-left: 1px dashed var(--line-color);
+            padding-left: 1.5rem;
+        }
+
+        /* 横版巨幅画作展示 */
+        .hero-landscape-area {
+            position: relative;
+            width: 100%;
+            border: 1px solid var(--line-color);
+            padding: 10px; 
+            background-color: #FFF;
+            box-shadow: 0 12px 35px rgba(28, 28, 27, 0.03);
+            transition: var(--transition-smooth);
+            margin-top: 1rem;
+        }
+
+        /* 模拟挂轴 */
+        .hero-landscape-area::before, .hero-landscape-area::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 6px;
+            height: 102%;
+            background: #D3C9BE;
+            border: 1px solid #B0A596;
+            transform: translateY(-50%);
+            border-radius: 2px;
+        }
+        .hero-landscape-area::before { left: -6px; }
+        .hero-landscape-area::after { right: -6px; }
+
+        .landscape-scroll {
+            width: 100%;
+            aspect-ratio: 21 / 9; 
+            object-fit: cover;
+            filter: grayscale(100%) contrast(108%);
+            transition: var(--transition-smooth);
+            display: block;
+        }
+
+        .hero-landscape-area:hover .landscape-scroll {
+            filter: grayscale(60%) contrast(105%); 
+        }
+
+
+        /* 3. 关于（艺术家简介） */
+        .about-section {
+            padding: 8rem 0;
+            border-top: 1px double var(--line-color);
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+            border-bottom: 1px solid var(--line-color);
+            padding-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-sub {
+            font-size: 0.85rem;
+            color: var(--seal-red);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 500;
+        }
+
+        .section-calligraphy-mark {
+            font-family: var(--font-calligraphy-ma);
+            font-size: 2.5rem;
+            color: var(--seal-red);
+            opacity: 0.8;
+            line-height: 1;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 5rem;
+        }
+
+        .about-text-content {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            line-height: 2;
+            color: var(--ink-black);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .about-philosophies {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .philosophy-card {
+            border-bottom: 1px dashed rgba(223, 218, 208, 0.8);
+            padding-bottom: 1.5rem;
+        }
+
+        .philosophy-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--ink-black);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .philosophy-card h3::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border: 1px solid var(--seal-red);
+            transform: rotate(45deg);
+        }
+
+        .philosophy-card p {
+            color: var(--ink-gray);
+            font-size: 0.95rem;
+        }
+
+
+        /* 4. 作品展示区 */
+        .works-section {
+            padding: 8rem 0;
+            border-top: 1px double var(--line-color);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(223, 218, 208, 0.4);
+        }
+
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            color: var(--ink-gray);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
+            padding-bottom: 12px;
+            position: relative;
+        }
+
+        .filter-btn.active {
+            color: var(--ink-black);
+            font-weight: 500;
+        }
+
+        .filter-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--seal-red);
+        }
+
+        /* 解决页面跳动的网格容器配置 */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            min-height: 780px; /* 设立最小高度，防止隐藏内容时发生页面高度塌陷产生跳动 */
+            transition: min-height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* 动画重构核心：为卡片定义更细腻流畅的水墨渐变动画类 */
+        .work-card {
+            background: #FFF;
+            padding: 1.5rem;
+            border: 1px solid var(--line-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
+            cursor: pointer;
+            position: relative;
+            /* 整合动画过渡 */
+            transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1), 
+                        transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), 
+                        box-shadow 0.45s ease, 
+                        border-color 0.45s ease;
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* 淡出动画状态：往下滑落并隐藏 */
+        .work-card.fade-out {
+            opacity: 0;
+            transform: scale(0.94) translateY(15px);
+            pointer-events: none;
+        }
+
+        /* 淡入动画状态 */
+        .work-card.fade-in {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .work-card::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            bottom: 6px;
+            left: 6px;
+            right: 6px;
+            border: 1px solid rgba(223, 218, 208, 0.5);
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .work-img-wrapper {
+            overflow: hidden;
+            aspect-ratio: 4 / 5;
+            margin-bottom: 1.5rem;
+            position: relative;
+            background-color: #F3F1EA;
+        }
+
+        .work-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (hover: hover) {
+            .work-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 40px rgba(28, 28, 27, 0.05);
+                border-color: rgba(28, 28, 27, 0.2);
+            }
+            .work-card:hover::before {
+                border-color: var(--seal-red);
+            }
+            .work-card:hover .work-img {
+                transform: scale(1.04);
+                filter: grayscale(40%);
+            }
+        }
+
+        .work-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+            z-index: 2;
+        }
+
+        .work-title {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--ink-black);
+            margin-bottom: 0.4rem;
+        }
+
+        .work-meta {
+            font-size: 0.85rem;
+            color: var(--ink-gray);
+        }
+
+        .work-seal-mark {
+            font-family: var(--font-serif);
+            color: var(--seal-red);
+            font-size: 0.75rem;
+            border: 1px solid var(--seal-red);
+            padding: 2px 5px;
+            line-height: 1.1;
+            background: rgba(168, 46, 26, 0.03);
+        }
+
+
+        /* 5. 艺术年表 (Timeline) */
+        .timeline-section {
+            padding: 8rem 0;
+            border-top: 1px double var(--line-color);
+        }
+
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 10px;
+            bottom: 10px;
+            width: 1px;
+            background-color: var(--line-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 4rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: calc(-3rem + 1px);
+            top: 10px;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background-color: var(--bg-paper);
+            border: 2px solid var(--seal-red);
+            transition: var(--transition-smooth);
+            z-index: 2;
+        }
+
+        .timeline-item:hover::before {
+            background-color: var(--seal-red);
+            transform: scale(1.4);
+        }
+
+        .timeline-year {
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--ink-black);
+            margin-bottom: 0.8rem;
+        }
+
+        .timeline-content h4 {
+            font-family: var(--font-serif);
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--ink-black);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            color: var(--ink-gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+
+        /* 6. 联系 / 底部 */
+        footer {
+            padding: 8rem 0 4rem 0;
+            border-top: 1px double var(--line-color);
+            background-color: #F1EFE7;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            margin-bottom: 5rem;
+        }
+
+        .footer-quote {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            line-height: 1.7;
+            color: var(--ink-black);
+            border-left: 2px solid var(--seal-red);
+            padding-left: 2rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-label {
+            font-size: 0.8rem;
+            color: var(--ink-gray);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.15em;
+        }
+
+        .contact-val {
+            font-size: 1.2rem;
+            font-family: var(--font-serif);
+            color: var(--ink-black);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .contact-val:hover {
+            color: var(--seal-red);
+        }
+
+        .copyright-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(223, 218, 208, 0.8);
+            font-size: 0.85rem;
+            color: var(--ink-gray);
+        }
+
+
+        /* 7. 轻量级交互灯箱 */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 25, 0.96);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(8px);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85vh;
+            position: relative;
+            transform: scale(0.97);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px;
+            background-color: #FFF;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            background: transparent;
+            border: none;
+            color: #FFF;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .lightbox-caption {
+            color: rgba(255, 255, 255, 0.85);
+            text-align: center;
+            margin-top: 1.2rem;
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            letter-spacing: 0.1em;
+        }
+
+
+        /* ==================== 响应式移动端深度适配 ==================== */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+            .works-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.8rem;
+                min-height: 900px; /* 移动端双列时最小高度微调 */
+            }
+            .bg-calligraphy-watermark {
+                font-size: 25rem; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                background-size: 28px 100%; 
+            }
+
+            body.menu-open {
+                overflow: hidden;
+            }
+
+            .frame-decorator {
+                top: 10px;
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+            }
+
+            nav {
+                height: 85px;
+            }
+
+            nav.scrolled {
+                height: 65px;
+            }
+
+            /* 移动端菜单激活：右起竖排布局 */
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--bg-paper);
+                flex-direction: row-reverse; 
+                justify-content: center;
+                align-items: center;
+                gap: 2.5rem;
+                padding: 4rem 2rem;
+                box-shadow: -15px 0 40px rgba(0,0,0,0.06);
+                transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+                z-index: 99;
+                border-left: 1px double var(--line-color);
+            }
+
+            .nav-links.open {
+                right: 0;
+            }
+
+            .nav-links a {
+                height: 60%;
+            }
+
+            .burger-menu {
+                display: flex;
+            }
+
+            .hero-top-info {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .hero-desc {
+                align-self: flex-start;
+                border-left: none;
+                border-top: 1px dashed var(--line-color);
+                padding-left: 0;
+                padding-top: 1.5rem;
+                width: 100%;
+            }
+
+            .landscape-scroll {
+                aspect-ratio: 16 / 9; 
+            }
+
+            .works-grid {
+                grid-template-columns: 1fr; /* 移动端单列 */
+                gap: 2rem;
+                min-height: 1600px; /* 移动端单列排版防跳动 */
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 3.5rem;
+            }
+
+            .footer-quote {
+                font-size: 1.35rem;
+                padding-left: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 中式画卷外框 -->
+    <div class="frame-decorator"></div>
+
+    <!-- 1. 导航栏 -->
+    <nav id="mainNav">
+        <!-- 左侧Logo：林墨安姓名滚动时淡出，保留下方精致方形四字印章 -->
+        <a href="#" class="logo">
+            <div class="logo-text">林墨安</div>
+            <div class="square-seal">
+                <span>之</span>
+                <span>墨</span>
+                <span>印</span>
+                <span>安</span>
+            </div>
+        </a>
+        <!-- 右侧竖排Tab，高度变矮时，Span字符缩放精准居中对齐 -->
+        <div class="nav-links" id="navLinks">
+            <a href="#about" onclick="toggleMenu()"><span>关</span><span class="extra">于</span></a>
+            <a href="#works" onclick="toggleMenu()"><span>墨</span><span class="extra">迹</span></a>
+            <a href="#timeline" onclick="toggleMenu()"><span>年</span><span class="extra">谱</span></a>
+            <a href="#contact" onclick="toggleMenu()"><span>问</span><span class="extra">茶</span></a>
+        </div>
+        <button class="burger-menu" id="burgerMenu" onclick="toggleMenu()" aria-label="Toggle Menu" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- 2. Hero 头部（横版巨幅画作区） -->
+    <header class="container">
+        <!-- 背景飘逸书法大字“道” -->
+        <div class="bg-calligraphy-watermark" style="top: 10%; right: 5%;">道</div>
+        
+        <div class="hero-top-info">
+            <div>
+                <span class="hero-concept">SHU FA VISUAL ART</span>
+                <h1 class="hero-title">
+                    心外无笔，<br>
+                    笔外无意。
+                </h1>
+            </div>
+            <p class="hero-desc">
+                林墨安，当代先锋书法家、水墨视觉艺术家。探索中国传统书法线条在现代空间与数字媒介下的解构重组，用骨力苍茫的笔墨在当代留白中构建感官共鸣。
+            </p>
+        </div>
+
+        <!-- 横版巨幅书法画作 -->
+        <div class="hero-landscape-area reveal">
+            <!-- Unsplash极简黑白墨意横图 -->
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1600" alt="横轴水墨书法巨作" class="landscape-scroll">
+        </div>
+    </header>
+
+    <!-- 3. 关于（艺术家简介） -->
+    <section class="about-section container reveal" id="about">
+        <!-- 背景书法大字“气” -->
+        <div class="bg-calligraphy-watermark" style="top: -10%; left: 0;">气</div>
+
+        <div class="section-header">
+            <div>
+                <div class="section-sub">Biography</div>
+                <h2 class="section-title">当代书道之变</h2>
+            </div>
+            <span class="section-calligraphy-mark">心手双畅</span>
+        </div>
+        <div class="about-grid">
+            <div class="about-text-content">
+                <p>
+                    “书法之妙，在于一呼一吸间的骨气相通。传统的笔法与字形不仅是章法，更是一种情绪密符。我的探索，是要在宣纸颗粒的摩擦中，寻找线条的野性，释放纯粹的情感张力。”
+                </p>
+                <div style="font-family: var(--font-calligraphy-ma); font-size: 1.8rem; color: var(--seal-red); margin-top: 2rem; letter-spacing: 0.2em;">
+                    临渊起舞，落纸惊风
+                </div>
+            </div>
+            <div class="about-philosophies">
+                <div class="philosophy-card">
+                    <h3>汉魏风骨 · 铁线重组</h3>
+                    <p>骨力源于汉碑之厚重雄浑，章法取自宋人手札之意趣。拆解偏旁部首，使每一个线条都具备独立于字形之外的雕塑美感。</p>
+                </div>
+                <div class="philosophy-card">
+                    <h3>水墨解构 · 留白艺术</h3>
+                    <p>不落一字而意境自生。将传统的字里行间化为巨大的墨团与极细飞白的冲突，让无色之色在视网膜上产生动态呼吸感。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 作品展示区 -->
+    <section class="works-section container reveal" id="works">
+        <!-- 背景书法大字“妙” -->
+        <div class="bg-calligraphy-watermark" style="bottom: 10%; right: 10%;">妙</div>
+
+        <div class="section-header">
+            <div>
+                <div class="section-sub">Selected Works</div>
+                <h2 class="section-title">墨迹展陈</h2>
+            </div>
+            <span class="section-calligraphy-mark">落纸云烟</span>
+        </div>
+        
+        <!-- 分类过滤（按钮改用 type="button"，防止隐式表单跳动） -->
+        <div class="filter-tabs">
+            <button type="button" class="filter-btn active" onclick="filterWorks(this, 'all')">全幅选集</button>
+            <button type="button" class="filter-btn" onclick="filterWorks(this, 'hang')">行草意象</button>
+            <button type="button" class="filter-btn" onclick="filterWorks(this, 'modern')">空间媒介</button>
+            <button type="button" class="filter-btn" onclick="filterWorks(this, 'monument')">碑拓解构</button>
+        </div>
+
+        <!-- 作品网格 -->
+        <div class="works-grid" id="worksGrid">
+            <!-- 作品 1 -->
+            <div class="work-card" data-category="hang" onclick="openLightbox('https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80&w=800', '《观沧海》- 行草大轴 2025')">
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80&w=800" alt="观沧海" class="work-img" loading="lazy">
+                </div>
+                <div class="work-info">
+                    <div>
+                        <h3 class="work-title">观沧海</h3>
+                        <p class="work-meta">行草、生宣 / 180 × 97 cm</p>
+                    </div>
+                    <span class="work-seal-mark">墨安</span>
+                </div>
+            </div>
+
+            <!-- 作品 2 -->
+            <div class="work-card" data-category="modern" onclick="openLightbox('https://images.unsplash.com/photo-1554188248-14164d3f779f?auto=format&fit=crop&q=80&w=800', '《石上泉》- 装置艺术与空间重构 2024')">
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1554188248-14164d3f779f?auto=format&fit=crop&q=80&w=800" alt="石上泉" class="work-img" loading="lazy">
+                </div>
+                <div class="work-info">
+                    <div>
+                        <h3 class="work-title">石上泉</h3>
+                        <p class="work-meta">矿物颜料、手制宣纸 / 120 × 120 cm</p>
+                    </div>
+                    <span class="work-seal-mark">野趣</span>
+                </div>
+            </div>
+
+            <!-- 作品 3 -->
+            <div class="work-card" data-category="monument" onclick="openLightbox('https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?auto=format&fit=crop&q=80&w=800', '《破格》- 碑刻力量解构 2024')">
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?auto=format&fit=crop&q=80&w=800" alt="破格" class="work-img" loading="lazy">
+                </div>
+                <div class="work-info">
+                    <div>
+                        <h3 class="work-title">破格之格</h3>
+                        <p class="work-meta">浓墨、重磅宣纸 / 200 × 150 cm</p>
+                    </div>
+                    <span class="work-seal-mark">大璞</span>
+                </div>
+            </div>
+
+            <!-- 作品 4 -->
+            <div class="work-card" data-category="hang" onclick="openLightbox('https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&q=80&w=800', '《独坐敬亭山》- 极简飞白 2025')">
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1549887534-1541e9326642?auto=format&fit=crop&q=80&w=800" alt="独坐敬亭山" class="work-img" loading="lazy">
+                </div>
+                <div class="work-info">
+                    <div>
+                        <h3 class="work-title">独坐敬亭山</h3>
+                        <p class="work-meta">焦墨、麻宣 / 140 × 75 cm</p>
+                    </div>
+                    <span class="work-seal-mark">静笃</span>
+                </div>
+            </div>
+
+            <!-- 作品 5 -->
+            <div class="work-card" data-category="modern" onclick="openLightbox('https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&q=80&w=800', '《生息》- 声音与动态墨迹投影 2026')">
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&q=80&w=800" alt="生息" class="work-img" loading="lazy">
+                </div>
+                <div class="work-info">
+                    <div>
+                        <h3 class="work-title">息与回响</h3>
+                        <p class="work-meta">数字影像装置、宣纸拓本</p>
+                    </div>
+                    <span class="work-seal-mark">实验</span>
+                </div>
+            </div>
+
+            <!-- 作品 6 -->
+            <div class="work-card" data-category="monument" onclick="openLightbox('https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&q=80&w=800', '《临渊》- 巨幅手卷视觉 2024')">
+                <div class="work-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&q=80&w=800" alt="临渊" class="work-img" loading="lazy">
+                </div>
+                <div class="work-info">
+                    <div>
+                        <h3 class="work-title">临渊而望</h3>
+                        <p class="work-meta">综合媒介、皮宣 / 240 × 120 cm</p>
+                    </div>
+                    <span class="work-seal-mark">行深</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 艺术年表 (Timeline) -->
+    <section class="timeline-section container reveal" id="timeline">
+        <div class="section-header">
+            <div>
+                <div class="section-sub">Exhibitions</div>
+                <h2 class="section-title">艺术历程</h2>
+            </div>
+            <span class="section-calligraphy-mark">履迹留痕</span>
+        </div>
+        <div class="timeline-container">
+            <div class="timeline-item">
+                <div class="timeline-year">2026</div>
+                <div class="timeline-content">
+                    <h4>《解构与重组》林墨安个展</h4>
+                    <p>上海当代艺术博物馆 (PSA) | 展出大尺幅空间水墨与动态数字交互书法装置。</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2025</div>
+                <div class="timeline-content">
+                    <h4>《墨之生息》中日韩青年书道特展</h4>
+                    <p>东京国立新美术馆 | 荣获“年度当代东方美学视觉突破奖”。</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2024</div>
+                <div class="timeline-content">
+                    <h4>《不立文字》先锋书法联展</h4>
+                    <p>北京红砖美术馆 | 实验性将狂草线条刻于玻璃及花岗岩等现代建筑切面之上。</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2022</div>
+                <div class="timeline-content">
+                    <h4>《回声：汉字演变与未来视觉》</h4>
+                    <p>杭州中国美术学院美术馆 | 首次发表新概念重组汉字系列《观沧海》。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. 问茶 / 底部 -->
+    <footer id="contact">
+        <!-- 背景巨大书法“神” -->
+        <div class="bg-calligraphy-watermark" style="bottom: -5%; left: 10%;">神</div>
+
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-quote">
+                        书，散也。<br>
+                        欲书先散怀抱，<br>
+                        任情恣性，然后书之。
+                    </h3>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-label">设席待茶 · 艺术合作</span>
+                        <a href="mailto:studio@linmoan.art" class="contact-val">studio@linmoan.art</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">日常印迹</span>
+                        <a href="#" class="contact-val">微信公众号 / 墨安艺术空间</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">工作室地址</span>
+                        <span class="contact-val" style="font-size: 0.95rem;">浙江省杭州市西湖区西溪草堂 A7 栋</span>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-area">
+                <p>&copy; 2026 林墨安 LIN MO'AN. 保留所有权利。</p>
+                <p>探索中国书道的当代美学表达</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 7. 轻量级全屏灯箱 -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img src="" alt="大图预览" class="lightbox-img" id="lightboxImg">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+
+    <script>
+        // 1. 移动端导航抽屉菜单
+        const navLinks = document.getElementById('navLinks');
+        const burgerMenu = document.getElementById('burgerMenu');
+
+        function toggleMenu() {
+            if (window.innerWidth <= 768) {
+                navLinks.classList.toggle('open');
+                burgerMenu.classList.toggle('open');
+                document.body.classList.toggle('menu-open');
+            }
+        }
+
+        // 2. 导航栏滚动交互
+        const mainNav = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                mainNav.classList.add('scrolled');
+            } else {
+                mainNav.classList.remove('scrolled');
+            }
+        });
+
+        // 3. 滚动微动效：元素渐进显现 (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+
+        // 4. 重构作品筛选逻辑：水墨淡出后，有序阶梯式（Staggered）淡入，解决突兀闪烁和页面跳动
+        function filterWorks(btnElement, category) {
+            // 切换 Tab 的激活状态
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const cards = document.querySelectorAll('.work-card');
+
+            // 阶段一：让所有卡片向下平滑淡出
+            cards.forEach(card => {
+                card.classList.add('fade-out');
+                card.classList.remove('fade-in');
+            });
+
+            // 阶段二：等待淡出动画完成后（约300ms），变更 display 属性，再进行有序的阶梯式淡入
+            setTimeout(() => {
+                let staggerDelay = 0; // 阶梯延迟计时器
+                
+                cards.forEach(card => {
+                    const itemCategory = card.getAttribute('data-category');
+                    
+                    if (category === 'all' || itemCategory === category) {
+                        card.style.display = 'block';
+                        
+                        // 强制触发回流以确保后续的 CSS 动画生效
+                        void card.offsetWidth; 
+                        
+                        // 有序滞后地触发淡入
+                        setTimeout(() => {
+                            card.classList.remove('fade-out');
+                            card.classList.add('fade-in');
+                        }, staggerDelay);
+                        
+                        staggerDelay += 50; // 每张卡片依次滞后50毫秒显示
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }, 300);
+        }
+
+
+        // 5. 精致灯箱交互 (Lightbox)
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+
+        function openLightbox(src, caption) {
+            lightboxImg.src = src;
+            lightboxCaption.textContent = caption;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
