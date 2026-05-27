@@ -13,7 +13,7 @@ window.templatesData = {
             "image": "images/github风格后端开发简历.png",
             "demoUrl": "https://freezeng.top/templates/github%E9%A3%8E%E6%A0%BC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E7%AE%80%E5%8E%86.png",
             "tags": ["开发者", "技术简历", "GitHub"],
-            "category": "text",
+            "categories": ["text"],
             "visible": true,
             "order": 23
         },
@@ -24,7 +24,7 @@ window.templatesData = {
             "image": "images/notion风格文学专业个人简历.png",
             "demoUrl": "templates/notion风格文学专业个人简历.html",
             "tags": ["极简", "笔记风格", "文学"],
-            "category": "text",
+            "categories": ["text"],
             "visible": true,
             "order": 22
         },
@@ -35,7 +35,7 @@ window.templatesData = {
             "image": "images/便当盒风格产品经理简历.png",
             "demoUrl": "templates/便当盒风格产品经理简历.html",
             "tags": ["文字简历", "便当盒风", "产品经理"],
-            "category": "text",
+            "categories": ["text"],
             "visible": true,
             "order": 21
         },
@@ -46,7 +46,7 @@ window.templatesData = {
             "image": "images/便当盒风格后端开发简历.png",
             "demoUrl": "templates/便当盒风格后端开发简历.html",
             "tags": ["文字简历", "极客便当盒风", "后端开发"],
-            "category": "text",
+            "categories": ["text"],
             "visible": true,
             "order": 20
         },
@@ -57,7 +57,7 @@ window.templatesData = {
             "image": "images/巨型字体莫兰迪色简历.png",
             "demoUrl": "templates/巨型字体莫兰迪色简历.html",
             "tags": ["莫兰迪色", "艺术感", "巨型字体"],
-            "category": "visual",
+            "categories": ["animation", "text"],
             "visible": true,
             "order": 8
         },
@@ -68,7 +68,7 @@ window.templatesData = {
             "image": "images/新粗野主义风格前端开发个人简历.png",
             "demoUrl": "templates/新粗野主义风格前端开发个人简历.html",
             "tags": ["前端", "粗野主义", "创意"],
-            "category": "text",
+            "categories": ["text", "visual"],
             "visible": true,
             "order": 17
         },
@@ -79,7 +79,7 @@ window.templatesData = {
             "image": "images/横向滚动图片作品集简历.png",
             "demoUrl": "templates/横向滚动图片作品集简历.html",
             "tags": ["视觉大图", "作品集", "横向滚动"],
-            "category": "visual",
+            "categories": ["visual", "animation"],
             "visible": true,
             "order": 7
         },
@@ -90,7 +90,7 @@ window.templatesData = {
             "image": "images/看板风格产品经理个人主页.png",
             "demoUrl": "templates/看板风格产品经理个人主页.html",
             "tags": ["产品经理", "看板", "项目管理"],
-            "category": "text",
+            "categories": ["text"],
             "visible": true,
             "order": 16
         },
@@ -101,7 +101,7 @@ window.templatesData = {
             "image": "images/粗线条风儿童插画师作品集.png",
             "demoUrl": "templates/粗线条风儿童插画师作品集.html",
             "tags": ["插画", "儿童风格", "粗线条"],
-            "category": "visual",
+            "categories": ["visual"],
             "visible": true,
             "order": 9
         },
@@ -112,7 +112,7 @@ window.templatesData = {
             "image": "images/经典牛津风格金融行业个人简历.png",
             "demoUrl": "templates/经典牛津风格金融行业个人简历.html",
             "tags": ["极简清爽", "金融", "经典风格"],
-            "category": "text",
+            "categories": ["text"],
             "visible": true,
             "order": 10
         },
@@ -123,7 +123,7 @@ window.templatesData = {
             "image": "images/艺术院校申请莫兰迪色作品集主页.png",
             "demoUrl": "templates/艺术院校申请莫兰迪色作品集主页.html",
             "tags": ["艺术院校", "作品集", "莫兰迪色"],
-            "category": "visual",
+            "categories": ["visual"],
             "visible": true,
             "order": 11
         },
@@ -134,7 +134,7 @@ window.templatesData = {
             "image": "images/莫兰迪交互设计个人主页.png",
             "demoUrl": "templates/莫兰迪交互设计个人主页.html",
             "tags": ["UI设计", "莫兰迪色", "交互设计"],
-            "category": "visual",
+            "categories": ["visual", "text"],
             "visible": true,
             "order": 1
         },
@@ -145,7 +145,7 @@ window.templatesData = {
             "image": "images/莫兰迪儿童文学个人主页.png",
             "demoUrl": "templates/莫兰迪儿童文学个人主页.html",
             "tags": ["儿童文学", "莫兰迪色", "温馨"],
-            "category": "text",
+            "categories": ["text", "visual","animation"],
             "visible": true,
             "order": 2
         },
@@ -156,7 +156,7 @@ window.templatesData = {
             "image": "images/莫兰迪风UI设计师简历.png",
             "demoUrl": "templates/莫兰迪风UI设计师简历.html",
             "tags": ["UI设计", "莫兰迪色", "设计师"],
-            "category": "visual",
+            "categories": ["visual"],
             "visible": true,
             "order": 3
         },
@@ -167,7 +167,7 @@ window.templatesData = {
             "image": "images/视差滚动风格个人主页.png",
             "demoUrl": "templates/视差滚动风格个人主页.html",
             "tags": ["高级动效", "视差滚动", "个人主页"],
-            "category": "animation",
+            "categories": ["animation", "visual"],
             "visible": true,
             "order": 4
         },
@@ -178,7 +178,7 @@ window.templatesData = {
             "image": "images/院校申请中英个人简历主页.png",
             "demoUrl": "templates/院校申请中英个人简历主页.html",
             "tags": ["中英双语", "院校申请", "海外求职"],
-            "category": "text",
+            "categories": ["text"],
             "visible": true,
             "order": 5
         },
@@ -189,7 +189,7 @@ window.templatesData = {
             "image": "images/马卡龙色儿童插画师个人主页.png",
             "demoUrl": "templates/马卡龙色儿童插画师个人主页.html",
             "tags": ["插画", "马卡龙色", "儿童风格"],
-            "category": "visual",
+            "categories": ["visual"],
             "visible": true,
             "order": 6
         },
@@ -200,7 +200,7 @@ window.templatesData = {
             "image": "images/高级图片作品集毕业生.png",
             "demoUrl": "templates/高级图片作品集毕业生.html",
             "tags": ["毕业生", "作品集", "高级风格"],
-            "category": "visual",
+            "categories": ["visual"],
             "visible": true,
             "order": 18
         },
@@ -211,7 +211,7 @@ window.templatesData = {
             "image": "images/高级学术风格主页.png",
             "demoUrl": "templates/高级学术风格主页.html",
             "tags": ["学术", "研究", "学者"],
-            "category": "text",
+            "categories": ["text"],
             "visible": true,
             "order": 19
         },
@@ -222,7 +222,7 @@ window.templatesData = {
             "image": "images/高级时尚杂志风格个人简历.png",
             "demoUrl": "templates/高级时尚杂志风格个人简历.html",
             "tags": ["时尚", "杂志风", "模特"],
-            "category": "visual",
+            "categories": ["visual", "text"],
             "visible": true,
             "order": 15
         },
@@ -233,7 +233,7 @@ window.templatesData = {
             "image": "images/高级黑白风带头像设计师.png",
             "demoUrl": "templates/高级黑白风带头像设计师.html",
             "tags": ["黑白风格", "设计师", "带头像"],
-            "category": "visual",
+            "categories": ["visual"],
             "visible": true,
             "order": 14
         },
@@ -244,7 +244,7 @@ window.templatesData = {
             "image": "images/高级黑白风毕业生求职简历.png",
             "demoUrl": "templates/高级黑白风毕业生求职简历.html",
             "tags": ["黑白风格", "毕业生", "求职"],
-            "category": "text",
+            "categories": ["text"],
             "visible": true,
             "order": 13
         },
@@ -255,7 +255,7 @@ window.templatesData = {
             "image": "images/高级黑白风纯文字律师.png",
             "demoUrl": "templates/高级黑白风纯文字律师.html",
             "tags": ["黑白风格", "律师", "纯文字"],
-            "category": "text",
+            "categories": ["text"],
             "visible": true,
             "order": 12
         }

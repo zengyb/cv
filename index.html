@@ -144,6 +144,57 @@
             animation: shineLoop 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* 弹窗遮罩 */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 360px;
+            width: 90vw;
+            text-align: center;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.2);
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .modal-close-btn:hover {
+            background: #e5e7eb;
+        }
+
         /* 底部磁吸按钮优化 */
         .magnetic-btn {
             cursor: pointer;
@@ -210,8 +261,8 @@
                     <a href="#gallery" class="nav-link text-sm font-medium text-gray-500 hover:text-primary">模板展示</a>
                     <a href="#pricing" class="nav-link text-sm font-medium text-gray-500 hover:text-primary">价格方案</a>
                     <a href="#faq" class="nav-link text-sm font-medium text-gray-500 hover:text-primary">常见问题</a>
-                    <a href="#contact" class="bg-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ml-4">
-                        立即定制
+                    <a href="javascript:void(0)" class="bg-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ml-4">
+                        立即下单
                     </a>
                 </div>
                 <button class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors mobile-menu-btn" onclick="toggleMobileMenu()">
@@ -225,7 +276,7 @@
                 <a href="#gallery" class="block py-2 text-gray-600 hover:text-primary font-medium transition-colors" onclick="toggleMobileMenu()">模板展示</a>
                 <a href="#pricing" class="block py-2 text-gray-600 hover:text-primary font-medium transition-colors" onclick="toggleMobileMenu()">价格方案</a>
                 <a href="#faq" class="block py-2 text-gray-600 hover:text-primary font-medium transition-colors" onclick="toggleMobileMenu()">常见问题</a>
-                <a href="#contact" class="block mt-4 bg-primary text-white text-center px-5 py-3 rounded-full font-semibold transition-transform active:scale-95" onclick="toggleMobileMenu()">立即定制</a>
+                <a href="javascript:void(0)" class="block mt-4 bg-primary text-white text-center px-5 py-3 rounded-full font-semibold transition-transform active:scale-95" onclick="toggleMobileMenu()">立即下单</a>
             </div>
         </div>
     </nav>
@@ -492,7 +543,7 @@
                             <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 赠送 1 次后期内容微调</li>
                         </ul>
                     </div>
-                    <a href="#contact" class="shine-btn-loop block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 mt-auto">
+                    <a href="javascript:void(0)" class="shine-btn-loop block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 mt-auto">
                         立即下单
                     </a>
                 </div>
@@ -523,7 +574,7 @@
                                 <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-indigo-500 shrink-0"></i> 支持定制二级域名名称</li>
                             </ul>
                         </div>
-                        <a href="#contact" class="shine-btn-loop block w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white py-3.5 rounded-xl font-bold text-sm transition-all duration-300 shadow-md shadow-indigo-600/10 mt-auto">
+                        <a href="javascript:void(0)" class="shine-btn-loop block w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white py-3.5 rounded-xl font-bold text-sm transition-all duration-300 shadow-md shadow-indigo-600/10 mt-auto">
                             立即下单
                         </a>
                     </div>
@@ -551,7 +602,7 @@
                             <li class="flex gap-3 items-center text-gray-600"><i data-lucide="check" class="w-4 h-4 text-secondary shrink-0"></i> 域名访问优化，提供更快、更稳定的访问服务</li>
                         </ul>
                     </div>
-                    <a href="#contact" class="shine-btn-loop block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 mt-auto">
+                    <a href="javascript:void(0)" class="shine-btn-loop block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 mt-auto">
                         立即下单
                     </a>
                 </div>
@@ -665,7 +716,7 @@
                         </div>
                         <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
                             <div class="px-6 pb-5 text-gray-500 text-xs md:text-sm leading-relaxed border-t border-gray-50 pt-4">
-                                我们全面支持淘宝、小红书官方等主流电商担保平台进行支付交易。在我们将搭建完成的专属预览链接发送给您之前，您无需支付任何尾款资金；对实际成品的视觉与交互排版满意后，再进行确认，全程安全无忧。
+                                我们支持主流电商担保平台进行支付交易。下单后，我们将搭建完成的专属预览链接发送给您确认。对最终成品的视觉与交互排版满意后，再确认收货，全程安全无忧。
                             </div>
                         </div>
                     </div>
@@ -675,6 +726,37 @@
         </div>
     </section>
 
+    <!-- 钉钉二维码弹窗 -->
+    <div class="modal-overlay" id="qrModal">
+        <div class="relative">
+            <div class="modal-content">
+                <button class="modal-close-btn" onclick="closeQRModal()">
+                    <i data-lucide="x" class="w-4 h-4 text-gray-500"></i>
+                </button>
+                <div class="mb-6">
+                    <div class="w-16 h-16 mx-auto bg-indigo-50 rounded-2xl flex items-center justify-center mb-4">
+                        <i data-lucide="smartphone" class="w-8 h-8 text-secondary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">扫码添加客服</h3>
+                    <p class="text-sm text-gray-400">打开钉钉扫描下方二维码，咨询客服了解更多信息</p>
+                </div>
+                <div class="bg-gray-50 rounded-2xl p-6 mb-4">
+                    <img src="images/dingtalk-qr.jpg" alt="钉钉客服二维码" class="w-48 h-48 mx-auto rounded-xl" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <div class="hidden flex-col items-center justify-center w-48 h-48 mx-auto rounded-xl bg-gray-100 text-gray-400">
+                        <i data-lucide="image-off" class="w-8 h-8 mb-2"></i>
+                        <span class="text-xs">请将钉钉二维码放置于</span>
+                        <span class="text-xs">images/dingtalk-qr.png</span>
+                    </div>
+                </div>
+                <a href="https://n.dingtalk.com/dingding/h5-profile/outside/index.html?fr_source=13&uidCipher=B%2Fl59TgegC8dlmMum0z8ag%3D%3D&cardToken=e8980f36f5&profile=%40kgDOGtoSWw" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 w-full bg-secondary hover:bg-indigo-500 text-white py-3 rounded-xl text-sm font-bold transition-all duration-300 shadow-md hover:shadow-lg active:scale-[0.97] mb-3">
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                    打开链接
+                </a>
+                <p class="text-xs text-gray-400">工作时间：工作日 9:00 - 21:00</p>
+            </div>
+        </div>
+    </div>
+
     <!-- 7. 底部召唤与页脚 (Footer & CTA) -->
     <footer id="contact" class="bg-white border-t border-gray-100 pt-20 pb-10">
         <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center mb-16 reveal-element">
@@ -682,10 +764,9 @@
             <p class="text-base md:text-lg text-gray-400 mb-10">极速开启数字化个人形象，告别千篇一律的传统简历</p>
             
             <div class="flex justify-center">
-                <!-- 饱满立体的咨询磁吸大按钮 (带全时流光常亮动效) -->
-                <button class="magnetic-btn shine-btn-loop flex items-center justify-center gap-3 bg-[#ff2442] hover:bg-[#e01f3a] text-white px-16 py-6 rounded-full text-lg font-extrabold transition-all duration-300 shadow-xl hover:shadow-[0_25px_50px_-12px_rgba(255,36,66,0.3)] hover:-translate-y-0.5 active:translate-y-0">
+                <button class="magnetic-btn shine-btn-loop flex items-center justify-center gap-3 bg-[#ff2442] hover:bg-[#e01f3a] text-white px-16 py-6 rounded-full text-lg font-extrabold transition-all duration-300 shadow-xl hover:shadow-[0_25px_50px_-12px_rgba(255,36,66,0.3)] hover:-translate-y-0.5 active:translate-y-0" onclick="openQRModal()">
                     <i data-lucide="message-circle" class="w-6 h-6"></i>
-                    咨询客服 / 极速下单
+                    咨询客服
                 </button>
             </div>
         </div>
@@ -841,7 +922,7 @@
             // 过滤：1. 只展示 visible !== false 的模版 2. 根据分类筛选 3. 根据 order 字段从小到大排序
             const filteredTemplates = templatesData.templates
                 .filter(t => t.visible !== false)
-                .filter(t => activeCategory === 'all' || t.category === activeCategory)
+                .filter(t => activeCategory === 'all' || (t.categories && t.categories.includes(activeCategory)))
                 .sort((a, b) => {
                     const orderA = a.order !== undefined ? a.order : 999;
                     const orderB = b.order !== undefined ? b.order : 999;
@@ -979,6 +1060,25 @@
         // 页面初始化
         document.addEventListener('DOMContentLoaded', () => {
             loadTemplates();
+
+            // 钉钉二维码弹窗
+            window.openQRModal = function() {
+                document.getElementById('qrModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+                lucide.createIcons();
+            };
+            window.closeQRModal = function() {
+                document.getElementById('qrModal').classList.remove('active');
+                document.body.style.overflow = '';
+            };
+            document.getElementById('qrModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeQRModal();
+                }
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeQRModal();
+            });
 
             // 3D 偏转反馈
             const videoCard = document.querySelector('.interactive-video-card');
