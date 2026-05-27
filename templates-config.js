@@ -12,7 +12,7 @@ window.templatesData = {
             "name": "GitHub风格后端开发简历",
             "description": "极客范十足的开发者简历，展示你的技术栈和项目贡献，让技术面试官眼前一亮。",
             "image": "images/github风格后端开发简历.png",
-            "demoUrl": "templets/github风格后端开发简历.html",
+            "demoUrl": "https://freezeng.top/templates/github%E9%A3%8E%E6%A0%BC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E7%AE%80%E5%8E%86.png",
             "tags": ["开发者", "技术简历", "GitHub"],
             "category": "text",
             "visible": true,
