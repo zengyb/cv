@@ -117,38 +117,49 @@
             transform-style: preserve-3d;
         }
 
-        /* 轮播容器 */
+        /* 轮播容器优化 */
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+        }
         .carousel-track {
             display: flex;
+            width: 100%;
             height: 100%;
             transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: transform;
         }
         .carousel-slide {
-            min-width: 100%;
+            width: 100%;
+            flex: 0 0 100%; /* 强力限制子项宽度为容器的 100%，防止大图撑开 */
             height: 100%;
             flex-shrink: 0;
+            overflow: hidden;
         }
         .carousel-slide img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            object-position: top;
+            object-fit: cover; /* 自动裁剪并铺满 */
+            object-position: top; /* 顶端对齐，向下延伸裁剪 */
+            display: block;
         }
+        
+        /* 悬浮毛玻璃轮播指示器 */
         .carousel-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: #d1d5db;
-            transition: background 0.3s, transform 0.3s;
+            background: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
         }
         .carousel-dot.active {
-            background: #4F46E5;
-            transform: scale(1.3);
+            background: #ffffff;
+            width: 18px; /* 活跃时拉伸为现代精致的药丸状（Pill Indicator） */
+            border-radius: 9999px;
         }
         .carousel-dot:hover {
-            background: #818cf8;
+            background: rgba(255, 255, 255, 0.8);
         }
 
         /* 按钮光影掠过自主、循环流光特效 (Shine Loop Effect) */
@@ -351,11 +362,37 @@
                 </a>
             </div>
 
-            <!-- 首屏轮播卡片 (带3D微特效) -->
-            <div class="mt-16 relative max-w-4xl mx-auto reveal-element delay-400">
+            <!-- 首屏轮播卡片 (升级版：重构为极致对称的 Safari 浏览器窗口 Mockup，消除白边不协调) -->
+            <div class="mt-16 relative max-w-4xl mx-auto reveal-element delay-400 px-4 sm:px-0">
                 <div class="absolute -inset-1.5 bg-gradient-to-r from-secondary to-purple-600 rounded-2xl blur-xl opacity-15 pointer-events-none"></div>
-                <div class="interactive-video-card bg-white p-2 rounded-2xl border border-gray-100 shadow-2xl overflow-hidden cursor-pointer relative carousel-container">
-                    <div class="relative w-full select-none" style="aspect-ratio: 16/9;">
+                
+                <!-- 带有 3D 偏转反馈的精美浏览器外壳 -->
+                <div class="interactive-video-card bg-white rounded-2xl border border-gray-150 shadow-2xl overflow-hidden cursor-pointer relative carousel-container flex flex-col">
+                    
+                    <!-- Safari 风格：顶部精致工具栏 -->
+                    <div class="bg-gray-50 border-b border-gray-100 px-4 py-3 flex items-center justify-between select-none">
+                        <!-- 苹果标志性三色按钮 -->
+                        <div class="flex items-center gap-1.5 w-16">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-400 block"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 block"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-green-400 block"></span>
+                        </div>
+                        
+                        <!-- 仿真安全链接输入栏 -->
+                        <div class="bg-gray-200/55 text-[10px] sm:text-xs text-gray-400 px-4 sm:px-8 py-1 rounded-md flex-1 max-w-[140px] sm:max-w-md mx-auto text-center truncate flex items-center justify-center gap-1">
+                            <i data-lucide="lock" class="w-3 h-3 text-gray-400 shrink-0"></i>
+                            <span class="truncate">shanjian.art/template-preview</span>
+                        </div>
+                        
+                        <!-- 右侧空栏，以保持排版平衡 -->
+                        <div class="w-16 flex justify-end gap-2 text-gray-400">
+                            <i data-lucide="share-2" class="w-3.5 h-3.5 hidden sm:block"></i>
+                            <i data-lucide="plus" class="w-3.5 h-3.5 hidden sm:block"></i>
+                        </div>
+                    </div>
+
+                    <!-- 轮播图主体区域 (多端自适应比例完美裁切：手机端 taller 展现，桌面端 16/9 宽屏) -->
+                    <div class="relative w-full select-none aspect-[4/3] sm:aspect-[16/9] overflow-hidden bg-gray-50">
                         <div class="carousel-track" id="heroCarousel">
                             <div class="carousel-slide">
                                 <img src="images/莫兰迪交互设计个人主页.png" alt="莫兰迪交互设计个人主页" draggable="false">
@@ -370,9 +407,12 @@
                                 <img src="images/高级黑白风毕业生求职简历.png" alt="高级黑白风毕业生求职简历" draggable="false">
                             </div>
                         </div>
+
+                        <!-- 悬浮型毛玻璃圆点指示器（贴合于页面中央底部，视觉更精致） -->
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/30 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center justify-center gap-2 z-20" id="carouselDots">
+                        </div>
                     </div>
-                    <div class="flex items-center justify-center gap-2 pt-3 pb-1" id="carouselDots">
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -540,7 +580,7 @@
         </div>
     </section>
 
-    <!-- 5. 价格方案 (Pricing Table - 新版原价换行 & 常亮流光动效) -->
+    <!-- 5. 价格方案 (Pricing Table) -->
     <section id="pricing" class="py-24 bg-white border-t border-gray-100">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-16 reveal-element">
@@ -646,7 +686,7 @@
         </div>
     </section>
 
-    <!-- 6. 常见问题 (FAQ - 重构为双列网格布局，共6个问题) -->
+    <!-- 6. 常见问题 (FAQ) -->
     <section id="faq" class="py-24 bg-gray-50/50">
         <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-16 reveal-element">
@@ -1113,7 +1153,7 @@
                 if (e.key === 'Escape') closeQRModal();
             });
 
-            // 轮播（统一使用像素值，避免百分比/像素混用导致卡顿）
+            // 轮播组件逻辑（强化对齐计算：实时精确重绘每一个 Slide 宽度）
             const carouselTrack = document.getElementById('heroCarousel');
             const dotsContainer = document.getElementById('carouselDots');
             if (carouselTrack && dotsContainer) {
@@ -1147,7 +1187,7 @@
                     stopAuto();
                     autoTimer = setInterval(() => {
                         goTo((currentIndex + 1) % totalSlides);
-                    }, 3000);
+                    }, 3500);
                 }
 
                 function stopAuto() {
@@ -1161,7 +1201,15 @@
                 container.addEventListener('mouseenter', stopAuto);
                 container.addEventListener('mouseleave', startAuto);
 
-                window.addEventListener('resize', () => goTo(currentIndex));
+                // 窗口重绘时重新对齐，杜绝错位和黑边露点
+                window.addEventListener('resize', () => {
+                    carouselTrack.style.transition = 'none';
+                    goTo(currentIndex);
+                    // 强制在下一帧恢复过渡效果
+                    setTimeout(() => {
+                        carouselTrack.style.transition = '';
+                    }, 50);
+                });
 
                 // 触摸滑动
                 carouselTrack.addEventListener('touchstart', (e) => {
@@ -1175,7 +1223,7 @@
                 carouselTrack.addEventListener('touchmove', (e) => {
                     if (!isDragging) return;
                     const slideW = getSlideWidth();
-                    const offset = -(startTranslate * slideW + (e.touches[0].clientX - startX));
+                    const offset = -(startTranslate * slideW + (startX - e.touches[0].clientX));
                     carouselTrack.style.transform = `translateX(${offset}px)`;
                 }, { passive: true });
 
