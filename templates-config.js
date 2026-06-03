@@ -10,9 +10,9 @@ window.templatesData = {
             "id": "Chinese-style",
             "name": "新中式风格书法家个人页",
             "description": "中式风格满满的页面设计，适合展示您的书法作品、中式风格的各类作品。",
-            "image": "images/新中式风格书法家个人页.jpg",
+            "image": "images/新中式风格书法家个人页.png",
             "demoUrl": "templates/新中式风格书法家个人页.html",
-            "tags": ["开发者", "技术简历", "GitHub"],
+            "tags": ["新中式", "作品集", "个人主页"],
             "categories": ["visual"],
             "visible": true,
             "order": 20
