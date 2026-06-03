@@ -10,12 +10,23 @@ window.templatesData = {
             "id": "github-style-backend",
             "name": "GitHub风格后端开发简历",
             "description": "极客范十足的开发者简历，展示你的技术栈和项目贡献，让技术面试官眼前一亮。",
-            "image": "images/github风格后端开发简历.png",
-            "demoUrl": "https://freezeng.top/templates/github%E9%A3%8E%E6%A0%BC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E7%AE%80%E5%8E%86.png",
+            "image": "images/新中式风格书法家个人页.jpg",
+            "demoUrl": "templates/新中式风格书法家个人页.html",
             "tags": ["开发者", "技术简历", "GitHub"],
             "categories": ["text"],
             "visible": true,
-            "order": 23
+            "order": 20
+        },
+        {
+            "id": "github-style-backend",
+            "name": "GitHub风格后端开发简历",
+            "description": "极客范十足的开发者简历，展示你的技术栈和项目贡献，让技术面试官眼前一亮。",
+            "image": "images/github风格后端开发简历.png",
+            "demoUrl": "templates/github风格后端开发简历.html",
+            "tags": ["开发者", "技术简历", "GitHub"],
+            "categories": ["text"],
+            "visible": true,
+            "order": 24
         },
         {
             "id": "notion-style-literature",
@@ -26,7 +37,7 @@ window.templatesData = {
             "tags": ["极简", "笔记风格", "文学"],
             "categories": ["text"],
             "visible": true,
-            "order": 22
+            "order": 23
         },
         {
             "id": "bento-pm",
@@ -37,7 +48,7 @@ window.templatesData = {
             "tags": ["文字简历", "便当盒风", "产品经理"],
             "categories": ["text"],
             "visible": true,
-            "order": 21
+            "order": 22
         },
         {
             "id": "bento-backend",
@@ -48,7 +59,7 @@ window.templatesData = {
             "tags": ["文字简历", "极客便当盒风", "后端开发"],
             "categories": ["text"],
             "visible": true,
-            "order": 20
+            "order": 21
         },
         {
             "id": "giant-font-morandi",
