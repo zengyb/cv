@@ -7,13 +7,13 @@ window.templatesData = {
     ],
     "templates": [
         {
-            "id": "github-style-backend",
-            "name": "GitHub风格后端开发简历",
-            "description": "极客范十足的开发者简历，展示你的技术栈和项目贡献，让技术面试官眼前一亮。",
+            "id": "Chinese-style",
+            "name": "新中式风格书法家个人页",
+            "description": "中式风格满满的页面设计，适合展示您的书法作品、中式风格的各类作品。",
             "image": "images/新中式风格书法家个人页.jpg",
             "demoUrl": "templates/新中式风格书法家个人页.html",
             "tags": ["开发者", "技术简历", "GitHub"],
-            "categories": ["text"],
+            "categories": ["visual"],
             "visible": true,
             "order": 20
         },
